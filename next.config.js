@@ -8,13 +8,14 @@ module.exports = {
     appDir: true
   },
   images: {
-    formats: ['image/avif', 'image/webp'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'cdn.shopify.com',
-        pathname: '/s/files/**'
-      }
-    ]
+    domains: ["cdn.schema.io", "cdn.shopify.com"]
+    // formats: ['image/avif', 'image/webp'],
+    // remotePatterns: [
+    //   {
+    //     protocol: 'https',
+    //     hostname: 'cdn.schema.io',
+    //     pathname: '/s/files/**'
+    //   }
+    // ]
   }
 };

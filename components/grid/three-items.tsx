@@ -1,6 +1,6 @@
 import { GridTileImage } from 'components/grid/tile';
-import { getCollectionProducts } from 'lib/shopify';
-import type { Product } from 'lib/shopify/types';
+import { getCategoryProducts } from 'lib/swell';
+import type { SwellProduct } from 'lib/swell/types';
 import Link from 'next/link';
 
 function ThreeItemGridItem({
@@ -8,7 +8,7 @@ function ThreeItemGridItem({
   size,
   background
 }: {
-  item: Product;
+  item: SwellProduct;
   size: 'full' | 'half';
   background: 'white' | 'pink' | 'purple' | 'black';
 }) {
@@ -16,18 +16,18 @@ function ThreeItemGridItem({
     <div
       className={size === 'full' ? 'lg:col-span-4 lg:row-span-2' : 'lg:col-span-2 lg:row-span-1'}
     >
-      <Link className="block h-full" href={`/product/${item.handle}`}>
+      <Link className="block h-full" href={`/product/${item.slug}`}>
         <GridTileImage
-          src={item.featuredImage.url}
+          src={item.images[0].file.url}
           width={size === 'full' ? 1080 : 540}
           height={size === 'full' ? 1080 : 540}
           priority={true}
           background={background}
-          alt={item.title}
+          alt={item.name}
           labels={{
-            title: item.title as string,
-            amount: item.priceRange.maxVariantPrice.amount,
-            currencyCode: item.priceRange.maxVariantPrice.currencyCode
+            title: item.name as string,
+            amount: String(item.price), //TODO: Clean this up
+            currencyCode: 'USD' // TODO: Clean this up
           }}
         />
       </Link>
@@ -37,7 +37,9 @@ function ThreeItemGridItem({
 
 export async function ThreeItemGrid() {
   // Collections that start with `hidden-*` are hidden from the search page.
-  const homepageItems = await getCollectionProducts('hidden-homepage-featured-items');
+  // const homepageItems = await getCollectionProducts('hidden-homepage-featured-items');
+  const homepageItems = await getCategoryProducts('hidden-homepage-featured-items')
+  // const result = await swellFetch(getProductsQuery); // TODO: Testing. Remove this
 
   if (!homepageItems[0] || !homepageItems[1] || !homepageItems[2]) return null;
 
