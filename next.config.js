@@ -8,7 +8,7 @@ module.exports = {
     appDir: true
   },
   images: {
-    domains: ["cdn.schema.io", "cdn.shopify.com"]
+    domains: ["cdn.schema.io", "cdn.shopify.com", "cdn.swell.store"]
     // formats: ['image/avif', 'image/webp'],
     // remotePatterns: [
     //   {

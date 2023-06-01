@@ -28,7 +28,7 @@ export async function swellFetch<T>(
         variables?: any, // TODO: Type this
         headers?: HeadersInit,
         cache?: RequestCache
-    }): Promise<any> //TODO: type this
+    }): Promise<{data: any; errors: T} | never> //TODO: type this
    {
     try {
         const result = await fetch(endpoint, {

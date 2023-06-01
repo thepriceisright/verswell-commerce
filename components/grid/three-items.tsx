@@ -25,7 +25,7 @@ function ThreeItemGridItem({
           background={background}
           alt={item.name}
           labels={{
-            title: item.name as string,
+            title: item.name as string, // TODO: Ensure correct typing
             amount: String(item.price), //TODO: Clean this up
             currencyCode: 'USD' // TODO: Clean this up
           }}
@@ -37,9 +37,7 @@ function ThreeItemGridItem({
 
 export async function ThreeItemGrid() {
   // Collections that start with `hidden-*` are hidden from the search page.
-  // const homepageItems = await getCollectionProducts('hidden-homepage-featured-items');
   const homepageItems = await getCategoryProducts('hidden-homepage-featured-items')
-  // const result = await swellFetch(getProductsQuery); // TODO: Testing. Remove this
 
   if (!homepageItems[0] || !homepageItems[1] || !homepageItems[2]) return null;
 
