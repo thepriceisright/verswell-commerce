@@ -1,12 +1,3 @@
-// export async function swellFetch({
-//     query: string,
-//     variables,
-//     headers,
-//     cache = 'force-cache'
-// }) : {
-
-// }
-
 import { SWELL_GRAPHQL_API_ENDPOINT } from 'lib/constants';
 import { getCategoryProductsQuery } from './queries/category';
 

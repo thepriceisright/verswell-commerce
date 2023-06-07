@@ -1,4 +1,4 @@
-export type SwellProduct = {
+export type Product = {
     id: string;
   slug: string;
   availableForSale: boolean;
