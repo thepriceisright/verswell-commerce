@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { ProductOption, ProductVariant } from 'lib/shopify/types';
+import { SwellProductOption, SwellProductVariant } from 'lib/swell/types';
 import { createUrl } from 'lib/utils';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -21,8 +21,8 @@ export function VariantSelector({
   options,
   variants
 }: {
-  options: ProductOption[];
-  variants: ProductVariant[];
+  options: SwellProductOption[];
+  variants: SwellProductVariant[];
 }) {
   const pathname = usePathname();
   const currentParams = useSearchParams();
@@ -37,7 +37,9 @@ export function VariantSelector({
   // Discard any unexpected options or values from url and create params map.
   const paramsMap: ParamsMap = Object.fromEntries(
     Array.from(currentParams.entries()).filter(([key, value]) =>
-      options.find((option) => option.name.toLowerCase() === key && option.values.includes(value))
+      options.find(
+        (option) => option.name.toLowerCase() === key && option.values.find((v) => v.name === value)
+      )
     )
   );
 
@@ -45,16 +47,24 @@ export function VariantSelector({
   const optimizedVariants: OptimizedVariant[] = variants.map((variant) => {
     const optimized: OptimizedVariant = {
       id: variant.id,
-      availableForSale: variant.availableForSale,
+      availableForSale: variant.stockLevel > 0,
       params: new URLSearchParams()
     };
 
-    variant.selectedOptions.forEach((selectedOption) => {
-      const name = selectedOption.name.toLowerCase();
-      const value = selectedOption.value;
+    variant.optionValueIds.forEach((selectedOptionValueID) => {
+      const selectedOption = options.find((option) =>
+        option.values.find((value) => value.id === selectedOptionValueID)
+      );
+      const selectedOptionValue = selectedOption?.values.find(
+        (value) => value.id === selectedOptionValueID
+      );
 
-      optimized[name] = value;
-      optimized.params.set(name, value);
+      if (!selectedOption || !selectedOptionValue) return;
+      const name = selectedOption.name.toLowerCase();
+      if (selectedOptionValue) {
+        optimized[name] = selectedOptionValue.name;
+        optimized.params.set(name, selectedOptionValue.name);
+      }
     });
 
     return optimized;
@@ -91,28 +101,29 @@ export function VariantSelector({
           // Base option params on selected variant params.
           const optionParams = new URLSearchParams(selectedVariantParams);
           // Update the params using the current option to reflect how the url would change.
-          optionParams.set(option.name.toLowerCase(), value);
+          optionParams.set(option.name.toLowerCase(), value.name);
 
           const optionUrl = createUrl(pathname, optionParams);
 
           // The option is active if it in the url params.
-          const isActive = selectedVariantParams.get(option.name.toLowerCase()) === value;
+          const isActive = selectedVariantParams.get(option.name.toLowerCase()) === value.name;
 
           // The option is available for sale if it fully matches the variant in the option's url params.
           // It's super important to note that this is the options params, *not* the selected variant's params.
           // This is the "magic" that will cross check possible future variant combinations and preemptively
           // disable combinations that are not possible.
-          const isAvailableForSale = optimizedVariants.find((a) =>
-            Array.from(optionParams.entries()).every(([key, value]) => a[key] === value)
-          )?.availableForSale;
+
+          const isAvailableForSale = optimizedVariants.find((a) => {
+            return Array.from(optionParams.entries()).every(([key, value]) => a[key] === value);
+          })?.availableForSale;
 
           const DynamicTag = isAvailableForSale ? Link : 'p';
 
           return (
             <DynamicTag
-              key={value}
+              key={value.id}
               href={optionUrl}
-              title={`${option.name} ${value}${!isAvailableForSale ? ' (Out of Stock)' : ''}`}
+              title={`${option.name} ${value.name}${!isAvailableForSale ? ' (Out of Stock)' : ''}`}
               className={clsx(
                 'flex h-12 min-w-[48px] items-center justify-center rounded-full px-2 text-sm',
                 {
@@ -125,7 +136,7 @@ export function VariantSelector({
               )}
               data-testid={isActive ? 'selected-variant' : 'variant'}
             >
-              {value}
+              {value.name}
             </DynamicTag>
           );
         })}

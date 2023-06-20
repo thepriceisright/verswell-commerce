@@ -1,19 +1,21 @@
+import productFragment from '../fragments/product';
+
+export const getProductQuery = /* GraphQL */ `
+  query getProduct($slug: String!) {
+    productBySlug(slug: $slug) {
+      ...product
+    }
+  }
+  ${productFragment}
+`;
 
 export const getProductsQuery = /* GraphQL */ `
-query getProducts {
-	products {
-        results {
-        id
-        name
-            categories { 
-                topId
-                name
-                parentId
-            }
-        }
+  query getProducts($sort: String, $query: String) {
+    products(sort: $sort, search: $query) {
+      results {
+        ...product
+      }
+    }
   }
-}
-`
-
-// TODO: Product Fragment
-
+  ${productFragment}
+`;

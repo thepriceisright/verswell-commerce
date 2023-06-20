@@ -2,16 +2,13 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
-import Grid from 'components/grid';
 import Footer from 'components/layout/footer';
-import ProductGridItems from 'components/layout/product-grid-items';
-import { AddToCart } from 'components/product/add-to-cart';
 import { Gallery } from 'components/product/gallery';
 import { VariantSelector } from 'components/product/variant-selector';
 import Prose from 'components/prose';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
-import { getProduct, getProductRecommendations } from 'lib/shopify';
-import { Image } from 'lib/shopify/types';
+import { getProduct } from 'lib/swell';
+import { SwellProductImage } from 'lib/swell/types';
 
 export const runtime = 'edge';
 
@@ -24,12 +21,12 @@ export async function generateMetadata({
 
   if (!product) return notFound();
 
-  const { url, width, height, altText: alt } = product.featuredImage || {};
+  const { caption, file } = (product.images && product.images[0]) || {};
   const hide = !product.tags.includes(HIDDEN_PRODUCT_TAG);
 
   return {
-    title: product.seo.title || product.title,
-    description: product.seo.description || product.description,
+    title: product.metaTitle || product.name,
+    description: product.metaDescription || product.description,
     robots: {
       index: hide,
       follow: hide,
@@ -38,14 +35,14 @@ export async function generateMetadata({
         follow: hide
       }
     },
-    openGraph: url
+    openGraph: file
       ? {
           images: [
             {
-              url,
-              width,
-              height,
-              alt
+              url: file.url,
+              width: file.width,
+              height: file.height,
+              alt: caption
             }
           ]
         }
@@ -63,50 +60,33 @@ export default async function ProductPage({ params }: { params: { handle: string
       <div className="lg:grid lg:grid-cols-6">
         <div className="lg:col-span-4">
           <Gallery
-            title={product.title}
-            amount={product.priceRange.maxVariantPrice.amount}
-            currencyCode={product.priceRange.maxVariantPrice.currencyCode}
-            images={product.images.map((image: Image) => ({
-              src: image.url,
-              altText: image.altText
+            title={product.name}
+            amount={product.price.toString()}
+            currencyCode={product.currency}
+            images={product.images.map((image: SwellProductImage) => ({
+              src: image.file.url,
+              altText: image.caption
             }))}
           />
         </div>
 
         <div className="p-6 lg:col-span-2">
           {/* @ts-expect-error Server Component */}
-          <VariantSelector options={product.options} variants={product.variants} />
+          <VariantSelector options={product.options} variants={product.variants.results} />
 
-          {product.descriptionHtml ? (
-            <Prose className="mb-6 text-sm leading-tight" html={product.descriptionHtml} />
+          {product.description ? (
+            <Prose className="mb-6 text-sm leading-tight" html={product.description} />
           ) : null}
 
-          <AddToCart variants={product.variants} availableForSale={product.availableForSale} />
+          {/* <AddToCart variants={product.variants} availableForSale={product.availableForSale} /> */}
         </div>
       </div>
       <Suspense>
-        {/* @ts-expect-error Server Component */}
-        <RelatedProducts id={product.id} />
         <Suspense>
           {/* @ts-expect-error Server Component */}
           <Footer />
         </Suspense>
       </Suspense>
-    </div>
-  );
-}
-
-async function RelatedProducts({ id }: { id: string }) {
-  const relatedProducts = await getProductRecommendations(id);
-
-  if (!relatedProducts.length) return null;
-
-  return (
-    <div className="px-4 py-8">
-      <div className="mb-4 text-3xl font-bold">Related Products</div>
-      <Grid className="grid-cols-2 lg:grid-cols-5">
-        <ProductGridItems products={relatedProducts} />
-      </Grid>
     </div>
   );
 }
