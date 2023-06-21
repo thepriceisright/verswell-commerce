@@ -3,16 +3,15 @@ import Link from 'next/link';
 import GitHubIcon from 'components/icons/github';
 import LogoIcon from 'components/icons/logo';
 import VercelIcon from 'components/icons/vercel';
-import { Menu } from 'lib/shopify/types';
+import { getMenu } from 'lib/swell';
+import { MenuFragment } from 'lib/swell/__generated__/graphql';
 
 const { SITE_NAME } = process.env;
 
 export default async function Footer() {
   const currentYear = new Date().getFullYear();
   const copyrightDate = 2023 + (currentYear > 2023 ? `-${currentYear}` : '');
-  // const menu = await getMenu('next-js-frontend-footer-menu');
-  const menu = [];
-
+  const menu = await getMenu('footer');
   return (
     <footer className="border-t border-gray-700 bg-white text-black dark:bg-black dark:text-white">
       <div className="mx-auto w-full max-w-7xl px-6">
@@ -25,16 +24,16 @@ export default async function Footer() {
               <span>{SITE_NAME}</span>
             </a>
           </div>
-          {menu.length ? (
+          {menu?.items.length ? (
             <nav className="col-span-1 lg:col-span-7">
               <ul className="grid md:grid-flow-col md:grid-cols-3 md:grid-rows-4">
-                {menu.map((item: Menu) => (
-                  <li key={item.title} className="py-3 md:py-0 md:pb-4">
+                {menu.items.map((item: MenuFragment) => (
+                  <li key={item.name} className="py-3 md:py-0 md:pb-4">
                     <Link
-                      href={item.path}
+                      href={item.name}
                       className="text-gray-800 transition duration-150 ease-in-out hover:text-gray-300 dark:text-gray-100"
                     >
-                      {item.title}
+                      {item.name}
                     </Link>
                   </li>
                 ))}

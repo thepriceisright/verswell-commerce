@@ -8,10 +8,10 @@ import { useEffect, useState } from 'react';
 
 import CloseIcon from 'components/icons/close';
 import MenuIcon from 'components/icons/menu';
-import { Menu } from 'lib/shopify/types';
+import { MenuFragment } from 'lib/swell/__generated__/graphql';
 import Search from './search';
 
-export default function MobileMenu({ menu }: { menu: Menu[] }) {
+export default function MobileMenu({ menu }: { menu: MenuFragment[] }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [mobileMenuIsOpen, setMobileMenuIsOpen] = useState(false);
@@ -74,16 +74,16 @@ export default function MobileMenu({ menu }: { menu: Menu[] }) {
               </div>
               {menu.length ? (
                 <ul className="flex flex-col">
-                  {menu.map((item: Menu) => (
-                    <li key={item.title}>
+                  {menu.map((item: MenuFragment) => (
+                    <li key={item.name}>
                       <Link
-                        href={item.path}
+                        href={item.name}
                         className="rounded-lg py-1 text-xl text-black transition-colors hover:text-gray-500 dark:text-white"
                         onClick={() => {
                           setMobileMenuIsOpen(false);
                         }}
                       >
-                        {item.title}
+                        {item.name}
                       </Link>
                     </li>
                   ))}

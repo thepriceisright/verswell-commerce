@@ -1,9 +1,7 @@
 query getMenus {
   menuSettings {
     sections {
-      id
-      name
-      items
+      ...Menu
     }
   }
 }

@@ -2988,6 +2988,11 @@ export type CategoryFragment = (
   & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'>
 );
 
+export type MenuFragment = (
+  { __typename?: 'SwellSettingsMenusSection' }
+  & Pick<SwellSettingsMenusSection, 'id' | 'name' | 'items'>
+);
+
 export type ProductFragment = (
   { __typename?: 'SwellProduct' }
   & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
@@ -3293,6 +3298,13 @@ export const CategoryFragmentDoc = gql`
   description
 }
     `;
+export const MenuFragmentDoc = gql`
+    fragment Menu on SwellSettingsMenusSection {
+  id
+  name
+  items
+}
+    `;
 export const ProductFragmentDoc = gql`
     fragment Product on SwellProduct {
   id
@@ -3400,13 +3412,11 @@ export const GetMenusDocument = gql`
     query getMenus {
   menuSettings {
     sections {
-      id
-      name
-      items
+      ...Menu
     }
   }
 }
-    `;
+    ${MenuFragmentDoc}`;
 export const GetProductDocument = gql`
     query getProduct($slug: String!) {
   productBySlug(slug: $slug) {
