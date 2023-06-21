@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
-import { addToCart, removeFromCart, updateCart } from 'lib/shopify';
+import { addToCart, removeFromCart, updateCart } from 'lib/swell';
 import { isShopifyError } from 'lib/type-guards';
 
 function formatErrorMessage(err: Error): string {
@@ -9,14 +9,20 @@ function formatErrorMessage(err: Error): string {
 }
 
 export async function POST(req: NextRequest): Promise<Response> {
-  const cartId = cookies().get('cartId')?.value;
-  const { merchandiseId } = await req.json();
+  const cartId = cookies().get('sessionToken')?.value;
+  const { variantId, productId, quantity } = await req.json();
 
-  if (!cartId?.length || !merchandiseId?.length) {
-    return NextResponse.json({ error: 'Missing cartId or variantId' }, { status: 400 });
+  console.log(cartId);
+
+  if (!cartId?.length || !variantId?.length) {
+    return NextResponse.json({ error: 'Missing session or variantId' }, { status: 400 });
   }
   try {
-    await addToCart(cartId, [{ merchandiseId, quantity: 1 }]);
+    await addToCart(cartId, {
+      variantId,
+      productId,
+      quantity
+    });
     return NextResponse.json({ status: 204 });
   } catch (e) {
     if (isShopifyError(e)) {
@@ -28,23 +34,17 @@ export async function POST(req: NextRequest): Promise<Response> {
 }
 
 export async function PUT(req: NextRequest): Promise<Response> {
-  const cartId = cookies().get('cartId')?.value;
-  const { variantId, quantity, lineId } = await req.json();
+  const cartId = cookies().get('sessionToken')?.value;
+  const { quantity, itemId } = await req.json();
 
-  if (!cartId || !variantId || !quantity || !lineId) {
-    return NextResponse.json(
-      { error: 'Missing cartId, variantId, lineId, or quantity' },
-      { status: 400 }
-    );
+  if (!cartId || !quantity || !itemId) {
+    return NextResponse.json({ error: 'Missing cartId, itemId, or quantity' }, { status: 400 });
   }
   try {
-    await updateCart(cartId, [
-      {
-        id: lineId,
-        merchandiseId: variantId,
-        quantity
-      }
-    ]);
+    await updateCart(cartId, {
+      itemId,
+      quantity
+    });
     return NextResponse.json({ status: 204 });
   } catch (e) {
     if (isShopifyError(e)) {
@@ -57,13 +57,13 @@ export async function PUT(req: NextRequest): Promise<Response> {
 
 export async function DELETE(req: NextRequest): Promise<Response> {
   const cartId = cookies().get('cartId')?.value;
-  const { lineId } = await req.json();
+  const { itemId } = await req.json();
 
-  if (!cartId || !lineId) {
-    return NextResponse.json({ error: 'Missing cartId or lineId' }, { status: 400 });
+  if (!cartId || !itemId) {
+    return NextResponse.json({ error: 'Missing cartId or itemId' }, { status: 400 });
   }
   try {
-    await removeFromCart(cartId, [lineId]);
+    await removeFromCart(cartId, itemId);
     return NextResponse.json({ status: 204 });
   } catch (e) {
     if (isShopifyError(e)) {

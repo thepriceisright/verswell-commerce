@@ -3,6 +3,7 @@ fragment Product on SwellProduct {
   currency
   slug
   stockPurchasable
+  stockLevel
   name
   description
   options {
@@ -18,27 +19,7 @@ fragment Product on SwellProduct {
   price
   variants {
     results {
-      id
-      name
-      sku
-      prices {
-        price
-        discountPercent
-      }
-      optionValueIds
-      # purchaseOptions {
-      #   standard {
-      #     price
-      #     sale
-      #     salePrice
-      #     prices {
-      #       price
-      #       discountPercent
-      #     }
-      #   }
-      # }
-      stockLevel
-      currency
+      ...ProductVariant
     }
   }
   images {
@@ -52,4 +33,17 @@ fragment Product on SwellProduct {
   metaTitle
   metaDescription
   tags
+}
+
+fragment ProductVariant on SwellProductVariant {
+  id
+  name
+  sku
+  prices {
+    price
+    discountPercent
+  }
+  optionValueIds
+  stockLevel
+  currency
 }

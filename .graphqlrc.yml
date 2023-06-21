@@ -12,6 +12,7 @@ generates:
       preResolveTypes: false
       maybeValue: T
       inputMaybeValue: T | undefined
+      rawRequest: true
       avoidOptionals:
         field: true
         inputValue: true

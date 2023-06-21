@@ -7,10 +7,7 @@ import CloseIcon from 'components/icons/close';
 import ShoppingBagIcon from 'components/icons/shopping-bag';
 import Price from 'components/price';
 import { DEFAULT_OPTION } from 'lib/constants';
-import type { Cart } from 'lib/shopify/types';
-import { createUrl } from 'lib/utils';
-import DeleteItemButton from './delete-item-button';
-import EditItemQuantityButton from './edit-item-quantity-button';
+import { CartFragment } from 'lib/swell/__generated__/graphql';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -23,7 +20,7 @@ export default function CartModal({
 }: {
   isOpen: boolean;
   onClose: () => void;
-  cart: Cart;
+  cart: CartFragment;
 }) {
   return (
     <AnimatePresence initial={false}>
@@ -70,28 +67,30 @@ export default function CartModal({
                 </button>
               </div>
 
-              {cart.lines.length === 0 ? (
+              {cart.items.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingBagIcon className="h-16" />
                   <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
                 </div>
               ) : null}
-              {cart.lines.length !== 0 ? (
+              {cart.items.length !== 0 ? (
                 <div className="flex h-full flex-col justify-between overflow-hidden">
                   <ul className="flex-grow overflow-auto p-6">
-                    {cart.lines.map((item, i) => {
+                    {cart.items.map((item, i) => {
                       const merchandiseSearchParams = {} as MerchandiseSearchParams;
 
-                      item.merchandise.selectedOptions.forEach(({ name, value }) => {
-                        if (value !== DEFAULT_OPTION) {
-                          merchandiseSearchParams[name.toLowerCase()] = value;
-                        }
-                      });
+                      // item.product.selectedOptions.forEach(({ name, value }) => {
+                      //   if (value !== DEFAULT_OPTION) {
+                      //     merchandiseSearchParams[name.toLowerCase()] = value;
+                      //   }
+                      // });
 
-                      const merchandiseUrl = createUrl(
-                        `/product/${item.merchandise.product.handle}`,
-                        new URLSearchParams(merchandiseSearchParams)
-                      );
+                      // const merchandiseUrl = createUrl(
+                      //   `/product/${item.merchandise.product.handle}`,
+                      //   new URLSearchParams(merchandiseSearchParams)
+                      // );
+
+                      const merchandiseUrl = '';
 
                       return (
                         <li key={i} data-testid="cart-item">
@@ -105,48 +104,43 @@ export default function CartModal({
                                 className="h-full w-full object-cover"
                                 width={64}
                                 height={64}
-                                alt={
-                                  item.merchandise.product.featuredImage.altText ||
-                                  item.merchandise.product.title
-                                }
-                                src={item.merchandise.product.featuredImage.url}
+                                alt={item.product.images[0].caption || item.product.name}
+                                src={item.product.images[0].file.url}
                               />
                             </div>
                             <div className="flex flex-1 flex-col text-base">
-                              <span className="font-semibold">
-                                {item.merchandise.product.title}
-                              </span>
-                              {item.merchandise.title !== DEFAULT_OPTION ? (
+                              <span className="font-semibold">{item.product.name}</span>
+                              {item.product.name !== DEFAULT_OPTION ? (
                                 <p className="text-sm" data-testid="cart-product-variant">
-                                  {item.merchandise.title}
+                                  {item.product.name}
                                 </p>
                               ) : null}
                             </div>
                             <Price
                               className="flex flex-col justify-between space-y-2 text-sm"
-                              amount={item.cost.totalAmount.amount}
-                              currencyCode={item.cost.totalAmount.currencyCode}
+                              amount={item.price}
+                              currencyCode={item.product.currency}
                             />
                           </Link>
-                          <div className="flex h-9 flex-row">
+                          {/* <div className="flex h-9 flex-row">
                             <DeleteItemButton item={item} />
                             <p className="ml-2 flex w-full items-center justify-center border dark:border-gray-700">
                               <span className="w-full px-2">{item.quantity}</span>
                             </p>
                             <EditItemQuantityButton item={item} type="minus" />
                             <EditItemQuantityButton item={item} type="plus" />
-                          </div>
+                          </div> */}
                         </li>
                       );
                     })}
                   </ul>
-                  <div className="border-t border-gray-200 pt-2 text-sm text-black dark:text-white">
+                  {/* <div className="border-t border-gray-200 pt-2 text-sm text-black dark:text-white">
                     <div className="mb-2 flex items-center justify-between">
                       <p>Subtotal</p>
                       <Price
                         className="text-right"
-                        amount={cart.cost.subtotalAmount.amount}
-                        currencyCode={cart.cost.subtotalAmount.currencyCode}
+                        amount={cart.grandTotal}
+                        currencyCode={cart.currency}
                       />
                     </div>
                     <div className="mb-2 flex items-center justify-between">
@@ -169,7 +163,7 @@ export default function CartModal({
                         currencyCode={cart.cost.totalAmount.currencyCode}
                       />
                     </div>
-                  </div>
+                  </div> */}
                   <a
                     href={cart.checkoutUrl}
                     className="flex w-full items-center justify-center bg-black p-3 text-sm font-medium uppercase text-white opacity-90 hover:opacity-100 dark:bg-white dark:text-black"

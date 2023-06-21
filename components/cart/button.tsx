@@ -4,21 +4,21 @@ import { useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 
 import CartIcon from 'components/icons/cart';
+import { CartFragment } from 'lib/swell/__generated__/graphql';
 import CartModal from './modal';
-
-import type { Cart } from 'lib/shopify/types';
 
 export default function CartButton({
   cart,
   cartIdUpdated
 }: {
-  cart: Cart;
+  cart: CartFragment;
   cartIdUpdated: boolean;
 }) {
-  if (!cart) return null;
+  if (!cart.items) return null;
+
   const [, setCookie] = useCookies(['cartId']);
   const [cartIsOpen, setCartIsOpen] = useState(false);
-  const quantityRef = useRef(cart.totalQuantity);
+  const quantityRef = useRef(cart.items.length);
 
   // Temporary hack to update the `cartId` cookie when it changes since we cannot update it
   // on the server-side (yet).
@@ -35,16 +35,16 @@ export default function CartButton({
 
   useEffect(() => {
     // Open cart modal when when quantity changes.
-    if (cart.totalQuantity !== quantityRef.current) {
+    if (cart.items.length !== quantityRef.current) {
       // But only if it's not already open (quantity also changes when editing items in cart).
       if (!cartIsOpen) {
         setCartIsOpen(true);
       }
 
       // Always update the quantity reference
-      quantityRef.current = cart.totalQuantity;
+      quantityRef.current = cart.items.length;
     }
-  }, [cartIsOpen, cart.totalQuantity, quantityRef]);
+  }, [cartIsOpen, cart.items.length, quantityRef]);
 
   return (
     <>
@@ -58,7 +58,7 @@ export default function CartButton({
         className="relative right-0 top-0"
         data-testid="open-cart"
       >
-        <CartIcon quantity={cart.totalQuantity} />
+        <CartIcon quantity={cart.items.length} />
       </button>
     </>
   );

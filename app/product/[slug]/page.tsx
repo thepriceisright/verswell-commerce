@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 import Footer from 'components/layout/footer';
+import { AddToCart } from 'components/product/add-to-cart';
 import { Gallery } from 'components/product/gallery';
 import { VariantSelector } from 'components/product/variant-selector';
 import Prose from 'components/prose';
@@ -14,9 +15,9 @@ export const runtime = 'edge';
 export async function generateMetadata({
   params
 }: {
-  params: { handle: string };
+  params: { slug: string };
 }): Promise<Metadata> {
-  const product = await getProduct(params.handle);
+  const product = await getProduct(params.slug);
 
   if (!product) return notFound();
 
@@ -49,8 +50,8 @@ export async function generateMetadata({
   };
 }
 
-export default async function ProductPage({ params }: { params: { handle: string } }) {
-  const product = await getProduct(params.handle);
+export default async function ProductPage({ params }: { params: { slug: string } }) {
+  const product = await getProduct(params.slug);
 
   if (!product) return notFound();
 
@@ -77,7 +78,11 @@ export default async function ProductPage({ params }: { params: { handle: string
             <Prose className="mb-6 text-sm leading-tight" html={product.description} />
           ) : null}
 
-          {/* <AddToCart variants={product.variants} availableForSale={product.availableForSale} /> */}
+          <AddToCart
+            productId={product.id}
+            variants={product.variants.results}
+            availableForSale={product.stockLevel > 0}
+          />
         </div>
       </div>
       <Suspense>

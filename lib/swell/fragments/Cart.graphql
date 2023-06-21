@@ -1,6 +1,7 @@
 fragment Cart on SwellCart {
   checkoutUrl
   grandTotal
+  currency
   items {
     id
     quantity
@@ -11,6 +12,14 @@ fragment Cart on SwellCart {
       id
       name
       currency
+      images {
+        file {
+          url
+          width
+          height
+        }
+        caption
+      }
     }
   }
 }

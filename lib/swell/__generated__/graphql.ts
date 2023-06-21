@@ -1,5 +1,6 @@
 import { GraphQLClient } from 'graphql-request';
 import { GraphQLClientRequestHeaders } from 'graphql-request/build/cjs/types';
+import { print } from 'graphql'
 import gql from 'graphql-tag';
 export type Maybe<T> = T;
 export type InputMaybe<T> = T | undefined;
@@ -2972,13 +2973,21 @@ export type SwellSubscriptions = {
 
 export type CartFragment = (
   { __typename?: 'SwellCart' }
-  & Pick<SwellCart, 'checkoutUrl' | 'grandTotal'>
+  & Pick<SwellCart, 'checkoutUrl' | 'grandTotal' | 'currency'>
   & { items: Maybe<Array<Maybe<(
     { __typename?: 'SwellCartItem' }
     & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal'>
     & { product: Maybe<(
       { __typename?: 'SwellProduct' }
       & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+      & { images: Maybe<Array<Maybe<(
+        { __typename?: 'SwellProductImage' }
+        & Pick<SwellProductImage, 'caption'>
+        & { file: Maybe<(
+          { __typename?: 'SwellProductImageFile' }
+          & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
+        )> }
+      )>>> }
     )> }
   )>>> }
 );
@@ -2995,7 +3004,7 @@ export type MenuFragment = (
 
 export type ProductFragment = (
   { __typename?: 'SwellProduct' }
-  & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
+  & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
   & { options: Maybe<Array<Maybe<(
     { __typename?: 'SwellProductOption' }
     & Pick<SwellProductOption, 'name' | 'id' | 'description'>
@@ -3023,6 +3032,15 @@ export type ProductFragment = (
   )>>> }
 );
 
+export type ProductVariantFragment = (
+  { __typename?: 'SwellProductVariant' }
+  & Pick<SwellProductVariant, 'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'>
+  & { prices: Maybe<Array<Maybe<(
+    { __typename?: 'SwellProductVariantPrice' }
+    & Pick<SwellProductVariantPrice, 'price' | 'discountPercent'>
+  )>>> }
+);
+
 export type AddToCartMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
   quantity: Scalars['Int']['input'];
@@ -3034,13 +3052,21 @@ export type AddToCartMutation = (
   { __typename?: 'Mutation' }
   & { addCartItem: Maybe<(
     { __typename?: 'SwellCart' }
-    & Pick<SwellCart, 'checkoutUrl' | 'grandTotal'>
+    & Pick<SwellCart, 'checkoutUrl' | 'grandTotal' | 'currency'>
     & { items: Maybe<Array<Maybe<(
       { __typename?: 'SwellCartItem' }
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal'>
       & { product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+        & { images: Maybe<Array<Maybe<(
+          { __typename?: 'SwellProductImage' }
+          & Pick<SwellProductImage, 'caption'>
+          & { file: Maybe<(
+            { __typename?: 'SwellProductImageFile' }
+            & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
+          )> }
+        )>>> }
       )> }
     )>>> }
   )> }
@@ -3056,13 +3082,21 @@ export type EditCartItemMutation = (
   { __typename?: 'Mutation' }
   & { updateCartItem: Maybe<(
     { __typename?: 'SwellCart' }
-    & Pick<SwellCart, 'checkoutUrl' | 'grandTotal'>
+    & Pick<SwellCart, 'checkoutUrl' | 'grandTotal' | 'currency'>
     & { items: Maybe<Array<Maybe<(
       { __typename?: 'SwellCartItem' }
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal'>
       & { product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+        & { images: Maybe<Array<Maybe<(
+          { __typename?: 'SwellProductImage' }
+          & Pick<SwellProductImage, 'caption'>
+          & { file: Maybe<(
+            { __typename?: 'SwellProductImageFile' }
+            & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
+          )> }
+        )>>> }
       )> }
     )>>> }
   )> }
@@ -3077,13 +3111,21 @@ export type RemoveFromCartMutation = (
   { __typename?: 'Mutation' }
   & { deleteCartItem: Maybe<(
     { __typename?: 'SwellCart' }
-    & Pick<SwellCart, 'checkoutUrl' | 'grandTotal'>
+    & Pick<SwellCart, 'checkoutUrl' | 'grandTotal' | 'currency'>
     & { items: Maybe<Array<Maybe<(
       { __typename?: 'SwellCartItem' }
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal'>
       & { product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+        & { images: Maybe<Array<Maybe<(
+          { __typename?: 'SwellProductImage' }
+          & Pick<SwellProductImage, 'caption'>
+          & { file: Maybe<(
+            { __typename?: 'SwellProductImageFile' }
+            & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
+          )> }
+        )>>> }
       )> }
     )>>> }
   )> }
@@ -3096,13 +3138,21 @@ export type GetCartQuery = (
   { __typename?: 'Query' }
   & { cart: Maybe<(
     { __typename?: 'SwellCart' }
-    & Pick<SwellCart, 'checkoutUrl' | 'grandTotal'>
+    & Pick<SwellCart, 'checkoutUrl' | 'grandTotal' | 'currency'>
     & { items: Maybe<Array<Maybe<(
       { __typename?: 'SwellCartItem' }
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal'>
       & { product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+        & { images: Maybe<Array<Maybe<(
+          { __typename?: 'SwellProductImage' }
+          & Pick<SwellProductImage, 'caption'>
+          & { file: Maybe<(
+            { __typename?: 'SwellProductImageFile' }
+            & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
+          )> }
+        )>>> }
       )> }
     )>>> }
   )> }
@@ -3147,7 +3197,7 @@ export type GetCategoriesProductsQuery = (
     & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'>
     & { products: Maybe<Array<Maybe<(
       { __typename?: 'SwellProduct' }
-      & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
+      & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
       & { options: Maybe<Array<Maybe<(
         { __typename?: 'SwellProductOption' }
         & Pick<SwellProductOption, 'name' | 'id' | 'description'>
@@ -3200,7 +3250,7 @@ export type GetProductQuery = (
   { __typename?: 'Query' }
   & { productBySlug: Maybe<(
     { __typename?: 'SwellProduct' }
-    & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
+    & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
     & { options: Maybe<Array<Maybe<(
       { __typename?: 'SwellProductOption' }
       & Pick<SwellProductOption, 'name' | 'id' | 'description'>
@@ -3241,7 +3291,7 @@ export type GetProductsQuery = (
     { __typename?: 'SwellProducts' }
     & { results: Maybe<Array<Maybe<(
       { __typename?: 'SwellProduct' }
-      & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
+      & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
       & { options: Maybe<Array<Maybe<(
         { __typename?: 'SwellProductOption' }
         & Pick<SwellProductOption, 'name' | 'id' | 'description'>
@@ -3275,6 +3325,7 @@ export const CartFragmentDoc = gql`
     fragment Cart on SwellCart {
   checkoutUrl
   grandTotal
+  currency
   items {
     id
     quantity
@@ -3285,6 +3336,14 @@ export const CartFragmentDoc = gql`
       id
       name
       currency
+      images {
+        file {
+          url
+          width
+          height
+        }
+        caption
+      }
     }
   }
 }
@@ -3305,12 +3364,27 @@ export const MenuFragmentDoc = gql`
   items
 }
     `;
+export const ProductVariantFragmentDoc = gql`
+    fragment ProductVariant on SwellProductVariant {
+  id
+  name
+  sku
+  prices {
+    price
+    discountPercent
+  }
+  optionValueIds
+  stockLevel
+  currency
+}
+    `;
 export const ProductFragmentDoc = gql`
     fragment Product on SwellProduct {
   id
   currency
   slug
   stockPurchasable
+  stockLevel
   name
   description
   options {
@@ -3326,16 +3400,7 @@ export const ProductFragmentDoc = gql`
   price
   variants {
     results {
-      id
-      name
-      sku
-      prices {
-        price
-        discountPercent
-      }
-      optionValueIds
-      stockLevel
-      currency
+      ...ProductVariant
     }
   }
   images {
@@ -3350,7 +3415,7 @@ export const ProductFragmentDoc = gql`
   metaDescription
   tags
 }
-    `;
+    ${ProductVariantFragmentDoc}`;
 export const AddToCartDocument = gql`
     mutation addToCart($productId: ID!, $quantity: Int!, $variantId: ID!) {
   addCartItem(
@@ -3438,38 +3503,47 @@ export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, str
 
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
-
+const AddToCartDocumentString = print(AddToCartDocument);
+const EditCartItemDocumentString = print(EditCartItemDocument);
+const RemoveFromCartDocumentString = print(RemoveFromCartDocument);
+const GetCartDocumentString = print(GetCartDocument);
+const GetCategoriesDocumentString = print(GetCategoriesDocument);
+const GetGategoryDocumentString = print(GetGategoryDocument);
+const GetCategoriesProductsDocumentString = print(GetCategoriesProductsDocument);
+const GetMenusDocumentString = print(GetMenusDocument);
+const GetProductDocumentString = print(GetProductDocument);
+const GetProductsDocumentString = print(GetProductsDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    addToCart(variables: AddToCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<AddToCartMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<AddToCartMutation>(AddToCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'addToCart', 'mutation');
+    addToCart(variables: AddToCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AddToCartMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AddToCartMutation>(AddToCartDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'addToCart', 'mutation');
     },
-    editCartItem(variables: EditCartItemMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<EditCartItemMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<EditCartItemMutation>(EditCartItemDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'editCartItem', 'mutation');
+    editCartItem(variables: EditCartItemMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: EditCartItemMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<EditCartItemMutation>(EditCartItemDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'editCartItem', 'mutation');
     },
-    removeFromCart(variables: RemoveFromCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<RemoveFromCartMutation> {
-      return withWrapper((wrappedRequestHeaders) => client.request<RemoveFromCartMutation>(RemoveFromCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'removeFromCart', 'mutation');
+    removeFromCart(variables: RemoveFromCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: RemoveFromCartMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<RemoveFromCartMutation>(RemoveFromCartDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'removeFromCart', 'mutation');
     },
-    getCart(variables?: GetCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCartQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCartQuery>(GetCartDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCart', 'query');
+    getCart(variables?: GetCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetCartQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetCartQuery>(GetCartDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCart', 'query');
     },
-    getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesQuery>(GetCategoriesDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query');
+    getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetCategoriesQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetCategoriesQuery>(GetCategoriesDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query');
     },
-    getGategory(variables: GetGategoryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetGategoryQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetGategoryQuery>(GetGategoryDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getGategory', 'query');
+    getGategory(variables: GetGategoryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetGategoryQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetGategoryQuery>(GetGategoryDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getGategory', 'query');
     },
-    getCategoriesProducts(variables: GetCategoriesProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCategoriesProductsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetCategoriesProductsQuery>(GetCategoriesProductsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategoriesProducts', 'query');
+    getCategoriesProducts(variables: GetCategoriesProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetCategoriesProductsQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetCategoriesProductsQuery>(GetCategoriesProductsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategoriesProducts', 'query');
     },
-    getMenus(variables?: GetMenusQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetMenusQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetMenusQuery>(GetMenusDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMenus', 'query');
+    getMenus(variables?: GetMenusQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetMenusQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetMenusQuery>(GetMenusDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMenus', 'query');
     },
-    getProduct(variables: GetProductQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetProductQuery>(GetProductDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProduct', 'query');
+    getProduct(variables: GetProductQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetProductQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetProductQuery>(GetProductDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProduct', 'query');
     },
-    getProducts(variables?: GetProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetProductsQuery> {
-      return withWrapper((wrappedRequestHeaders) => client.request<GetProductsQuery>(GetProductsDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProducts', 'query');
+    getProducts(variables?: GetProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetProductsQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetProductsQuery>(GetProductsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProducts', 'query');
     }
   };
 }

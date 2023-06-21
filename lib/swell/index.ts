@@ -14,47 +14,95 @@ const client = new GraphQLClient(endpoint, {
 const SwellClient = getSdk(client);
 
 export const getProduct = async (slug: string) => {
-  const { productBySlug } = await SwellClient.getProduct({
+  const { data } = await SwellClient.getProduct({
     slug
   });
-  return productBySlug;
+  return data.productBySlug;
 };
 
 export const getProducts = async ({ query, sort }: { query?: string; sort?: string }) => {
-  const { products } = await SwellClient.getProducts({
+  const { data } = await SwellClient.getProducts({
     query,
     sort
   });
-  return products.results;
+  return data.products.results;
 };
 
 export const createCart = async () => {
-  const { cart } = await SwellClient.getCart();
-  return cart;
+  const data = await SwellClient.getCart();
+  return {
+    id: data.headers.get('x-session')!,
+    ...data
+  };
+};
+
+export const getCart = async (sessionToken: string) => {
+  client.setHeader('x-session', sessionToken);
+  const data = await SwellClient.getCart();
+  return data;
+};
+
+export const addToCart = async (
+  sessionToken: string,
+  { productId, quantity, variantId }: { productId: string; quantity: number; variantId: string }
+) => {
+  client.setHeader('X-Session', sessionToken);
+  const addCartItem = await SwellClient.addToCart({
+    productId,
+    quantity,
+    variantId
+  });
+  return addCartItem;
+};
+
+export const updateCart = async (
+  sessionToken: string,
+  {
+    itemId,
+    quantity
+  }: {
+    itemId: string;
+    quantity: number;
+  }
+) => {
+  client.setHeader('X-Session', sessionToken);
+  const updateCart = await SwellClient.editCartItem({
+    itemId,
+    quantity
+  });
+  return updateCart;
+};
+
+export const removeFromCart = async (sessionToken: string, { itemId }: { itemId: string }) => {
+  client.setHeader('X-Session', sessionToken);
+  const removeCart = await SwellClient.removeFromCart({
+    itemId
+  });
+  return removeCart;
 };
 
 export const getCategory = async (slug: string) => {
-  const { categoryBySlug } = await SwellClient.getGategory({
+  const { data } = await SwellClient.getGategory({
     slug
   });
-  return categoryBySlug;
+  return data.categoryBySlug;
 };
 
 export const getCategoryProducts = async (slug: string) => {
-  const { categoryBySlug } = await SwellClient.getCategoriesProducts({
+  const { data } = await SwellClient.getCategoriesProducts({
     slug
   });
-  return categoryBySlug?.products;
+  return data.categoryBySlug?.products;
 };
 
 export const getCategories = async () => {
-  const { categories } = await SwellClient.getCategories();
-  return categories.results;
+  const { data } = await SwellClient.getCategories();
+  return data.categories.results;
 };
 
 export const getMenus = async () => {
-  const { menuSettings } = await SwellClient.getMenus();
-  return menuSettings;
+  const { data } = await SwellClient.getMenus();
+  return data.menuSettings;
 };
 
 export const getMenu = async (id: string) => {
