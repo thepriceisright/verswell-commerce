@@ -1,4 +1,4 @@
-import { createCart, getCart } from 'lib/shopify';
+import { getCart } from 'lib/shopify';
 import { cookies } from 'next/headers';
 import CartButton from './button';
 
@@ -15,7 +15,8 @@ export default async function Cart() {
   // (old carts becomes `null` when you checkout), then get a new `cartId`
   //  and re-fetch the cart.
   if (!cartId || !cart) {
-    cart = await createCart();
+    // cart = await createCart();
+    cart = undefined;
     cartIdUpdated = true;
   }
 

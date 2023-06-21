@@ -1,0 +1,17 @@
+mutation addToCart($productId: ID!, $quantity: Int!, $variantId: ID!) {
+  addCartItem(input: { productId: $productId, quantity: $quantity, variantId: $variantId }) {
+    ...Cart
+  }
+}
+
+mutation editCartItem($itemId: String!, $quantity: Int!) {
+  updateCartItem(itemId: $itemId, input: { quantity: $quantity }) {
+    ...Cart
+  }
+}
+
+mutation removeFromCart($itemId: String!) {
+  deleteCartItem(itemId: $itemId) {
+    ...Cart
+  }
+}

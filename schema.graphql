@@ -1,0 +1,3216 @@
+type Query {
+  session: Session
+  account(_locale: String, _currency: String): SwellAccount
+  cart(_locale: String, _currency: String): SwellCart
+  attributeById(id: String, _locale: String, _currency: String): SwellAttribute
+  attributes(
+    search: String
+    where: JSON
+    sort: String
+    limit: Int
+    page: Int
+    _locale: String
+    _currency: String
+  ): SwellAttributes
+  productById(
+    id: String
+    _locale: String
+    _currency: String
+    _pricing: ProductPricing
+  ): SwellProduct
+  productBySlug(
+    slug: String
+    _locale: String
+    _currency: String
+    _pricing: ProductPricing
+  ): SwellProduct
+  products(
+    search: String
+    where: JSON
+    sort: String
+    limit: Int
+    page: Int
+    _locale: String
+    _currency: String
+    _pricing: ProductPricing
+  ): SwellProducts
+  categoryById(id: String, _locale: String, _currency: String): SwellCategory
+  categoryBySlug(
+    slug: String
+    _locale: String
+    _currency: String
+  ): SwellCategory
+  categories(
+    search: String
+    where: JSON
+    sort: String
+    limit: Int
+    page: Int
+    _locale: String
+    _currency: String
+  ): SwellCategories
+  orderById(id: String, _locale: String, _currency: String): SwellOrder
+  orderByNumber(number: String, _locale: String, _currency: String): SwellOrder
+  orders(
+    search: String
+    where: JSON
+    sort: String
+    limit: Int
+    page: Int
+    _locale: String
+    _currency: String
+  ): SwellOrders
+  subscriptionById(
+    id: String
+    _locale: String
+    _currency: String
+  ): SwellSubscription
+  subscriptions(
+    search: String
+    where: JSON
+    sort: String
+    limit: Int
+    page: Int
+    _locale: String
+    _currency: String
+  ): SwellSubscriptions
+  storeSettings(_locale: String, _currency: String): SwellSettings
+  menuSettings(_locale: String, _currency: String): SwellSettingsMenus
+  paymentSettings(_locale: String, _currency: String): SwellSettingsPayments
+  subscriptionSettings(
+    _locale: String
+    _currency: String
+  ): SwellSettingsSubscriptions
+  contentPageById(
+    id: String
+    _locale: String
+    _currency: String
+    _preview: Boolean
+  ): SwellContentPage
+  contentPageBySlug(
+    slug: String
+    _locale: String
+    _currency: String
+    _preview: Boolean
+  ): SwellContentPage
+  contentPages(
+    search: String
+    where: JSON
+    sort: String
+    limit: Int
+    page: Int
+    _locale: String
+    _currency: String
+    _preview: Boolean
+  ): SwellContentPages
+  contentAttributeGroupById(
+    id: String
+    _locale: String
+    _currency: String
+    _preview: Boolean
+  ): SwellContentAttributeGroup
+  contentAttributeGroups(
+    search: String
+    where: JSON
+    sort: String
+    limit: Int
+    page: Int
+    _locale: String
+    _currency: String
+    _preview: Boolean
+  ): SwellContentAttributeGroups
+}
+
+type Session {
+  locale: String
+  currency: String
+  publicKey: String
+  cartId: String
+  accountId: String
+}
+
+# Customer
+type SwellAccount {
+  orders(_locale: String, _currency: String): [SwellOrder]
+  subscriptions(_locale: String, _currency: String): [SwellSubscription]
+  dateCreated: DateTime
+
+  # Account Type
+  type: String
+
+  # Account Name
+  name: String
+  firstName: String
+  lastName: String
+  email: String
+  emailOptin: Boolean
+  phone: String
+  orderCount: Int
+  orderValue: SafeNumber
+  dateFirstOrder: DateTime
+  dateLastOrder: DateTime
+  group: String
+  vatNumber: String
+
+  # Stored credit cards used by an account
+  cards: SwellAccountsCards
+
+  # Stored addresses used by an account
+  addresses: SwellAccountsAddresses
+
+  # Default account billing information
+  billing: SwellAccountBilling
+
+  # Default account shipping information
+  shipping: SwellAccountShipping
+  balance: SafeNumber
+  metadata: JSON
+}
+
+# Order
+type SwellOrder {
+  id: ID
+  dateCreated: DateTime
+
+  # Unique incremental order number, assigned automatically using a format configured in general settings.
+  number: String
+
+  # List of line items describing the products ordered.
+  items: [SwellOrderItem]
+
+  # List of discounts applied to the order.
+  discounts: [SwellOrderDiscount]
+
+  # List of taxes applied to the order.
+  taxes: [SwellOrderTax]
+
+  # Indicates the order is tax-exempt. Taxes will not be calculated or applied when true.
+  taxesFixed: Boolean
+
+  # The customer's billing details. Defaults to `account.billing`. Updating billing will also update the corresponding account billing object.
+  billing: SwellOrderBilling
+
+  # The customer's shipping details. Defaults to `account.shipping`. Updating shipping will also update the corresponding account shipping object.
+  shipping: SwellOrderShipping
+
+  # Object describing the shipping services and rates available for the order. Shipping `country` must be set before retrieving shipping rates.
+  shipmentRating: SwellOrderShipmentRating
+
+  # Customer notes provided when placing the order, if any.
+  comments: String
+
+  # Indicates the order is intended as a gift for the recipient.
+  gift: Boolean
+
+  # Optional message to include with the order when shipping to the recipient.
+  giftMessage: String
+
+  # Indicates the order was paid in full. Always `true` when `payment_marked=true`, otherwise depends on the sum of `payments`.
+  paid: Boolean
+
+  # Indicates the order was completely fulfilled. Always `true` when `delivery_marked=true`, otherwise depends on the sum of `shipments`, `giftcards`, and `subscriptions`.
+  delivered: Boolean
+
+  # Indicates the order was completely canceled.
+  canceled: Boolean
+
+  # Current status of the order. Can be `pending`, `draft`, `payment_pending`, `delivery_pending`, `hold`, `complete`, or `canceled`.
+  status: String
+
+  # Sum of all line items before discounts, taxes and shipping.
+  subTotal: SafeNumber
+
+  # Total discount applied to line items.
+  itemDiscount: SafeNumber
+
+  # Total taxes applied to line items.
+  itemTax: SafeNumber
+
+  # Indicates line item prices include taxes.
+  itemTaxIncluded: Boolean
+
+  # Total quantity of all line items.
+  itemQuantity: Int
+
+  # Total quantity of line items canceled.
+  itemQuantityCanceled: Int
+
+  # Total quantity of cancelable items on the order.
+  itemQuantityCancelable: Int
+
+  # Total quantity of line items that have been fulfilled.
+  itemQuantityDelivered: Int
+
+  # Total quantity of line items that can be fulfilled.
+  itemQuantityDeliverable: Int
+
+  # Total quantity of line items that can be fulfilled by shipment. Applies when `item.delivery=shipment`.
+  itemQuantityShipmentDeliverable: Int
+
+  # Total quantity of line items that can be fulfilled by gift card. Applies when `item.delivery=giftcard`.
+  itemQuantityGiftcardDeliverable: Int
+
+  # Total quantity of line items that can be fulfilled by subscription. Applies when `item.delivery=subscription`.
+  itemQuantitySubscriptionDeliverable: Int
+
+  # Total quantity of line items that have been returned.
+  itemQuantityReturned: Int
+
+  # Total quantity of line items that can still be returned.
+  itemQuantityReturnable: Int
+
+  # Total quantity of items invoiced on the order.
+  itemQuantityInvoiced: Int
+
+  # Total quantity of items eligible for invoicing on the order.
+  itemQuantityInvoiceable: Int
+
+  # Total quantity of items credited on the order.
+  itemQuantityCredited: Int
+
+  # Total quantity of line items that can be credited.
+  itemQuantityCreditable: Int
+
+  # Total shipping weight of all line items.
+  itemShipmentWeight: SafeNumber
+
+  # Total discount amount.
+  discountTotal: SafeNumber
+
+  # Total shipping price before discounts.
+  shipmentPrice: SafeNumber
+
+  # Shipping discount applied by coupons, promotions, or custom logic.
+  shipmentDiscount: SafeNumber
+
+  # Total shipping price after discounts.
+  shipmentTotal: SafeNumber
+
+  # Shipping tax amount, if applicable.
+  shipmentTax: SafeNumber
+
+  # Indicates shipping total includes taxes, if applicable.
+  shipmentTaxIncluded: Boolean
+
+  # Total shipping price including taxes and discount. Allows for an alternate display style as normally `shipment_total` and `tax_total` are shown separately.
+  shipmentTaxIncludedTotal: SafeNumber
+
+  # Total tax amount applied to the order including line items and shipping.
+  taxTotal: SafeNumber
+
+  # Total of taxes applied separately from line items.
+  taxIncludedTotal: SafeNumber
+
+  # Grand total including items, shipping and taxes.
+  grandTotal: SafeNumber
+
+  # Total shipping price for items invoiced on the order.
+  shipmentTotalInvoiced: SafeNumber
+
+  # Total shipping price for items credited on the order.
+  shipmentTotalCredited: SafeNumber
+
+  # Coupon code applied to the order.
+  couponCode: String
+
+  # List of gift cards applied to the order.
+  giftcards: [SwellOrderGiftcard]
+
+  # Total payment amount applied to the order from `giftcards`.
+  giftcardTotal: SafeNumber
+
+  # List of promotion IDs applied to the order.
+  promotionIds: [ID]
+
+  # The `id` of the customer's account. During checkout, customer accounts without a password are designated as `guest=true`.
+  accountId: ID
+
+  # Indicates the customer was logged into their account when placing the order.
+  accountLoggedIn: Boolean
+
+  # Indicates the customer chose to save shipping and billing information to their account when submitting the order.
+  accountInfoSaved: Boolean
+
+  # Indicates the customer’s account credit is applied when submitting the order.
+  accountCreditApplied: Boolean
+
+  # Amount of customer's account credit applied for initial payment, if applicable.
+  accountCreditAmount: SafeNumber
+
+  # Indicates the customer was not logged in when placing the order.
+  guest: Boolean
+
+  # Indicates the order has at least one line item with `delivery=shipment`.
+  shipmentDelivery: Boolean
+
+  # Indicates the order has at least one line item with `delivery=giftcard`.
+  giftcardDelivery: Boolean
+
+  # Indicates the order has at least one line item with `delivery=subscription`.
+  subscriptionDelivery: Boolean
+
+  # Currency percentage used in calculating the fixed amount.
+  currencyRate: SafeNumber
+
+  # The store’s base currency.
+  currencyBase: String
+
+  # Arbitrary data, typically set in a checkout flow to store custom values. See Frontend API for details.
+  metadata: JSON
+  currency: String
+  coupon: SwellOrderCoupon
+  promotions: SwellOrdersPromotions
+  shipments: SwellOrdersShipments
+  payments: SwellOrdersPayments
+
+  # Expandable list of refunds issued for the payment.
+  refunds: SwellOrdersRefunds
+}
+
+scalar DateTime
+
+# List of line items describing the products ordered.
+type SwellOrderItem {
+  id: ID
+  quantity: Int
+  price: SafeNumber
+  quantityTotal: Int
+  priceTotal: SafeNumber
+  purchaseOption: SwellOrderItemPurchaseOption
+  options: [SwellOrderItemOption]
+  bundleItems: [SwellOrderItemBundleItem]
+  shipmentWeight: SafeNumber
+  quantityInvoiced: Int
+  quantityInvoiceable: Int
+  quantityCredited: Int
+  quantityCreditable: Int
+  quantityConsumed: Int
+  quantityCanceled: Int
+  quantityCancelable: Int
+  quantityDelivered: Int
+  quantityDeliverable: Int
+  quantityShipmentDeliverable: Int
+  quantityGiftcardDeliverable: Int
+  quantitySubscriptionDelivered: Int
+  quantitySubscriptionDeliverable: Int
+  quantityReturned: Int
+  quantityReturnable: Int
+  quantityRestocked: Int
+  discountTotal: SafeNumber
+
+  # Discount Amount
+  discountEach: SafeNumber
+  taxes: [SwellOrderItemTax]
+  taxTotal: SafeNumber
+
+  # Tax Amount
+  taxEach: SafeNumber
+  productId: ID
+  variantId: ID
+  metadata: JSON
+  product: SwellProduct
+  variant: SwellProductVariant
+}
+
+scalar SafeNumber
+
+type SwellOrderItemPurchaseOption {
+  type: String
+  id: ID
+  name: String
+  price: SafeNumber
+  planId: ID
+  planName: String
+  planDescription: String
+  billingSchedule: SwellOrderItemPurchaseOptionBillingSchedule
+  orderSchedule: SwellOrderItemPurchaseOptionOrderSchedule
+}
+
+type SwellOrderItemPurchaseOptionBillingSchedule {
+  interval: String
+  intervalCount: Int
+  trialDays: Int
+  limit: Int
+}
+
+type SwellOrderItemPurchaseOptionOrderSchedule {
+  interval: String
+  intervalCount: Int
+  limit: Int
+}
+
+type SwellOrderItemOption {
+  id: String
+  name: String
+  value: String
+  valueId: ID
+  variant: Boolean
+  subscription: Boolean
+  price: SafeNumber
+  shipmentWeight: SafeNumber
+}
+
+type SwellOrderItemBundleItem {
+  id: ID
+  quantity: Int
+  quantityTotal: Int
+  productId: ID
+  variantId: ID
+  options: [SwellOrderItemBundleItemOption]
+  quantityConsumed: Int
+  quantityCanceled: Int
+  quantityCancelable: Int
+  quantityDelivered: Int
+  quantityDeliverable: Int
+  quantityShipmentDelivered: Int
+  quantityShipmentDeliverable: Int
+  quantityGiftcardDeliverable: Int
+  quantityReturned: Int
+  quantityReturnable: Int
+  quantityRestocked: Int
+  product: SwellProduct
+  variant: SwellProductVariant
+}
+
+type SwellOrderItemBundleItemOption {
+  id: String
+  name: String
+  value: String
+  valueId: ID
+  variant: Boolean
+  subscription: Boolean
+  price: SafeNumber
+  shipmentWeight: SafeNumber
+}
+
+# Product
+type SwellProduct {
+  id: ID
+
+  # Human-friendly name of the product.
+  name: String
+
+  # Lowercase, hyphenated identifier typically used in URLs. When creating a product, a `slug `will be generated automatically from the `name`. Maximum length of 1,000 characters.
+  slug: String
+
+  # Stock keeping unit (SKU) used to track inventory in a warehouse.
+  sku: String
+
+  # Array of searchable tags to aid in search discoverability.
+  tags: [String]
+
+  # List price used when `sale=false` or `sale_price` is not defined. This value is intended for use via the frontend. See the `purchase_options` array to manage a product's price.
+  price: SafeNumber
+
+  # Indicates whether the product is on sale. If `true`, the `sale_price` will be used by default when the product is added to a cart.
+  sale: Boolean
+
+  # Sale price used to override list price when `sale=true`.
+  salePrice: SafeNumber
+
+  # Reflects the non-sale price of the product
+  origPrice: SafeNumber
+
+  # Price rules determined by cart quantity or customer account group. Overrides `price` and `sale_price` when conditions match.
+  prices: [SwellProductPrice]
+
+  # A long-form description of the product. May contain HTML or other markup languages.
+  description: String
+
+  # Page title used to override product name in storefronts.
+  metaTitle: String
+
+  # Page description used for search engine optimization purposes.
+  metaDescription: String
+
+  # Expandable list of variants representing unique variations of the product. Each variant is a combination of one or more `options`. For example, Size and Color.
+  variants: SwellProductsVariants
+
+  # An object containing custom attribute key/value pairs.
+  attributes: JSON
+
+  # Options that allow for variations of the base product. If the option is part of a variant or `required=true`, an option value must be set for the product to be added to a cart.
+  options: [SwellProductOption]
+
+  # Configuration of one or more purchase options for the product. Can be `standard` for one-time purchases or `subscription` for a subscription plan. Products can support both purchase options simultaneously.
+  purchaseOptions: SwellProductPurchaseOptions
+
+  # Indicates whether the product is a bundle of other products.
+  bundle: Boolean
+
+  # List of products sold as a bundle. Applicable only when `bundle=true`.
+  bundleItems: [SwellProductBundleItem]
+
+  # List of images depicting the bundle.
+  images: [SwellProductImage]
+
+  # Indicates whether the product has stock tracking enabled.
+  stockTracking: Boolean
+
+  # Quantity of the product currently in stock (including all variants), based on the sum of the stock entries.
+  stockLevel: Int
+
+  # Indicates whether the product's stock is purchasable.
+  stockPurchasable: Boolean
+
+  # String indicating the product's stock status for the purpose of ordering. When `stock_purchasable=true`, an order can be placed for this product regardless of current stock status. Otherwise an order submission will be blocked unless stock status is `available`, `preorder`, or `backorder`.
+  stockStatus: String
+
+  # List of products to display as up-sells on a product detail page.
+  upSells: [SwellProductUpSell]
+
+  # List of products to display as cross-sells on a shopping cart page.
+  crossSells: [SwellProductCrossSell]
+  currency: String
+  content: SwellProductContent
+  categories(_locale: String, _currency: String): [SwellCategory]
+}
+
+# Price rules determined by cart quantity or customer account group. Overrides `price` and `sale_price` when conditions match.
+type SwellProductPrice {
+  price: SafeNumber
+  discountPercent: SafeNumber
+  quantityMin: Int
+  quantityMax: Int
+  accountGroup: String
+}
+
+type SwellProductsVariants {
+  count: Int
+  results: [SwellProductVariant]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+# Expandable list of variants representing unique variations of the product. Each variant is a combination of one or more `options`. For example, Size and Color.
+type SwellProductVariant {
+  id: ID
+  name: String
+
+  # SKU
+  sku: String
+  price: SafeNumber
+  origPrice: SafeNumber
+  prices: [SwellProductVariantPrice]
+  images: [SwellProductVariantImage]
+  optionValueIds: [ID]
+  purchaseOptions: SwellProductVariantPurchaseOptions
+  attributes: JSON
+  stockLevel: Int
+  currency: String
+}
+
+type SwellProductVariantPrice {
+  price: SafeNumber
+  discountPercent: SafeNumber
+  quantityMin: Int
+  quantityMax: Int
+  accountGroup: String
+}
+
+type SwellProductVariantImage {
+  id: ID
+  caption: String
+  file: SwellProductVariantImageFile
+}
+
+type SwellProductVariantImageFile {
+  md5: String
+  url: String
+  width: Int
+  height: Int
+}
+
+type SwellProductVariantPurchaseOptions {
+  standard: SwellProductVariantPurchaseOptionsStandard
+}
+
+type SwellProductVariantPurchaseOptionsStandard {
+  price: SafeNumber
+  sale: Boolean
+  salePrice: SafeNumber
+  origPrice: SafeNumber
+  prices: [SwellProductVariantPurchaseOptionsStandardPrice]
+}
+
+type SwellProductVariantPurchaseOptionsStandardPrice {
+  price: SafeNumber
+  discountPercent: SafeNumber
+  quantityMin: Int
+  quantityMax: Int
+  accountGroup: String
+}
+
+# The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+scalar JSON
+
+type Page {
+  number: Int
+  start: Int
+  end: Int
+}
+
+# Options that allow for variations of the base product. If the option is part of a variant or `required=true`, an option value must be set for the product to be added to a cart.
+type SwellProductOption {
+  id: ID
+  name: String
+  active: Boolean
+  price: SafeNumber
+  description: String
+
+  # Indicates the option is an aspect of variants
+  variant: Boolean
+  subscription: Boolean
+
+  # Indicates the option requires a value
+  required: Boolean
+  attributeId: String
+
+  # List of values for this option
+  values: [SwellProductOptionValue]
+  parentId: ID
+  parentValueIds: [ID]
+  inputType: String
+  inputMulti: Boolean
+  inputHint: String
+}
+
+# List of values for this option
+type SwellProductOptionValue {
+  id: ID
+  name: String
+  price: SafeNumber
+  color: String
+  image: SwellProductOptionValueImage
+  description: String
+  images: [SwellProductOptionValueImage]
+
+  # Shipment weight added if the option value is selected
+  shipmentWeight: SafeNumber
+  subscriptionInterval: String
+  subscriptionIntervalCount: Int
+  subscriptionTrialDays: Int
+}
+
+type SwellProductOptionValueImage {
+  id: ID
+  dateUploaded: DateTime
+  length: Int
+  md5: String
+  filename: String
+  contentType: String
+  metadata: JSON
+  data: JSON
+  private: Boolean
+  url: String
+  width: Int
+  height: Int
+  caption: String
+  file: SwellProductOptionValueImageFile
+}
+
+type SwellProductOptionValueImageFile {
+  id: ID
+  dateUploaded: DateTime
+  length: Int
+  md5: String
+  filename: String
+  contentType: String
+  metadata: JSON
+  data: JSON
+  private: Boolean
+  url: String
+  width: Int
+  height: Int
+}
+
+# Configuration of one or more purchase options for the product. Can be `standard` for one-time purchases or `subscription` for a subscription plan. Products can support both purchase options simultaneously.
+type SwellProductPurchaseOptions {
+  standard: SwellProductPurchaseOptionsStandard
+  subscription: SwellProductPurchaseOptionsSubscription
+  trial: SwellProductPurchaseOptionsTrial
+}
+
+type SwellProductPurchaseOptionsStandard {
+  id: ID
+  name: String
+  description: String
+  active: Boolean
+  price: SafeNumber
+  sale: Boolean
+  salePrice: SafeNumber
+  origPrice: SafeNumber
+  prices: [SwellProductPurchaseOptionsStandardPrice]
+  accountGroups: [JSON]
+}
+
+type SwellProductPurchaseOptionsStandardPrice {
+  price: SafeNumber
+  discountPercent: SafeNumber
+  quantityMin: Int
+  quantityMax: Int
+  accountGroup: String
+}
+
+type SwellProductPurchaseOptionsSubscription {
+  id: ID
+  name: String
+  description: String
+  active: Boolean
+  accountGroups: [JSON]
+  plans: [SwellProductPurchaseOptionsSubscriptionPlan]
+}
+
+type SwellProductPurchaseOptionsSubscriptionPlan {
+  id: ID
+  name: String
+  description: String
+  active: Boolean
+  price: SafeNumber
+  billingSchedule: SwellProductPurchaseOptionsSubscriptionPlanBillingSchedule
+  orderSchedule: SwellProductPurchaseOptionsSubscriptionPlanOrderSchedule
+}
+
+type SwellProductPurchaseOptionsSubscriptionPlanBillingSchedule {
+  interval: String
+  intervalCount: Int
+  trialDays: Int
+  limit: Int
+}
+
+type SwellProductPurchaseOptionsSubscriptionPlanOrderSchedule {
+  interval: String
+  intervalCount: Int
+  limit: Int
+}
+
+type SwellProductPurchaseOptionsTrial {
+  id: ID
+  active: Boolean
+  price: SafeNumber
+  authAmount: SafeNumber
+  trialDays: Int
+  prices: [SwellProductPurchaseOptionsTrialPrice]
+}
+
+type SwellProductPurchaseOptionsTrialPrice {
+  price: SafeNumber
+  authAmount: SafeNumber
+  trialDays: Int
+  accountGroup: String
+}
+
+# List of products sold as a bundle. Applicable only when `bundle=true`.
+type SwellProductBundleItem {
+  product(_locale: String, _currency: String): SwellProduct
+  id: ID
+  quantity: Int
+  productId: ID
+  productName: String
+  variantId: ID
+  variant: SwellProductVariant
+}
+
+# List of images depicting the bundle.
+type SwellProductImage {
+  id: ID
+  caption: String
+  file: SwellProductImageFile
+}
+
+type SwellProductImageFile {
+  md5: String
+  url: String
+  width: Int
+  height: Int
+}
+
+# List of products to display as up-sells on a product detail page.
+type SwellProductUpSell {
+  product(_locale: String, _currency: String): SwellProduct
+  productId: ID
+}
+
+# List of products to display as cross-sells on a shopping cart page.
+type SwellProductCrossSell {
+  product(_locale: String, _currency: String): SwellProduct
+  id: ID
+  productId: ID
+  discountType: String
+  discountAmount: SafeNumber
+  discountPercent: SafeNumber
+}
+
+type SwellProductContent {
+  productType: String
+  sampleText: String
+}
+
+# Category
+type SwellCategory {
+  top(_locale: String, _currency: String): SwellCategory
+  parent(_locale: String, _currency: String): SwellCategory
+  children(_locale: String, _currency: String): [SwellCategory]
+
+  # A human-friendly name for the category.
+  name: String
+
+  # Unique identifier typically used in URLs. Defaults to `name` converted to lowercase and hyphenated. If the category has a parent, the default slug will be prefixed with the parent slug. Maximum length of 1,000 characters.
+  slug: String
+
+  # A long-form description of the category. Can contain HTML or other markup languages.
+  description: String
+
+  # Page keywords used for search engine optimization purposes.
+  metaKeywords: String
+
+  # Page description used for search engine optimization purposes.
+  metaDescription: String
+
+  # Image depicting the category.
+  image: SwellCategoryImage
+
+  # List of images depicting the category.
+  images: [SwellCategoryImage]
+
+  # Position of the category in a list.
+  sort: Int
+
+  # Default product sorting applied when retrieving products using the `category` or `categories` filter. Can be one of `popularity`, `price_asc`, `price_desc`, `date_asc`. `date_desc`. If not specified, products are sorted by their manually defined `sort` value.
+  sorting: String
+
+  # ID of the top level category in the hierarchy.
+  topId: ID
+
+  # ID of the parent category, if applicable.
+  parentId: ID
+  content: SwellCategoryContent
+  products(_locale: String, _currency: String): [SwellProduct]
+}
+
+# List of images depicting the category.
+type SwellCategoryImage {
+  name: String
+  caption: String
+  file: SwellCategoryImageFile
+  id: ID
+}
+
+type SwellCategoryImageFile {
+  id: ID
+  dateUploaded: DateTime
+  length: Int
+  md5: String
+  filename: String
+  contentType: String
+  metadata: JSON
+  data: JSON
+  private: Boolean
+  url: String
+  width: Int
+  height: Int
+}
+
+type SwellCategoryContent {
+  showHeroImage: Boolean
+  textColor: String
+  darkenHeroImage: Int
+  productCols: Int
+  productRows: Int
+  paginationStyle: String
+}
+
+type SwellOrderItemTax {
+  id: String
+  amount: SafeNumber
+}
+
+# List of discounts applied to the order.
+type SwellOrderDiscount {
+  id: String
+  type: String
+  rule: JSON
+  amount: SafeNumber
+
+  # References the related discount source object (e.g., promotion or coupon)
+  sourceId: ID
+}
+
+# List of taxes applied to the order.
+type SwellOrderTax {
+  id: String
+  name: String
+  shipping: Boolean
+  priority: Int
+  rate: SafeNumber
+  amount: SafeNumber
+}
+
+# The customer's billing details. Defaults to `account.billing`. Updating billing will also update the corresponding account billing object.
+type SwellOrderBilling {
+  # Billing Name
+  name: String
+
+  # Billing First Name
+  firstName: String
+
+  # Billing Last Name
+  lastName: String
+
+  # Address Line 1
+  address1: String
+
+  # Address Line 2
+  address2: String
+  city: String
+
+  # State/Province
+  state: String
+
+  # Zip/Postal Code
+  zip: String
+  country: String
+
+  # Phone Number
+  phone: String
+
+  # Payment Method
+  method: String
+
+  # Payment Instructions
+  instructions: String
+
+  # Payment Card
+  card: SwellOrderBillingCard
+  intent: JSON
+  amazon: SwellOrderBillingAmazon
+  paypal: SwellOrderBillingPaypal
+  affirm: SwellOrderBillingAffirm
+  resolve: SwellOrderBillingResolve
+  klarna: SwellOrderBillingKlarna
+  ideal: SwellOrderBillingIdeal
+  bancontact: SwellOrderBillingBancontact
+  google: SwellOrderBillingGoogle
+  apple: SwellOrderBillingApple
+
+  # Default Billing
+  default: Boolean
+  accountCardId: ID
+}
+
+# Payment Card
+type SwellOrderBillingCard {
+  token: String
+  expMonth: Int
+  expYear: Int
+  brand: String
+  last4: String
+  gateway: String
+  test: Boolean
+  addressCheck: String
+  zipCheck: String
+  cvcCheck: String
+}
+
+type SwellOrderBillingAmazon {
+  accessToken: String
+  orderReferenceId: String
+  checkoutSessionId: String
+}
+
+type SwellOrderBillingPaypal {
+  nonce: String
+  authorizationId: String
+  orderId: String
+  payerId: String
+  paymentId: String
+}
+
+type SwellOrderBillingAffirm {
+  checkoutToken: String
+}
+
+type SwellOrderBillingResolve {
+  chargeId: String
+}
+
+type SwellOrderBillingKlarna {
+  source: String
+}
+
+type SwellOrderBillingIdeal {
+  token: String
+}
+
+type SwellOrderBillingBancontact {
+  source: String
+}
+
+type SwellOrderBillingGoogle {
+  nonce: String
+  gateway: String
+}
+
+type SwellOrderBillingApple {
+  nonce: String
+  gateway: String
+}
+
+# The customer's shipping details. Defaults to `account.shipping`. Updating shipping will also update the corresponding account shipping object.
+type SwellOrderShipping {
+  # Shipping Name
+  name: String
+
+  # Shipping First Name
+  firstName: String
+
+  # Shipping Last Name
+  lastName: String
+
+  # Address Line 1
+  address1: String
+
+  # Address Line 2
+  address2: String
+  city: String
+
+  # State/Province
+  state: String
+
+  # Zip/Postal Code
+  zip: String
+  country: String
+
+  # Phone Number
+  phone: String
+
+  # Shipping Service ID
+  service: String
+
+  # Shipping Service Name
+  serviceName: String
+
+  # Shipping Price
+  price: SafeNumber
+  pickup: Boolean
+
+  # Default Shipping
+  default: Boolean
+  accountAddressId: ID
+}
+
+# Object describing the shipping services and rates available for the order. Shipping `country` must be set before retrieving shipping rates.
+type SwellOrderShipmentRating {
+  dateCreated: DateTime
+  fingerprint: String
+  services: [SwellOrderShipmentRatingService]
+  errors: [SwellOrderShipmentRatingError]
+}
+
+type SwellOrderShipmentRatingService {
+  id: String
+  name: String
+  carrier: String
+  price: SafeNumber
+  pickup: Boolean
+  taxCode: String
+}
+
+type SwellOrderShipmentRatingError {
+  message: String
+  code: String
+}
+
+# List of gift cards applied to the order.
+type SwellOrderGiftcard {
+  id: ID
+  code: String
+  codeFormatted: String
+
+  # Amount of gift card credit to spend for automatic payment
+  amount: SafeNumber
+  last4: String
+}
+
+type SwellOrderCoupon {
+  id: ID
+
+  # A short descriptive name of the coupon.
+  name: String
+
+  # A brief description of the coupon, as it may be displayed to customers.
+  description: String
+}
+
+type SwellOrdersPromotions {
+  count: Int
+  results: [SwellOrderPromotion]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+type SwellOrderPromotion {
+  # A short descriptive name of the promo.
+  name: String
+
+  # A brief description of the promo, as it may be displayed to customers.
+  description: String
+
+  # Date the promo is first available. When defined, the promo will not be valid until after this date and before `date_end`.
+  dateStart: DateTime
+
+  # Date the promo ends and is no longer available. When defined, the promo will not be applied after this date.
+  dateEnd: DateTime
+}
+
+type SwellOrdersShipments {
+  count: Int
+  results: [SwellOrderShipment]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+type SwellOrderShipment {
+  dateCreated: DateTime
+
+  # Unique incremental shipment number, assigned automatically.
+  number: String
+
+  # Indicates the shipment was canceled.
+  canceled: Boolean
+
+  # List of line items describing the products shipped.
+  items: [SwellOrderShipmentItem]
+
+  # The shipment origin location.
+  origin: SwellOrderShipmentOrigin
+
+  # The customer's shipping address.
+  destination: SwellOrderShipmentDestination
+
+  # The id of a shipping service as configured in shipment settings.
+  service: String
+
+  # Name of the shipping service.
+  serviceName: String
+
+  # The id of a third-party carrier offering the service, if applicable.
+  carrier: String
+
+  # Name of a third-party carrier offering the service, if applicable.
+  carrierName: String
+
+  # Tracking code used to identify the shipment, if applicable.
+  trackingCode: String
+
+  # Date the expected shipment is meant to arrive at the destination, if applicable.
+  dateEstimated: DateTime
+}
+
+# List of line items describing the products shipped.
+type SwellOrderShipmentItem {
+  product(_locale: String, _currency: String): SwellProduct
+  id: ID
+  orderItemId: ID
+  bundleItemId: ID
+  quantity: Int
+  options: [SwellOrderShipmentItemOption]
+  productId: ID
+  variantId: ID
+}
+
+type SwellOrderShipmentItemOption {
+  id: String
+  name: String
+  value: String
+}
+
+# The shipment origin location.
+type SwellOrderShipmentOrigin {
+  location: String
+}
+
+# The customer's shipping address.
+type SwellOrderShipmentDestination {
+  name: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  phone: String
+}
+
+type SwellOrdersPayments {
+  count: Int
+  results: [SwellOrderPayment]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+type SwellOrderPayment {
+  dateCreated: DateTime
+
+  # Unique incremental payment number assigned automatically.
+  number: String
+
+  # Method of payment. Can be `card`, `account`, `amazon`, `paypal` or any one of the manual methods defined in payment settings.
+  method: String
+
+  # ID of the payment gateway that was used to process the payment.
+  gateway: String
+
+  # Payment amount denominated in `currency`. Minimum of 0.01
+  amount: SafeNumber
+
+  # Amount of the payment that has been refunded.
+  amountRefunded: SafeNumber
+
+  # Remaining amount that can be refunded.
+  amountRefundable: SafeNumber
+
+  # Indicates the payment was successful. When an error occurs with a payment gateway, this status will be `false` and `error` field will be populated.
+  success: Boolean
+
+  # Indicates the payment was authorized before being captured.
+  authorized: Boolean
+
+  # Indicates the payment has been captured.
+  captured: Boolean
+
+  # Status of the payment. Can be `pending`, which is awaiting async processing, `error`, `success` or `authorized`.
+  status: String
+
+  # Credit card details used to make the payment, if applicable.
+  card: SwellOrderPaymentCard
+
+  # Currency percentage used in calculating the fixed amount.
+  currencyRate: SafeNumber
+  currency: String
+}
+
+# Credit card details used to make the payment, if applicable.
+type SwellOrderPaymentCard {
+  token: String
+  expMonth: Int
+  expYear: Int
+  brand: String
+  last4: String
+  test: Boolean
+  addressCheck: String
+  zipCheck: String
+  cvcCheck: String
+}
+
+type SwellOrdersRefunds {
+  count: Int
+  results: [SwellOrderRefund]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+# Expandable list of refunds issued for the payment.
+type SwellOrderRefund {
+  dateCreated: DateTime
+  number: String
+  method: String
+  amount: SafeNumber
+
+  # Indicates the refund was successfully processed
+  success: Boolean
+  status: String
+  currencyRate: SafeNumber
+  currency: String
+}
+
+# Subscription
+type SwellSubscription {
+  orders(
+    search: String
+    where: JSON
+    sort: String
+    limit: Int
+    page: Int
+    _locale: String
+    _currency: String
+  ): SwellOrders
+  id: ID
+  dateCreated: DateTime
+  dateUpdated: DateTime
+
+  # ID of the subscribed customer's account.
+  accountId: ID
+
+  # ID of the subscription plan product.
+  productId: ID
+
+  # ID of the subscription plan variant, if applicable.
+  variantId: ID
+
+  # Price of the plan. Plan price can be overridden when creating or updating a subscription.
+  price: SafeNumber
+
+  # Quantity of the plan to charge.
+  quantity: Int
+
+  # Total price of the plan (`price * quantity`).
+  priceTotal: SafeNumber
+
+  # Plan options matching one or more of `product.options`. When setting this value, specify either option `id` or `name` (case-insensitive) to identify the option.
+  options: [SwellSubscriptionOption]
+  interval: String
+  intervalCount: Int
+
+  # ID of the subscription plan.
+  planId: ID
+
+  # Name of the subscription plan.
+  planName: String
+
+  # Billing schedule for subscription plan.
+  billingSchedule: SwellSubscriptionBillingSchedule
+
+  # Order schedule for the subscription plan.
+  orderSchedule: SwellSubscriptionOrderSchedule
+
+  # List of invoice line items added to the subscription. Recurring items are charged repeatedly, otherwise they are charged on the next invoice and then removed from the subscription.
+  items: [SwellSubscriptionItem]
+
+  # Subscription billing details.
+  billing: SwellSubscriptionBilling
+
+  # Subscription shipping details.
+  shipping: SwellSubscriptionShipping
+
+  # Indicates the subscription is currently active.
+  active: Boolean
+
+  # Indicates the subscription is in a trial period and the first invoice will be issued on `date_trial_end`.
+  trial: Boolean
+
+  # Indicates the last invoice was fully paid.
+  paid: Boolean
+
+  # Indicates the last invoice was marked as unpaid. This occurs automatically after all payment attempts are exhausted, as configured in subscription settings.
+  unpaid: Boolean
+
+  # Indicates the subscription was canceled.
+  canceled: Boolean
+
+  # Date the subscription was canceled, if applicable.
+  dateCanceled: DateTime
+
+  # Indicates whether or not a subscription is paused.
+  paused: Boolean
+
+  # Date the subscription was paused, if applicable.
+  datePaused: DateTime
+
+  # Date the subscription was unpaused, if applicable.
+  datePauseEnd: DateTime
+
+  # Current status of the subscription. Can be `pending`, `active`, `trial`, `pastdue`, `unpaid`, `canceled`, or `paid`.
+  status: String
+
+  # Total discount applied to the subscription plan.
+  productDiscountTotal: SafeNumber
+
+  # Total discount amount of the subscription plan, divided by quantity.
+  productDiscountEach: SafeNumber
+
+  # Total tax applied to the subscription plan.
+  productTaxTotal: SafeNumber
+
+  # Total tax amount of the subscription plan, divided by quantity.
+  productTaxEach: SafeNumber
+
+  # List of taxes applied to the subscription.
+  taxes: [SwellSubscriptionTax]
+
+  # When true, taxes are not applied to the subscription. When false, taxes are calculated and applied to the subscription.
+  taxesFixed: Boolean
+  trialDays: Int
+
+  # Date the trial period started, if applicable.
+  dateTrialStart: DateTime
+
+  # Date the trial period did end in the past or will end in the future. Changing this value can be used to update the billing period of a subscription with or without a trial. For example, to set the monthly billing date to the 1st of the month, update `date_trial_end `to the first of the next month.
+  dateTrialEnd: DateTime
+
+  # Start date of the current billing period.
+  datePeriodStart: DateTime
+
+  # End date of the current billing period.
+  datePeriodEnd: DateTime
+
+  # End date for the subscription order period.
+  dateOrderPeriodEnd: DateTime
+
+  # When `true`, indicates the subscription was or will be canceled at the end of the billing period.
+  cancelAtEnd: Boolean
+
+  # Coupon code applied to the subscription. See coupons for details.
+  couponCode: String
+
+  # Amount invoiced for the last billing period.
+  itemTotal: SafeNumber
+
+  # Sum of all recurring line items before discounts and taxes.
+  recurringItemTotal: SafeNumber
+
+  # Sum of all line items before discounts and taxes.
+  subTotal: SafeNumber
+
+  # Total discount applied to line items.
+  itemDiscount: SafeNumber
+
+  # Total discount applied to recurring line items.
+  recurringItemDiscount: SafeNumber
+
+  # Total taxes applied to line items.
+  itemTax: SafeNumber
+
+  # Total taxes applied to recurring line items.
+  recurringItemTax: SafeNumber
+
+  # Total discount amount.
+  discountTotal: SafeNumber
+
+  # Total recurring discount applied to the subscription including line items.
+  recurringDiscountTotal: SafeNumber
+
+  # Total taxes applied to the subscription including line items.
+  taxTotal: SafeNumber
+
+  # Total taxes applied to the subscription including recurring line items.
+  recurringTaxTotal: SafeNumber
+
+  # Total of taxes applied separately from the subscription plan and line items.
+  taxIncludedTotal: SafeNumber
+
+  # Total of taxes applied separately from the subscription plan and recurring line items.
+  recurringTaxIncludedTotal: SafeNumber
+
+  # Grand total of the next invoice including line items and taxes.
+  grandTotal: SafeNumber
+
+  # Recurring total of the subscription including line items and taxes.
+  recurringTotal: SafeNumber
+
+  # Amount invoiced for the last billing period.
+  invoiceTotal: SafeNumber
+
+  # Total amount of payments for the last billing period.
+  paymentTotal: SafeNumber
+
+  # Balance of payments on the invoice for the last billing period. A negative number indicates payment is owed, while a positive balance indicates refund is due. Zero balance indicates the invoice was fully paid.
+  paymentBalance: SafeNumber
+
+  # When automated payment has failed, this is the date when the system will automatically retry.
+  datePaymentRetry: DateTime
+
+  # ID of the order that originated the subscription, if applicable.
+  orderId: ID
+
+  # Currency rate used in calculating the fixed amount.
+  currencyRate: SafeNumber
+  currency: String
+  product: SwellProduct
+  variant: SwellProductVariant
+}
+
+type SwellOrders {
+  count: Int
+  results: [SwellOrder]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+# Plan options matching one or more of `product.options`. When setting this value, specify either option `id` or `name` (case-insensitive) to identify the option.
+type SwellSubscriptionOption {
+  id: String
+  name: String
+  value: String
+  valueId: ID
+  variant: Boolean
+  price: SafeNumber
+  shipmentWeight: SafeNumber
+}
+
+# Billing schedule for subscription plan.
+type SwellSubscriptionBillingSchedule {
+  interval: String
+  intervalCount: Int
+  trialDays: Int
+  limit: Int
+  limitCurrent: Int
+  dateLimitEnd: DateTime
+}
+
+# Order schedule for the subscription plan.
+type SwellSubscriptionOrderSchedule {
+  interval: String
+  intervalCount: Int
+  limit: Int
+  limitCurrent: Int
+  dateLimitEnd: DateTime
+}
+
+# List of invoice line items added to the subscription. Recurring items are charged repeatedly, otherwise they are charged on the next invoice and then removed from the subscription.
+type SwellSubscriptionItem {
+  product(_locale: String, _currency: String): SwellProduct
+  id: ID
+  dateCreated: DateTime
+  quantity: Int
+  price: SafeNumber
+  priceTotal: SafeNumber
+  description: String
+  delivery: String
+  options: [SwellSubscriptionItemOption]
+  bundleItems: [SwellSubscriptionItemBundleItem]
+  proration: Boolean
+  prorationProductId: ID
+  recurring: Boolean
+  recurringPrice: SafeNumber
+  recurringPriceTotal: SafeNumber
+  discounts: [SwellSubscriptionItemDiscount]
+  discountTotal: SafeNumber
+  discountEach: SafeNumber
+  recurringDiscountTotal: SafeNumber
+  recurringDiscountEach: SafeNumber
+  taxes: [SwellSubscriptionItemTax]
+  taxTotal: SafeNumber
+  taxEach: SafeNumber
+  recurringTaxTotal: SafeNumber
+  recurringTaxEach: SafeNumber
+  productId: ID
+  variantId: ID
+}
+
+type SwellSubscriptionItemOption {
+  id: String
+  name: String
+  value: String
+  valueId: ID
+  variant: Boolean
+  price: SafeNumber
+  shipmentWeight: SafeNumber
+}
+
+type SwellSubscriptionItemBundleItem {
+  product(_locale: String, _currency: String): SwellProduct
+  id: ID
+  amountRatio: SafeNumber
+  price: SafeNumber
+  discountEach: SafeNumber
+  taxEach: SafeNumber
+  quantity: Int
+  quantityTotal: Int
+  productId: ID
+  variantId: ID
+}
+
+type SwellSubscriptionItemDiscount {
+  id: String
+  amount: SafeNumber
+}
+
+type SwellSubscriptionItemTax {
+  id: String
+  amount: SafeNumber
+}
+
+# Subscription billing details.
+type SwellSubscriptionBilling {
+  name: String
+  firstName: String
+  lastName: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  phone: String
+  method: String
+  card: SwellSubscriptionBillingCard
+  intent: JSON
+  default: Boolean
+  useAccount: Boolean
+  accountCardId: ID
+}
+
+type SwellSubscriptionBillingCard {
+  token: String
+  expMonth: Int
+  expYear: Int
+  brand: String
+  last4: String
+  gateway: String
+  test: Boolean
+  addressCheck: String
+  zipCheck: String
+  cvcCheck: String
+}
+
+# Subscription shipping details.
+type SwellSubscriptionShipping {
+  name: String
+  firstName: String
+  lastName: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  phone: String
+  service: String
+  serviceName: String
+  price: SafeNumber
+  pickup: Boolean
+  default: Boolean
+  useAccount: Boolean
+  accountAddressId: ID
+}
+
+# List of taxes applied to the subscription.
+type SwellSubscriptionTax {
+  id: String
+  name: String
+  priority: Int
+  rate: SafeNumber
+  amount: SafeNumber
+}
+
+type SwellAccountsCards {
+  count: Int
+  results: [SwellAccountCard]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+# Stored credit cards used by an account
+type SwellAccountCard {
+  parent(_locale: String, _currency: String): SwellAccount
+  id: ID
+  parentId: ID
+  dateCreated: DateTime
+  dateUpdated: DateTime
+  token: String
+  expMonth: Int
+  expYear: Int
+  brand: String
+
+  # Last 4 Digits
+  last4: String
+  gateway: String
+  test: Boolean
+  addressCheck: String
+  zipCheck: String
+  cvcCheck: String
+  billing: SwellAccountCardBilling
+  active: Boolean
+  fingerprint: String
+}
+
+type SwellAccountCardBilling {
+  # Billing Name
+  name: String
+
+  # Billing Email
+  email: String
+
+  # Billing Company Name
+  company: String
+
+  # Billing First Name
+  firstName: String
+
+  # Billing Last Name
+  lastName: String
+
+  # Phone Number
+  phone: String
+
+  # Address Line 1
+  address1: String
+
+  # Address Line 2
+  address2: String
+  city: String
+
+  # State/Province
+  state: String
+
+  # Zip/Postal Code
+  zip: String
+  country: String
+  vatNumber: String
+}
+
+type SwellAccountsAddresses {
+  count: Int
+  results: [SwellAccountAddress]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+# Stored addresses used by an account
+type SwellAccountAddress {
+  parent(_locale: String, _currency: String): SwellAccount
+  id: ID
+  parentId: ID
+  dateCreated: DateTime
+  dateUpdated: DateTime
+  name: String
+
+  # First Name
+  firstName: String
+
+  # Last Name
+  lastName: String
+
+  # Phone Number
+  phone: String
+
+  # Address Line 1
+  address1: String
+
+  # Address Line 2
+  address2: String
+  city: String
+
+  # State/Province
+  state: String
+
+  # Zip/Postal Code
+  zip: String
+  country: String
+  active: Boolean
+  fingerprint: String
+}
+
+# Default account billing information
+type SwellAccountBilling {
+  # Billing Name
+  name: String
+
+  # Billing First Name
+  firstName: String
+
+  # Billing Last Name
+  lastName: String
+
+  # Address Line 1
+  address1: String
+
+  # Address Line 2
+  address2: String
+  city: String
+
+  # State/Province
+  state: String
+
+  # Zip/Postal Code
+  zip: String
+  country: String
+
+  # Phone Number
+  phone: String
+
+  # Payment Method
+  method: String
+
+  # Payment Card
+  card: SwellAccountBillingCard
+  accountCardId: ID
+}
+
+# Payment Card
+type SwellAccountBillingCard {
+  token: String
+  expMonth: Int
+  expYear: Int
+  brand: String
+  last4: String
+  gateway: String
+  test: Boolean
+  addressCheck: String
+  zipCheck: String
+  cvcCheck: String
+}
+
+# Default account shipping information
+type SwellAccountShipping {
+  # Shipping Name
+  name: String
+
+  # Shipping First Name
+  firstName: String
+
+  # Shipping Last Name
+  lastName: String
+
+  # Phone Number
+  phone: String
+
+  # Address Line 1
+  address1: String
+
+  # Address Line 2
+  address2: String
+  city: String
+
+  # State/Province
+  state: String
+
+  # Zip/Postal Code
+  zip: String
+  country: String
+  accountAddressId: ID
+}
+
+# Cart
+type SwellCart {
+  dateCreated: DateTime
+
+  # Customer-facing unique identifier for the cart used in URLs and for abandoned cart recovery.
+  checkoutId: String
+
+  # URL to checkout for the cart, set automatically when the cart has at least `items`, `shipping`, or `billing` details set. Can also be set explicitly when creating or updating the cart for custom checkouts.
+  checkoutUrl: String
+
+  # ID of the the converted order, if applicable.
+  orderId: ID
+
+  # List of line items describing the products ordered.
+  items: [SwellCartItem]
+
+  # List of discounts applied to the cart.
+  discounts: [SwellCartDiscount]
+
+  # List of taxes applied to the cart.
+  taxes: [SwellCartTax]
+
+  # Indicates the order is tax-exempt. Taxes will not be calculated or applied when true.
+  taxesFixed: Boolean
+
+  # The customer's billing details. Defaults to `account.billing`. Updating billing will also update the corresponding account billing object.
+  billing: SwellCartBilling
+
+  # The customer's shipping details. Defaults to `account.shipping`. Updating shipping will also update the corresponding account shipping object.
+  shipping: SwellCartShipping
+
+  # Object describing the shipping services and rates available for the cart. Shipping `country` must be set before retrieving shipping rates.
+  shipmentRating: SwellCartShipmentRating
+
+  # Customer notes provided when placing the order, if any.
+  comments: String
+
+  # Indicates the order is intended as a gift for the recipient.
+  gift: Boolean
+
+  # Optional message to include with the order when shipping to the recipient.
+  giftMessage: String
+
+  # Indicates the cart was made in test mode.
+  test: Boolean
+
+  # Indicates the cart was abandoned after 3 hours of inactivity. After being marked as abandoned, this field is automatically set back to `false` after an update to items, billing, or shipping info.
+  abandoned: Boolean
+
+  # Number of abandoned cart notifications sent to the customer.
+  abandonedNotifications: Int
+
+  # Indicates the cart was recovered and converted to an order after being abandoned.
+  recovered: Boolean
+  trial: Boolean
+
+  # Date the cart was or will be marked as abandoned.
+  dateAbandoned: DateTime
+
+  # Next date the cart will be marked as abandoned when using a series of abandoned cart recovery notices (advanced cart recovery).
+  dateAbandonedNext: DateTime
+
+  # Sum of all line items before discounts, taxes and shipping.
+  subTotal: SafeNumber
+  trialSubTotal: SafeNumber
+  trialAuthTotal: SafeNumber
+
+  # Total discount applied to line items.
+  itemDiscount: SafeNumber
+  trialItemDiscount: SafeNumber
+
+  # Total taxes applied to line items.
+  itemTax: SafeNumber
+  trialItemTax: SafeNumber
+
+  # Indicates line item prices include taxes.
+  itemTaxIncluded: Boolean
+
+  # Total quantity of all line items.
+  itemQuantity: Int
+
+  # Total shipping weight of all line items.
+  itemShipmentWeight: SafeNumber
+
+  # Total discount amount.
+  discountTotal: SafeNumber
+
+  # Total shipping price before discounts.
+  shipmentPrice: SafeNumber
+
+  # Shipping discount applied by coupons, promotions, or custom logic.
+  shipmentDiscount: SafeNumber
+
+  # Total shipping price after discounts.
+  shipmentTotal: SafeNumber
+
+  # Shipping tax amount, if applicable.
+  shipmentTax: SafeNumber
+
+  # Indicates shipping total includes taxes, if applicable.
+  shipmentTaxIncluded: Boolean
+
+  # Total tax amount applied to the cart including line items and shipping.
+  taxTotal: SafeNumber
+
+  # Total with shipping and item taxes included. Allows for an alternate display style, as normally `sub_total` and `tax_total` are shown separately.
+  taxIncludedTotal: SafeNumber
+  trialTaxIncludedTotal: SafeNumber
+
+  # Grand total including items, shipping, and taxes.
+  grandTotal: SafeNumber
+  trialGrandTotal: SafeNumber
+  authTotal: SafeNumber
+  captureTotal: SafeNumber
+
+  # Coupon code applied to the cart.
+  couponCode: String
+
+  # ID of the coupon applied to the cart.
+  couponId: ID
+
+  # List of promotion IDs applied to the cart.
+  promotionIds: [ID]
+
+  # List of purchase link errors applied to the cart. Added when clicking on the purchase link, if any resources are blocking the creation of the cart.
+  purchaseLinksErrors: [SwellCartPurchaseLinksError]
+
+  # ID of the customer's account.
+  accountId: ID
+
+  # Indicates the customer was logged into their account when placing the order.
+  accountLoggedIn: Boolean
+
+  # Indicates the customer chose to save shipping and billing information to their account when submitting the order.
+  accountInfoSaved: Boolean
+
+  # Indicates the customer's account credit is applied to the initial payment.
+  accountCreditApplied: Boolean
+
+  # Amount of customer's account credit applied for initial payment, if applicable.
+  accountCreditAmount: SafeNumber
+
+  # Indicates the customer was not logged in when placing the order.
+  guest: Boolean
+
+  # List of gift cards applied to the cart.
+  giftcards: [SwellCartGiftcard]
+
+  # Total payment amount applied to the order from `giftcards`.
+  giftcardTotal: SafeNumber
+
+  # Indicates the cart has at least one line item with   `delivery=shipment`.
+  shipmentDelivery: Boolean
+
+  # Indicates the cart has at least one line item with     `delivery=giftcard`.
+  giftcardDelivery: Boolean
+
+  # Indicates the cart has at least one line item with `delivery=subscription`.
+  subscriptionDelivery: Boolean
+
+  # Currency percentage used in calculating the fixed amount.
+  currencyRate: SafeNumber
+
+  # Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) representing the user's preferred display currency, if applicable.
+  displayCurrency: String
+
+  # Locale code representing the user's preferred display locale, if applicable.
+  displayLocale: String
+
+  # Arbitrary data, typically set in a checkout flow to store custom values. See Frontend API for more details.
+  metadata: JSON
+  currency: String
+  content: SwellCartContent
+  testTextField: String
+  order(_locale: String, _currency: String): SwellOrder
+  account(_locale: String, _currency: String): SwellAccount
+  promotions: SwellCartsPromotions
+  coupon: SwellCartCoupon
+}
+
+# List of line items describing the products ordered.
+type SwellCartItem {
+  id: ID
+  quantity: Int
+  price: SafeNumber
+  origPrice: SafeNumber
+  priceTotal: SafeNumber
+  purchaseOption: SwellCartItemPurchaseOption
+  options: [SwellCartItemOption]
+  bundleItems: [SwellCartItemBundleItem]
+  shipmentWeight: SafeNumber
+  discountTotal: SafeNumber
+
+  # Discount Amount
+  discountEach: SafeNumber
+  taxes: [SwellCartItemTax]
+  taxTotal: SafeNumber
+
+  # Tax Amount
+  taxEach: SafeNumber
+  productId: ID
+  variantId: ID
+  metadata: JSON
+  product: SwellProduct
+  variant: SwellProductVariant
+}
+
+type SwellCartItemPurchaseOption {
+  type: String
+  id: ID
+  name: String
+  price: SafeNumber
+  authAmount: SafeNumber
+  trialDays: Int
+  planId: ID
+  planName: String
+  planDescription: String
+  billingSchedule: SwellCartItemPurchaseOptionBillingSchedule
+  orderSchedule: SwellCartItemPurchaseOptionOrderSchedule
+}
+
+type SwellCartItemPurchaseOptionBillingSchedule {
+  interval: String
+  intervalCount: Int
+  trialDays: Int
+  limit: Int
+}
+
+type SwellCartItemPurchaseOptionOrderSchedule {
+  interval: String
+  intervalCount: Int
+  limit: Int
+}
+
+type SwellCartItemOption {
+  id: String
+  name: String
+  value: String
+  valueId: ID
+  variant: Boolean
+  price: SafeNumber
+  shipmentWeight: SafeNumber
+}
+
+type SwellCartItemBundleItem {
+  id: ID
+  quantity: Int
+
+  # Bundled Quantity
+  quantityTotal: Int
+  productId: ID
+  variantId: ID
+  options: [SwellCartItemBundleItemOption]
+  product: SwellProduct
+  variant: SwellProductVariant
+}
+
+type SwellCartItemBundleItemOption {
+  id: String
+  name: String
+  value: String
+  valueId: ID
+  variant: Boolean
+  price: SafeNumber
+  shipmentWeight: SafeNumber
+}
+
+type SwellCartItemTax {
+  id: String
+  amount: SafeNumber
+}
+
+# List of discounts applied to the cart.
+type SwellCartDiscount {
+  id: String
+  type: String
+  rule: JSON
+  amount: SafeNumber
+
+  # References the related discount source object (e.g., promotion or coupon)
+  sourceId: ID
+}
+
+# List of taxes applied to the cart.
+type SwellCartTax {
+  id: String
+  name: String
+  shipping: Boolean
+  priority: Int
+  rate: SafeNumber
+  amount: SafeNumber
+}
+
+# The customer's billing details. Defaults to `account.billing`. Updating billing will also update the corresponding account billing object.
+type SwellCartBilling {
+  # Billing Name
+  name: String
+
+  # Billing First Name
+  firstName: String
+
+  # Billing Last Name
+  lastName: String
+
+  # Address Line 1
+  address1: String
+
+  # Address Line 2
+  address2: String
+  city: String
+
+  # State/Province
+  state: String
+
+  # Zip/Postal Code
+  zip: String
+  country: String
+
+  # Phone Number
+  phone: String
+
+  # Payment Method
+  method: String
+
+  # Payment Card
+  card: SwellCartBillingCard
+  intent: JSON
+  amazon: SwellCartBillingAmazon
+  paypal: SwellCartBillingPaypal
+  affirm: SwellCartBillingAffirm
+  resolve: SwellCartBillingResolve
+  klarna: SwellCartBillingKlarna
+  ideal: SwellCartBillingIdeal
+  bancontact: SwellCartBillingBancontact
+  google: SwellCartBillingGoogle
+  apple: SwellCartBillingApple
+
+  # Default Billing
+  default: Boolean
+  accountCardId: ID
+}
+
+# Payment Card
+type SwellCartBillingCard {
+  token: String
+  expMonth: Int
+  expYear: Int
+  brand: String
+  last4: String
+  gateway: String
+  test: Boolean
+  addressCheck: String
+  zipCheck: String
+  cvcCheck: String
+}
+
+type SwellCartBillingAmazon {
+  accessToken: String
+  orderReferenceId: String
+  checkoutSessionId: String
+}
+
+type SwellCartBillingPaypal {
+  nonce: String
+  authorizationId: String
+  orderId: String
+  payerId: String
+  paymentId: String
+}
+
+type SwellCartBillingAffirm {
+  checkoutToken: String
+}
+
+type SwellCartBillingResolve {
+  chargeId: String
+}
+
+type SwellCartBillingKlarna {
+  source: String
+}
+
+type SwellCartBillingIdeal {
+  token: String
+}
+
+type SwellCartBillingBancontact {
+  source: String
+}
+
+type SwellCartBillingGoogle {
+  nonce: String
+  gateway: String
+}
+
+type SwellCartBillingApple {
+  nonce: String
+  gateway: String
+}
+
+# The customer's shipping details. Defaults to `account.shipping`. Updating shipping will also update the corresponding account shipping object.
+type SwellCartShipping {
+  # Shipping Name
+  name: String
+
+  # Shipping First Name
+  firstName: String
+
+  # Shipping Last Name
+  lastName: String
+
+  # Address Line 1
+  address1: String
+
+  # Address Line 2
+  address2: String
+  city: String
+
+  # State/Province
+  state: String
+
+  # Zip/Postal Code
+  zip: String
+  country: String
+
+  # Phone Number
+  phone: String
+
+  # Shipping Service ID
+  service: String
+
+  # Shipping Service Name
+  serviceName: String
+
+  # Shipping Price
+  price: SafeNumber
+  pickup: Boolean
+
+  # Default Shipping
+  default: Boolean
+  accountAddressId: ID
+}
+
+# Object describing the shipping services and rates available for the cart. Shipping `country` must be set before retrieving shipping rates.
+type SwellCartShipmentRating {
+  dateCreated: DateTime
+  md5: String
+  services: [SwellCartShipmentRatingService]
+  errors: [SwellCartShipmentRatingError]
+}
+
+type SwellCartShipmentRatingService {
+  id: String
+  name: String
+  carrier: String
+  price: SafeNumber
+  pickup: Boolean
+  taxCode: String
+}
+
+type SwellCartShipmentRatingError {
+  message: String
+  code: String
+}
+
+# List of purchase link errors applied to the cart. Added when clicking on the purchase link, if any resources are blocking the creation of the cart.
+type SwellCartPurchaseLinksError {
+  id: ID
+  purchaseLinkId: String
+  error: SwellCartPurchaseLinksErrorError
+}
+
+type SwellCartPurchaseLinksErrorError {
+  code: String
+  message: String
+  resource: SwellCartPurchaseLinksErrorErrorResource
+}
+
+type SwellCartPurchaseLinksErrorErrorResource {
+  id: ID
+  name: String
+  model: String
+}
+
+# List of gift cards applied to the cart.
+type SwellCartGiftcard {
+  id: ID
+  code: String
+  codeFormatted: String
+
+  # Amount of gift card credit to spend for automatic payment
+  amount: SafeNumber
+  last4: String
+}
+
+type SwellCartContent {
+  wishlistSlug: String
+}
+
+type SwellCartsPromotions {
+  count: Int
+  results: [SwellCartPromotion]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+type SwellCartPromotion {
+  # A short descriptive name of the promo.
+  name: String
+
+  # A brief description of the promo, as it may be displayed to customers.
+  description: String
+
+  # Date the promo is first available. When defined, the promo will not be valid until after this date and before `date_end`.
+  dateStart: DateTime
+
+  # Date the promo ends and is no longer available. When defined, the promo will not be applied after this date.
+  dateEnd: DateTime
+}
+
+type SwellCartCoupon {
+  id: ID
+
+  # A short descriptive name of the coupon.
+  name: String
+
+  # A brief description of the coupon, as it may be displayed to customers.
+  description: String
+}
+
+# Attribute
+type SwellAttribute {
+  name: String
+  visible: Boolean
+  filterable: Boolean
+  searchable: Boolean
+  multi: Boolean
+  default: JSON
+  type: String
+  values: [JSON]
+}
+
+type SwellAttributes {
+  count: Int
+  results: [SwellAttribute]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+input ProductPricing {
+  quantity: Int
+  accountId: String
+}
+
+type SwellProducts {
+  count: Int
+  results: [SwellProduct]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+type SwellCategories {
+  count: Int
+  results: [SwellCategory]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+type SwellSubscriptions {
+  count: Int
+  results: [SwellSubscription]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+type SwellSettings {
+  values: JSON
+  store: SwellSettingsStore
+}
+
+type SwellSettingsStore {
+  id: String
+  name: String
+  currency: String
+  currencies: [SwellSettingsStoreCurrency]
+  country: String
+  locale: String
+  locales: [SwellSettingsStoreLocale]
+  supportEmail: String
+  supportPhone: String
+  publicKey: String
+  url: String
+  analyticsScripts: String
+  facebookPixelId: String
+  homePage: String
+}
+
+type SwellSettingsStoreCurrency {
+  code: String
+  rate: SafeNumber
+  name: String
+  symbol: String
+  decimals: Int
+  priced: Boolean
+  type: String
+}
+
+type SwellSettingsStoreLocale {
+  name: String
+  code: String
+  fallback: String
+}
+
+type SwellSettingsMenus {
+  sections: [SwellSettingsMenusSection]
+}
+
+type SwellSettingsMenusSection {
+  name: String
+  id: String
+  themeId: String
+  themeMenuId: String
+  items: [JSON]
+}
+
+type SwellSettingsPayments {
+  methods: JSON
+}
+
+type SwellSettingsSubscriptions {
+  features: JSON
+  pauseNextSkipThreshold: Int
+}
+
+# Page
+type SwellContentPage {
+  id: ID
+  dateCreated: DateTime
+  dateUpdated: DateTime
+  name: String
+  slug: String
+  content: String
+  published: Boolean
+  datePublished: DateTime
+  metaTitle: String
+  metaDescription: String
+  metaKeywords: String
+  redirect: String
+  sections: [SwellContentPageSections]
+}
+
+union SwellContentPageSections =
+    SwellContentPageSectionCollectionPreview
+  | SwellContentPageSectionCustomerReview
+  | SwellContentPageSectionEmailSignup
+  | SwellContentPageSectionFullWidthMedium
+  | SwellContentPageSectionLargeMedium
+  | SwellContentPageSectionMultiFeature
+  | SwellContentPageSectionMultiPanel
+  | SwellContentPageSectionPressMention
+  | SwellContentPageSectionHeadingWithText
+
+type SwellContentPageSectionCollectionPreview {
+  id: ID
+  type: String
+  category(_locale: String, _currency: String): SwellCategory
+  categoryId: String
+  showTitle: Boolean
+  title: String
+  showPrice: Boolean
+  titleSize: String
+  titleAlign: String
+  productCols: Int
+  productRows: Int
+  productTextAlign: String
+}
+
+type SwellContentPageSectionCustomerReview {
+  id: ID
+  type: String
+  heading: String
+  reviews: [SwellContentPageSectionCustomerReviewReview]
+}
+
+type SwellContentPageSectionCustomerReviewReview {
+  id: ID
+  quote: String
+  name: String
+  location: String
+  score: Int
+}
+
+type SwellContentPageSectionEmailSignup {
+  id: ID
+  type: String
+  heading: String
+  description: String
+  image: JSON
+  bgColor: String
+  outerSpacingX: String
+  outerSpacingY: String
+  alignX: String
+  textAlign: String
+}
+
+type SwellContentPageSectionFullWidthMedium {
+  id: ID
+  type: String
+  heading: String
+  description: String
+  image: JSON
+  links: [SwellContentPageSectionFullWidthMediumLink]
+  textColor: String
+  darkenBg: Int
+  innerSpacing: String
+  outerSpacingX: String
+  outerSpacingY: String
+  bgColor: String
+  alignX: String
+  alignY: String
+}
+
+type SwellContentPageSectionFullWidthMediumLink {
+  id: ID
+  style: String
+  label: String
+  url: String
+}
+
+type SwellContentPageSectionLargeMedium {
+  id: ID
+  type: String
+  heading: String
+  description: String
+  image: JSON
+  url: String
+  caption: String
+  bgColor: String
+}
+
+type SwellContentPageSectionMultiFeature {
+  id: ID
+  type: String
+  heading: String
+  features: [SwellContentPageSectionMultiFeatureFeature]
+  columnWidth: String
+}
+
+type SwellContentPageSectionMultiFeatureFeature {
+  id: ID
+  icon: String
+  label: String
+}
+
+type SwellContentPageSectionMultiPanel {
+  id: ID
+  type: String
+  panels: [SwellContentPageSectionMultiPanelPanels]
+  textAlign: String
+  bgColor: String
+}
+
+union SwellContentPageSectionMultiPanelPanels =
+    SwellContentPageSectionMultiPanelPanelText
+  | SwellContentPageSectionMultiPanelPanelImage
+
+type SwellContentPageSectionMultiPanelPanelText {
+  id: ID
+  type: String
+  heading: String
+  description: String
+  links: [SwellContentPageSectionMultiPanelPanelTextLink]
+}
+
+type SwellContentPageSectionMultiPanelPanelTextLink {
+  id: ID
+  style: String
+  label: String
+  url: String
+}
+
+type SwellContentPageSectionMultiPanelPanelImage {
+  id: ID
+  type: String
+  image: JSON
+  url: String
+  imageAlt: String
+}
+
+type SwellContentPageSectionPressMention {
+  id: ID
+  type: String
+  mentions: [SwellContentPageSectionPressMentionMention]
+}
+
+type SwellContentPageSectionPressMentionMention {
+  id: ID
+  quote: String
+  name: String
+  logo: JSON
+  logoScale: Int
+}
+
+type SwellContentPageSectionHeadingWithText {
+  id: ID
+  type: String
+  label: String
+  heading: String
+  description: String
+  bgColor: String
+  headingPosition: String
+  textColumns: String
+  textColumnWidth: String
+}
+
+type SwellContentPages {
+  count: Int
+  results: [SwellContentPage]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+# Attribute-Group
+type SwellContentAttributeGroup {
+  id: ID
+  dateCreated: DateTime
+  dateUpdated: DateTime
+  content: SwellContentAttributeGroupContent
+}
+
+type SwellContentAttributeGroupContent {
+  attributes: [SwellContentAttributeGroupContentAttribute]
+}
+
+type SwellContentAttributeGroupContentAttribute {
+  attributeId(_locale: String, _currency: String): SwellAttribute
+  id: ID
+  attributeIdId: String
+}
+
+type SwellContentAttributeGroups {
+  count: Int
+  results: [SwellContentAttributeGroup]
+  page: Int
+  pageCount: Int
+  pages: [Page]
+}
+
+type Mutation {
+  updateCart(
+    input: SwellCartInput
+    _locale: String
+    _currency: String
+  ): SwellCart
+  addCartItem(
+    input: SwellCartItemInput
+    _locale: String
+    _currency: String
+  ): SwellCart
+  updateCartItem(
+    itemId: String
+    input: SwellCartItemInput
+    _locale: String
+    _currency: String
+  ): SwellCart
+  deleteCartItem(itemId: String): SwellCart
+  applyCoupon(code: String, _locale: String, _currency: String): SwellCart
+  removeCoupon: SwellCart
+  applyGiftcard(code: String, _locale: String, _currency: String): SwellCart
+  removeGiftcard(
+    giftcardId: String
+    _locale: String
+    _currency: String
+  ): SwellCart
+  submitCartOrder(_locale: String, _currency: String): SwellOrder
+  loginAccount(
+    email: String
+    password: String
+    passwordToken: String
+  ): SuccessfulResponse
+  logoutAccount: SuccessfulResponse
+  createAccount(input: SwellAccountInput): SwellAccount
+  updateAccount(input: SwellAccountInput): SwellAccount
+  sendAccountRecovery(
+    email: String
+    passwordResetUrl: String
+  ): SuccessfulResponse
+  recoverAccount(password: String, passwordResetKey: String): SuccessfulResponse
+  addAccountAddress(input: SwellAccountAddressInput): SwellAccountAddress
+  updateAccountAddress(
+    addressId: String
+    input: SwellAccountAddressInput
+  ): SwellAccountAddress
+  deleteAccountAddress(addressId: String): SwellAccountAddress
+  addAccountCard(input: SwellAccountCardInput): SwellAccountCard
+  updateAccountCard(
+    cardId: String
+    input: SwellAccountCardInput
+  ): SwellAccountCard
+  deleteAccountCard(cardId: String): SwellAccountCard
+  createSubscription(input: SwellSubscriptionInput): SwellSubscription
+  updateSubscription(
+    id: String
+    input: SwellSubscriptionInput
+  ): SwellSubscription
+  addSubscriptionItem(
+    subscriptionId: String
+    input: SwellSubscriptionItemInput
+  ): SwellSubscriptionItem
+  updateSubscriptionItem(
+    subscriptionId: String
+    itemId: String
+    input: SwellSubscriptionItemInput
+  ): SwellSubscriptionItem
+  deleteSubscriptionItem(
+    subscriptionId: String
+    itemId: String
+  ): SwellSubscriptionItem
+}
+
+input SwellCartInput {
+  items: [SwellCartItemInput]
+  billing: SwellCartBillingInput
+  shipping: SwellCartShippingInput
+  shipmentRating: SwellCartShipmentRatingInput
+  comments: String
+  couponCode: String
+  metadata: JSON
+}
+
+input SwellCartItemInput {
+  id: ID
+  quantity: Int
+  purchaseOption: SwellCartItemPurchaseOptionInput
+  options: [SwellCartItemOptionInput]
+  bundleItems: [SwellCartItemBundleItemInput]
+  productId: ID
+  variantId: ID
+  metadata: JSON
+}
+
+input SwellCartItemPurchaseOptionInput {
+  type: String
+  planId: ID
+  planName: String
+  planDescription: String
+}
+
+input SwellCartItemOptionInput {
+  id: String
+  name: String
+  value: String
+  valueId: ID
+  variant: Boolean
+  price: SafeNumber
+  shipmentWeight: SafeNumber
+}
+
+input SwellCartItemBundleItemInput {
+  id: ID
+  quantity: Int
+  quantityTotal: Int
+  productId: ID
+  variantId: ID
+  options: [SwellCartItemBundleItemOptionInput]
+}
+
+input SwellCartItemBundleItemOptionInput {
+  id: String
+  name: String
+  value: String
+  valueId: ID
+  variant: Boolean
+  price: SafeNumber
+  shipmentWeight: SafeNumber
+}
+
+input SwellCartBillingInput {
+  name: String
+  firstName: String
+  lastName: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  phone: String
+  method: String
+  card: SwellCartBillingCardInput
+  intent: JSON
+  amazon: SwellCartBillingAmazonInput
+  paypal: SwellCartBillingPaypalInput
+  affirm: SwellCartBillingAffirmInput
+  resolve: SwellCartBillingResolveInput
+  klarna: SwellCartBillingKlarnaInput
+  ideal: SwellCartBillingIdealInput
+  bancontact: SwellCartBillingBancontactInput
+  google: SwellCartBillingGoogleInput
+  apple: SwellCartBillingAppleInput
+  default: Boolean
+  accountCardId: ID
+}
+
+input SwellCartBillingCardInput {
+  token: String
+  expMonth: Int
+  expYear: Int
+  brand: String
+  last4: String
+  gateway: String
+  test: Boolean
+  addressCheck: String
+  zipCheck: String
+  cvcCheck: String
+}
+
+input SwellCartBillingAmazonInput {
+  accessToken: String
+  orderReferenceId: String
+  checkoutSessionId: String
+}
+
+input SwellCartBillingPaypalInput {
+  nonce: String
+  authorizationId: String
+  orderId: String
+  payerId: String
+  paymentId: String
+}
+
+input SwellCartBillingAffirmInput {
+  checkoutToken: String
+}
+
+input SwellCartBillingResolveInput {
+  chargeId: String
+}
+
+input SwellCartBillingKlarnaInput {
+  source: String
+}
+
+input SwellCartBillingIdealInput {
+  token: String
+}
+
+input SwellCartBillingBancontactInput {
+  source: String
+}
+
+input SwellCartBillingGoogleInput {
+  nonce: String
+  gateway: String
+}
+
+input SwellCartBillingAppleInput {
+  nonce: String
+  gateway: String
+}
+
+input SwellCartShippingInput {
+  name: String
+  firstName: String
+  lastName: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  phone: String
+  service: String
+  serviceName: String
+  price: SafeNumber
+  pickup: Boolean
+  default: Boolean
+  accountAddressId: ID
+}
+
+input SwellCartShipmentRatingInput {
+  dateCreated: DateTime
+  md5: String
+  services: [SwellCartShipmentRatingServiceInput]
+  errors: [SwellCartShipmentRatingErrorInput]
+}
+
+input SwellCartShipmentRatingServiceInput {
+  id: String
+  name: String
+  carrier: String
+  price: SafeNumber
+  pickup: Boolean
+  taxCode: String
+}
+
+input SwellCartShipmentRatingErrorInput {
+  message: String
+  code: String
+}
+
+type SuccessfulResponse {
+  success: Boolean
+}
+
+input SwellAccountInput {
+  type: String
+  name: String
+  firstName: String
+  lastName: String
+  email: String
+  emailOptin: Boolean
+  password: String
+  passwordResetKey: String
+  passwordResetUrl: String
+  passwordToken: String
+  phone: String
+  vatNumber: String
+  cards: [SwellAccountCardInput]
+  addresses: [SwellAccountAddressInput]
+  billing: SwellAccountBillingInput
+  shipping: SwellAccountShippingInput
+  metadata: JSON
+}
+
+input SwellAccountCardInput {
+  id: ID
+  parentId: ID
+  dateCreated: DateTime
+  dateUpdated: DateTime
+  token: String
+  expMonth: Int
+  expYear: Int
+  brand: String
+  last4: String
+  gateway: String
+  test: Boolean
+  addressCheck: String
+  zipCheck: String
+  cvcCheck: String
+  billing: SwellAccountCardBillingInput
+  active: Boolean
+  fingerprint: String
+}
+
+input SwellAccountCardBillingInput {
+  name: String
+  email: String
+  company: String
+  firstName: String
+  lastName: String
+  phone: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  vatNumber: String
+}
+
+input SwellAccountAddressInput {
+  id: ID
+  parentId: ID
+  dateCreated: DateTime
+  dateUpdated: DateTime
+  name: String
+  firstName: String
+  lastName: String
+  phone: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  active: Boolean
+  fingerprint: String
+}
+
+input SwellAccountBillingInput {
+  name: String
+  firstName: String
+  lastName: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  phone: String
+  method: String
+  card: SwellAccountBillingCardInput
+  accountCardId: ID
+}
+
+input SwellAccountBillingCardInput {
+  token: String
+  expMonth: Int
+  expYear: Int
+  brand: String
+  last4: String
+  gateway: String
+  test: Boolean
+  addressCheck: String
+  zipCheck: String
+  cvcCheck: String
+}
+
+input SwellAccountShippingInput {
+  name: String
+  firstName: String
+  lastName: String
+  phone: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  accountAddressId: ID
+}
+
+input SwellSubscriptionInput {
+  productId: ID
+  variantId: ID
+  quantity: Int
+  options: [SwellSubscriptionOptionInput]
+  planId: ID
+  billingSchedule: SwellSubscriptionBillingScheduleInput
+  items: [SwellSubscriptionItemInput]
+  billing: SwellSubscriptionBillingInput
+  shipping: SwellSubscriptionShippingInput
+  canceled: Boolean
+  paused: Boolean
+  datePauseEnd: DateTime
+  cancelAtEnd: Boolean
+  couponCode: String
+}
+
+input SwellSubscriptionOptionInput {
+  id: String
+  name: String
+  value: String
+  valueId: ID
+  variant: Boolean
+  price: SafeNumber
+  shipmentWeight: SafeNumber
+}
+
+input SwellSubscriptionBillingScheduleInput {
+  interval: String
+  intervalCount: Int
+  trialDays: Int
+  limit: Int
+  limitCurrent: Int
+  dateLimitEnd: DateTime
+}
+
+input SwellSubscriptionItemInput {
+  id: ID
+  quantity: Int
+  options: [SwellSubscriptionItemOptionInput]
+  productId: ID
+  variantId: ID
+}
+
+input SwellSubscriptionItemOptionInput {
+  id: String
+  name: String
+  value: String
+  valueId: ID
+  variant: Boolean
+  price: SafeNumber
+  shipmentWeight: SafeNumber
+}
+
+input SwellSubscriptionBillingInput {
+  name: String
+  firstName: String
+  lastName: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  phone: String
+  method: String
+  card: SwellSubscriptionBillingCardInput
+  intent: JSON
+  default: Boolean
+  useAccount: Boolean
+  accountCardId: ID
+}
+
+input SwellSubscriptionBillingCardInput {
+  token: String
+  expMonth: Int
+  expYear: Int
+  brand: String
+  last4: String
+  gateway: String
+  test: Boolean
+  addressCheck: String
+  zipCheck: String
+  cvcCheck: String
+}
+
+input SwellSubscriptionShippingInput {
+  name: String
+  firstName: String
+  lastName: String
+  address1: String
+  address2: String
+  city: String
+  state: String
+  zip: String
+  country: String
+  phone: String
+  service: String
+  serviceName: String
+  price: SafeNumber
+  pickup: Boolean
+  default: Boolean
+  useAccount: Boolean
+  accountAddressId: ID
+}

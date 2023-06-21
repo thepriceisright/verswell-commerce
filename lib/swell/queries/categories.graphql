@@ -1,0 +1,22 @@
+query getCategories {
+  categories {
+    results {
+      ...Category
+    }
+  }
+}
+
+query getGategory($slug: String!) {
+  categoryBySlug(slug: $slug) {
+    ...Category
+  }
+}
+
+query getCategoriesProducts($slug: String!) {
+  categoryBySlug(slug: $slug) {
+    ...Category
+    products {
+      ...Product
+    }
+  }
+}

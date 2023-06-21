@@ -1,0 +1,16 @@
+fragment Cart on SwellCart {
+  checkoutUrl
+  grandTotal
+  items {
+    id
+    quantity
+    price
+    discountTotal
+    taxTotal
+    product {
+      id
+      name
+      currency
+    }
+  }
+}

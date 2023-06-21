@@ -27,3 +27,37 @@ export const getProducts = async ({ query, sort }: { query?: string; sort?: stri
   });
   return products;
 };
+
+export const createCart = async () => {
+  const { cart } = await SwellClient.getCart();
+  return cart;
+};
+
+export const getCategory = async (slug: string) => {
+  const { categoryBySlug } = await SwellClient.getGategory({
+    slug
+  });
+  return categoryBySlug;
+};
+
+export const getCategoryProducts = async (slug: string) => {
+  const { categoryBySlug } = await SwellClient.getCategoriesProducts({
+    slug
+  });
+  return categoryBySlug.products;
+};
+
+export const getCategories = async () => {
+  const { categories } = await SwellClient.getCategories();
+  return categories;
+};
+
+export const getMenus = async () => {
+  const { menuSettings } = await SwellClient.getMenus();
+  return menuSettings;
+};
+
+export const getMenu = async (id: string) => {
+  const menus = await getMenus();
+  return menus.sections.find((menu) => menu.id === id);
+};

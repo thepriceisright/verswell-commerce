@@ -15,6 +15,7 @@ export default function CartButton({
   cart: Cart;
   cartIdUpdated: boolean;
 }) {
+  if (!cart) return null;
   const [, setCookie] = useCookies(['cartId']);
   const [cartIsOpen, setCartIsOpen] = useState(false);
   const quantityRef = useRef(cart.totalQuantity);
