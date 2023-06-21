@@ -2985,7 +2985,7 @@ export type CartFragment = (
 
 export type CategoryFragment = (
   { __typename?: 'SwellCategory' }
-  & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords'>
+  & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'>
 );
 
 export type ProductFragment = (
@@ -3112,7 +3112,7 @@ export type GetCategoriesQuery = (
     { __typename?: 'SwellCategories' }
     & { results: Maybe<Array<Maybe<(
       { __typename?: 'SwellCategory' }
-      & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords'>
+      & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'>
     )>>> }
   )> }
 );
@@ -3126,7 +3126,7 @@ export type GetGategoryQuery = (
   { __typename?: 'Query' }
   & { categoryBySlug: Maybe<(
     { __typename?: 'SwellCategory' }
-    & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords'>
+    & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'>
   )> }
 );
 
@@ -3139,7 +3139,7 @@ export type GetCategoriesProductsQuery = (
   { __typename?: 'Query' }
   & { categoryBySlug: Maybe<(
     { __typename?: 'SwellCategory' }
-    & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords'>
+    & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'>
     & { products: Maybe<Array<Maybe<(
       { __typename?: 'SwellProduct' }
       & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
@@ -3290,6 +3290,7 @@ export const CategoryFragmentDoc = gql`
   slug
   metaDescription
   metaKeywords
+  description
 }
     `;
 export const ProductFragmentDoc = gql`

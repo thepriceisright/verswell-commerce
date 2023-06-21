@@ -1,4 +1,4 @@
-import { getCollection, getCollectionProducts } from 'lib/shopify';
+import { getCategory, getCategoryProducts } from 'lib/swell';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -12,18 +12,18 @@ export async function generateMetadata({
 }: {
   params: { collection: string };
 }): Promise<Metadata> {
-  const collection = await getCollection(params.collection);
+  const collection = await getCategory(params.collection);
 
   if (!collection) return notFound();
 
   return {
-    title: collection.seo?.title || collection.title,
+    title: collection.name,
     description:
-      collection.seo?.description || collection.description || `${collection.title} products`,
+      collection.metaDescription || collection.description || `${collection.name} products`,
     openGraph: {
       images: [
         {
-          url: `/api/og?title=${encodeURIComponent(collection.title)}`,
+          url: `/api/og?title=${encodeURIComponent(collection.name)}`,
           width: 1200,
           height: 630
         }
@@ -33,7 +33,7 @@ export async function generateMetadata({
 }
 
 export default async function CategoryPage({ params }: { params: { collection: string } }) {
-  const products = await getCollectionProducts(params.collection);
+  const products = await getCategoryProducts(params.collection);
 
   return (
     <section>
