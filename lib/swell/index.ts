@@ -25,7 +25,7 @@ export const getProducts = async ({ query, sort }: { query?: string; sort?: stri
     query,
     sort
   });
-  return products;
+  return products.results;
 };
 
 export const createCart = async () => {
