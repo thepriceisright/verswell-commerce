@@ -1,0 +1,19 @@
+overwrite: true
+# schema:
+#   - https://${SWELL_STORE_ID}.swell.store/graphql:
+#       headers:
+#         Authorization: ${SWELL_STOREFRONT_PUBLIC_KEY}
+schema: schema.graphql
+documents: 'lib/**/*.graphql'
+generates:
+  lib/swell/__generated__/graphql.ts:
+    plugins: ['typescript', 'typescript-operations', 'typescript-graphql-request']
+    config:
+      preResolveTypes: false
+      maybeValue: T
+      inputMaybeValue: T | undefined
+      avoidOptionals:
+        field: true
+        inputValue: true
+        object: true
+        defaultValue: true

@@ -8,7 +8,6 @@ import { VariantSelector } from 'components/product/variant-selector';
 import Prose from 'components/prose';
 import { HIDDEN_PRODUCT_TAG } from 'lib/constants';
 import { getProduct } from 'lib/swell';
-import { SwellProductImage } from 'lib/swell/types';
 
 export const runtime = 'edge';
 
@@ -63,7 +62,7 @@ export default async function ProductPage({ params }: { params: { handle: string
             title={product.name}
             amount={product.price.toString()}
             currencyCode={product.currency}
-            images={product.images.map((image: SwellProductImage) => ({
+            images={product.images.map((image) => ({
               src: image.file.url,
               altText: image.caption
             }))}

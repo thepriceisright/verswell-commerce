@@ -1,0 +1,13 @@
+query getProduct($slug: String!) {
+  productBySlug(slug: $slug) {
+    ...Product
+  }
+}
+
+query getProducts($sort: String, $query: String) {
+  products(sort: $sort, search: $query) {
+    results {
+      ...Product
+    }
+  }
+}

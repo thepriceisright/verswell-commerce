@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { SwellProductOption, SwellProductVariant } from 'lib/swell/types';
+import { SwellProductOption, SwellProductVariant } from 'lib/swell/__generated__/graphql';
 import { createUrl } from 'lib/utils';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';

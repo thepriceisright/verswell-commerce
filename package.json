@@ -13,7 +13,8 @@
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
     "test": "pnpm lint && pnpm prettier:check",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "codegen": "graphql-codegen -r dotenv/config --config .graphqlrc.yml"
   },
   "git": {
     "pre-commit": "lint-staged"
@@ -26,6 +27,8 @@
     "@vercel/og": "^0.1.0",
     "clsx": "^1.2.1",
     "framer-motion": "^8.4.0",
+    "graphql-request": "^6.1.0",
+    "graphql-tag": "^2.12.6",
     "is-empty-iterable": "^3.0.0",
     "next": "13.3.1",
     "react": "18.2.0",
@@ -33,6 +36,11 @@
     "react-dom": "18.2.0"
   },
   "devDependencies": {
+    "@graphql-codegen/cli": "^4.0.1",
+    "@graphql-codegen/client-preset": "^4.0.1",
+    "@graphql-codegen/typescript": "^4.0.1",
+    "@graphql-codegen/typescript-graphql-request": "^5.0.0",
+    "@graphql-codegen/typescript-operations": "^4.0.1",
     "@playwright/test": "^1.31.2",
     "@tailwindcss/typography": "^0.5.9",
     "@types/node": "18.13.0",
