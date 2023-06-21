@@ -1,7 +1,7 @@
 import { GridTileImage } from 'components/grid/tile';
 import { PLACEHOLDER_IMAGE } from 'lib/constants';
 import { getCategoryProducts } from 'lib/swell';
-import type { Product } from 'lib/swell/types';
+import { ProductFragment } from 'lib/swell/__generated__/graphql';
 import Link from 'next/link';
 
 function ThreeItemGridItem({
@@ -9,7 +9,7 @@ function ThreeItemGridItem({
   size,
   background
 }: {
-  item: Product;
+  item: ProductFragment;
   size: 'full' | 'half';
   background: 'white' | 'pink' | 'purple' | 'black';
 }) {
@@ -19,7 +19,7 @@ function ThreeItemGridItem({
     >
       <Link className="block h-full" href={`/product/${item.slug}`}>
         <GridTileImage
-          src={ (item.images.length === 0) ? PLACEHOLDER_IMAGE : item.images[0].file.url}
+          src={item.images.length === 0 ? PLACEHOLDER_IMAGE : item.images[0]?.file.url || ''}
           width={size === 'full' ? 1080 : 540}
           height={size === 'full' ? 1080 : 540}
           priority={true}
@@ -38,7 +38,7 @@ function ThreeItemGridItem({
 
 export async function ThreeItemGrid() {
   // Collections that start with `hidden-*` are hidden from the search page.
-  const homepageItems = await getCategoryProducts('hidden-homepage-featured-items')
+  const homepageItems = await getCategoryProducts('hidden-homepage-featured-items');
 
   if (!homepageItems[0] || !homepageItems[1] || !homepageItems[2]) return null;
 

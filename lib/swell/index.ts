@@ -49,7 +49,7 @@ export const getCategoryProducts = async (slug: string) => {
 
 export const getCategories = async () => {
   const { categories } = await SwellClient.getCategories();
-  return categories;
+  return categories.results;
 };
 
 export const getMenus = async () => {

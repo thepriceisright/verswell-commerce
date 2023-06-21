@@ -30,7 +30,7 @@ export default async function Footer() {
                 {menu.items.map((item: MenuFragment) => (
                   <li key={item.name} className="py-3 md:py-0 md:pb-4">
                     <Link
-                      href={item.name}
+                      href={'/' + item.name}
                       className="text-gray-800 transition duration-150 ease-in-out hover:text-gray-300 dark:text-gray-100"
                     >
                       {item.name}

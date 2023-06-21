@@ -17,7 +17,7 @@ export default function ProductGridItems({ products }: { products: ProductFragme
                 amount: product.price,
                 currencyCode: product.currency
               }}
-              src={product.images[0]?.file.url || ''}
+              src={(product.images && product.images[0]?.file.url) || ''}
               width={600}
               height={600}
             />

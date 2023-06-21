@@ -11,22 +11,25 @@ import type { ListItem, PathFilterItem } from '.';
 function PathFilterItem({ item }: { item: PathFilterItem }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const [active, setActive] = useState(pathname === item.path);
+
+  const getActive = () => pathname === '/search/' + item.slug;
+
+  const [active, setActive] = useState(getActive);
 
   useEffect(() => {
-    setActive(pathname === item.path);
-  }, [pathname, item.path]);
+    setActive(getActive);
+  }, [pathname, item.slug]);
 
   return (
-    <li className="mt-2 flex text-sm text-gray-400" key={item.title}>
+    <li className="mt-2 flex text-sm text-gray-400" key={item.name}>
       <Link
-        href={createUrl(item.path, searchParams)}
+        href={createUrl('/search/' + item.slug, searchParams)}
         className={clsx('w-full hover:text-gray-800 dark:hover:text-gray-100', {
           'text-gray-600 dark:text-gray-400': !active,
-          'font-semibold text-black dark:text-white': active
+          'activeeee font-semibold text-black dark:text-white': active
         })}
       >
-        {item.title}
+        {item.name}
       </Link>
     </li>
   );
@@ -47,7 +50,7 @@ function SortFilterItem({ item }: { item: SortFilterItem }) {
       : pathname;
 
   return (
-    <li className="mt-2 flex text-sm text-gray-400" key={item.title}>
+    <li className="mt-2 flex text-sm text-gray-400" key={item.name}>
       <Link
         prefetch={false}
         href={href}
@@ -56,12 +59,12 @@ function SortFilterItem({ item }: { item: SortFilterItem }) {
           'font-semibold text-black dark:text-white': active
         })}
       >
-        {item.title}
+        {item.name}
       </Link>
     </li>
   );
 }
 
 export function FilterItem({ item }: { item: ListItem }) {
-  return 'path' in item ? <PathFilterItem item={item} /> : <SortFilterItem item={item} />;
+  return 'sortKey' in item ? <SortFilterItem item={item} /> : <PathFilterItem item={item} />;
 }
