@@ -6,37 +6,41 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 
 import LoadingDots from 'components/loading-dots';
-import { ProductVariantFragment } from 'lib/swell/__generated__/graphql';
+import { ProductFragment, ProductVariantFragment } from 'lib/swell/__generated__/graphql';
 // import { ProductVariant } from 'lib/shopify/types';
 
 export function AddToCart({
   variants,
   availableForSale,
-  productId
+  product
 }: {
-  productId: string;
+  product: ProductFragment;
   variants: ProductVariantFragment[];
   availableForSale: boolean;
 }) {
-  const [selectedVariantId, setSelectedVariantId] = useState(variants[0]?.id);
+  const [selectedVariantID, setSelectedVariantID] = useState(variants[0]?.id);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
+    const currentVariantArray: any = [];
+    searchParams.forEach((value, key) => {
+      currentVariantArray.push({ value, key });
+    });
+
+    const currentVariantOptionsArray = currentVariantArray.map((variantItem: any) => {
+      return product.options
+        .find((option) => option.name.toLowerCase() === variantItem.key)
+        ?.values.find((option) => option.name === variantItem.value)?.id;
+    });
+
     const variant = variants.find((variant: ProductVariantFragment) =>
-      variant.optionValueIds.every(
-        // (option) => option.value === searchParams.get(option.name.toLowerCase())
-        (option) => option === searchParams.get(option)
-      )
+      variant.optionValueIds.every((option) => currentVariantOptionsArray.includes(option))
     );
 
-    if (variant) {
-      setSelectedVariantId(variant.id);
-    } else {
-      setSelectedVariantId(productId);
-    }
-  }, [searchParams, variants, setSelectedVariantId]);
+    setSelectedVariantID(variant?.id);
+  }, [searchParams, variants, selectedVariantID]);
 
   return (
     <button
@@ -45,7 +49,7 @@ export function AddToCart({
       onClick={() => {
         if (!availableForSale) return;
         startTransition(async () => {
-          const error = await addItem(selectedVariantId);
+          const error = await addItem(product.id, selectedVariantID);
 
           if (error) {
             alert(error);

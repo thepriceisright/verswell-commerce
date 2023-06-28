@@ -19,10 +19,12 @@ type OptimizedVariant = {
 
 export function VariantSelector({
   options,
-  variants
+  variants,
+  stockPurchasable
 }: {
   options: SwellProductOption[];
   variants: SwellProductVariant[];
+  stockPurchasable: boolean;
 }) {
   const pathname = usePathname();
   const currentParams = useSearchParams();
@@ -47,7 +49,7 @@ export function VariantSelector({
   const optimizedVariants: OptimizedVariant[] = variants.map((variant) => {
     const optimized: OptimizedVariant = {
       id: variant.id,
-      availableForSale: variant.stockLevel > 0,
+      availableForSale: stockPurchasable ? true : variant.stockLevel > 0,
       params: new URLSearchParams()
     };
 

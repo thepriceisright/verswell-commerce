@@ -3044,7 +3044,7 @@ export type ProductVariantFragment = (
 export type AddToCartMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
   quantity: Scalars['Int']['input'];
-  variantId: Scalars['ID']['input'];
+  variantId: InputMaybe<Scalars['ID']['input']>;
 }>;
 
 
@@ -3417,7 +3417,7 @@ export const ProductFragmentDoc = gql`
 }
     ${ProductVariantFragmentDoc}`;
 export const AddToCartDocument = gql`
-    mutation addToCart($productId: ID!, $quantity: Int!, $variantId: ID!) {
+    mutation addToCart($productId: ID!, $quantity: Int!, $variantId: ID) {
   addCartItem(
     input: {productId: $productId, quantity: $quantity, variantId: $variantId}
   ) {

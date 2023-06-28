@@ -64,8 +64,9 @@ export default async function ProductPage({ params }: { params: { handle: string
     image: product.images[0]?.file.url,
     offers: {
       '@type': 'AggregateOffer',
-      availability:
-        product.stockLevel > 0 ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock',
+      availability: product.stockPurchasable
+        ? 'https://schema.org/InStock'
+        : 'https://schema.org/OutOfStock',
       priceCurrency: product.currency,
       price: product.price
     }
@@ -93,16 +94,20 @@ export default async function ProductPage({ params }: { params: { handle: string
         </div>
 
         <div className="p-6 lg:col-span-2">
-          <VariantSelector options={product.options} variants={product.variants.results} />
+          <VariantSelector
+            options={product.options}
+            variants={product.variants.results}
+            stockPurchasable={product.stockPurchasable}
+          />
 
           {product.description ? (
             <Prose className="mb-6 text-sm leading-tight" html={product.description} />
           ) : null}
 
           <AddToCart
-            productId={product.id}
+            product={product}
             variants={product.variants.results}
-            availableForSale={product.stockLevel > 0}
+            availableForSale={product.stockPurchasable}
           />
         </div>
       </div>
