@@ -1,4 +1,4 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=SHOPIFY_STOREFRONT_ACCESS_TOKEN,SHOPIFY_STORE_DOMAIN,SITE_NAME,TWITTER_CREATOR,TWITTER_SITE)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=SHOPIFY_REVALIDATION_SECRET,SHOPIFY_STOREFRONT_ACCESS_TOKEN,SHOPIFY_STORE_DOMAIN,SITE_NAME,TWITTER_CREATOR,TWITTER_SITE)
 
 # Next.js Swell Commerce
 
@@ -6,20 +6,31 @@
 
 > The Swell Team is currently working on supporting the Vercel Commerce v2. Updates will be made to this repository. If you'd like to visit the Next.js Commerce v1 Repo with Swell Backend Support, you can do so [here](https://github.com/swellstores/nextjs-commerce).
 
-> Note: Looking for Next.js Commerce v1? View the [code](https://github.com/vercel/commerce/tree/v1), [demo](https://commerce-v1.vercel.store), and [release notes](https://github.com/vercel/commerce/releases/tag/v1)
-
-A Next.js 13 and App Router-ready ecommerce template, built with Shopify, featuring:
+A Next.js 13 and App Router-ready ecommerce template featuring:
 
 - Next.js App Router
 - Optimized for SEO using Next.js's Metadata
 - React Server Components (RSCs) and Suspense
-- Route Handlers for mutations
-- Edge runtime
+- Server Actions for mutations
+- Edge Runtime
 - New fetching and caching paradigms
 - Dynamic OG images
 - Styling with Tailwind CSS
 - Checkout and payments with Shopify
 - Automatic light/dark mode based on system settings
+
+> Note: Looking for Next.js Commerce v1? View the [code](https://github.com/vercel/commerce/tree/v1), [demo](https://commerce-v1.vercel.store), and [release notes](https://github.com/vercel/commerce/releases/tag/v1)
+
+## Providers
+
+Vercel will only be actively maintaining a Shopify version [as outlined in our vision and strategy for Next.js Commerce](https://github.com/vercel/commerce/pull/966).
+
+Vercel is more than happy to partner and work with any commerce provider to help them get a similar template up and running and listed below. Alternative providers should be able to fork this repository and swap out the `lib/shopify` file with their own implementation while leaving the rest of the template mostly unchanged.
+
+- Shopify (this repository)
+- [BigCommerce](https://github.com/bigcommerce/nextjs-commerce) ([Demo](https://next-commerce-v2.vercel.app/))
+- [Medusa](https://github.com/medusajs/vercel-commerce) ([Demo](https://medusa-nextjs-commerce.vercel.app/))
+- [Saleor](https://github.com/saleor/nextjs-commerce) ([Demo](https://saleor-commerce.vercel.app/))
 
 ## Running locally
 
@@ -38,9 +49,21 @@ pnpm dev
 
 Your app should now be running on [localhost:3000](http://localhost:3000/).
 
+<details>
+  <summary>Expand if you work at Vercel and want to run locally and / or contribute</summary>
+
+1. Run `vc link`.
+1. Select the `Vercel Solutions` scope.
+1. Connect to the existing `commerce-shopify` project.
+1. Run `vc env pull` to get environment variables.
+1. Run `pmpm dev` to ensure everything is working correctly.
+</details>
+
 ## How to configure your Shopify store for Next.js Commerce
 
-Next.js Commerce requires a [paid Shopify plan](https://www.shopify.com/pricing). It will not work with a Shopify Starter plan.
+Next.js Commerce requires a [paid Shopify plan](https://www.shopify.com/pricing).
+
+> Note: Next.js Commerce will not work with a Shopify Starter plan as it does not allow installation of custom themes, which is required to run as a headless storefront.
 
 ### Add Shopify domain to an environment variable
 
@@ -149,7 +172,46 @@ You can use Shopify's admin to customize these pages to match your brand and des
 
 ### Configure webhooks for on-demand incremental static regeneration (ISR)
 
-Coming soon.
+Utilizing [Shopify's webhooks](https://shopify.dev/docs/apps/webhooks), and listening for select [Shopify webhook event topics](https://shopify.dev/docs/api/admin-rest/2022-04/resources/webhook#event-topics), we can use [Next'js on-demand revalidation](https://nextjs.org/docs/app/building-your-application/data-fetching/revalidating#using-on-demand-revalidation) to keep data fetches indefinitely cached until certain events in the Shopify store occur.
+
+Next.js is pre-configured to listen for the following Shopify webhook events and automatically revalidate fetches.
+
+- `collections/create`
+- `collections/delete`
+- `collections/update`
+- `products/create`
+- `products/delete`
+- `products/update` (this also includes when variants are added, updated, and removed as well as when products are purchased so inventory and out of stocks can be updated)
+
+<details>
+  <summary>Expand to view detailed walkthrough</summary>
+
+#### Setup secret for secure revalidation
+
+1. Create your own secret or [generate a random UUID](https://www.uuidgenerator.net/guid).
+1. Create a [Vercel Environment Variable](https://vercel.com/docs/concepts/projects/environment-variables) named `SHOPIFY_REVALIDATION_SECRET` and use the value from above.
+
+#### Configure Shopify webhooks
+
+1. Navigate to `https://SHOPIFY_STORE_SUBDOMAIN.myshopify.com/admin/settings/notifications`.
+1. Add webhooks for all six event topics listed above. You can add more sets for other preview urls, environments, or local development. Append `?secret=[SECRET]` to each url, where `[SECRET]` is the secret you created above.
+   ![Shopify store webhooks](https://github.com/vercel/commerce/assets/446260/3d713fd7-b642-46e2-b2ce-f2b695ff6d2b)
+   ![Shopify store add webhook](https://github.com/vercel/commerce/assets/446260/f0240a22-be07-42bc-bf6c-b97873868677)
+
+#### Testing webhooks during local development
+
+The easiest way to test webhooks while developing locally is to use [ngrok](https://ngrok.com).
+
+1. [Install and configure ngrok](https://ngrok.com/download) (you will need to create an account).
+1. Run your app locally, `npm run dev`.
+1. In a separate terminal session, run `ngrok http 3000`.
+1. Use the url generated by ngrok and add or update your webhook urls in Shopify.
+   ![ngrok](https://github.com/vercel/commerce/assets/446260/5dc09c5d-0e48-479c-ab64-de8dc9a2c4b1)
+   ![Shopify store edit webhook](https://github.com/vercel/commerce/assets/446260/13fd397d-4666-4e8d-b25f-4adc674345c0)
+1. You can now make changes to your store and your local app should receive updates. You can also use the `Send test notification` button to trigger a generic webhook test.
+   ![Shopify store webhook send test notification](https://github.com/vercel/commerce/assets/446260/e872e233-1663-446d-961f-8c9455358530)
+
+</details>
 
 ### Using Shopify as a CMS
 

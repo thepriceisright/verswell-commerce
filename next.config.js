@@ -5,7 +5,7 @@ module.exports = {
     ignoreDuringBuilds: true
   },
   experimental: {
-    appDir: true
+    serverActions: true
   },
   images: {
     domains: ["cdn.schema.io", "cdn.shopify.com", "cdn.swell.store", "media.istockphoto.com"]

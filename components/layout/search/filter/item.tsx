@@ -39,6 +39,7 @@ function SortFilterItem({ item }: { item: SortFilterItem }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [active, setActive] = useState(searchParams.get('sort') === item.slug);
+  const q = searchParams.get('q');
 
   useEffect(() => {
     setActive(searchParams.get('sort') === item.slug);
@@ -46,7 +47,13 @@ function SortFilterItem({ item }: { item: SortFilterItem }) {
 
   const href =
     item.slug && item.slug.length
-      ? createUrl(pathname, new URLSearchParams({ sort: item.slug }))
+      ? createUrl(
+          pathname,
+          new URLSearchParams({
+            ...(q && { q }),
+            sort: item.slug
+          })
+        )
       : pathname;
 
   return (
