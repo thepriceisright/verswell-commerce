@@ -31,26 +31,41 @@ export const getProducts = async ({ query, sort }: { query?: string; sort?: stri
 export const createCart = async () => {
   const data = await SwellClient.getCart();
   return {
-    id: data.headers.get('x-session')!,
-    ...data
+    id: data.headers.get('X-Session')!,
+    ...data.data.cart
   };
 };
 
 export const getCart = async (sessionToken: string) => {
-  client.setHeader('x-session', sessionToken);
-  const data = await SwellClient.getCart();
-  return data;
+  client.setHeader('X-Session', sessionToken);
+  const data = await getSdk(client).getCart();
+  return {
+    id: sessionToken,
+    ...data.data.cart
+  };
 };
 
-export const addToCart = async (
+export const addToCartVariant = async (
   sessionToken: string,
   { productId, quantity, variantId }: { productId: string; quantity: number; variantId: string }
 ) => {
   client.setHeader('X-Session', sessionToken);
-  const addCartItem = await SwellClient.addToCart({
+  const addCartItem = await getSdk(client).addToCartVariant({
     productId,
     quantity,
     variantId
+  });
+  return addCartItem;
+};
+
+export const addToCart = async (
+  sessionToken: string,
+  { productId, quantity }: { productId: string; quantity: number }
+) => {
+  client.setHeader('X-Session', sessionToken);
+  const addCartItem = await getSdk(client).addToCart({
+    productId,
+    quantity
   });
   return addCartItem;
 };
@@ -73,7 +88,7 @@ export const updateCart = async (
   return updateCart;
 };
 
-export const removeFromCart = async (sessionToken: string, { itemId }: { itemId: string }) => {
+export const removeFromCart = async (sessionToken: string, itemId: string) => {
   client.setHeader('X-Session', sessionToken);
   const removeCart = await SwellClient.removeFromCart({
     itemId

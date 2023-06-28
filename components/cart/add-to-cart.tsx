@@ -45,7 +45,7 @@ export function AddToCart({
       onClick={() => {
         if (!availableForSale) return;
         startTransition(async () => {
-          const error = await addItem(selectedVariantId);
+          const error = await addItem(productId);
 
           if (error) {
             alert(error);

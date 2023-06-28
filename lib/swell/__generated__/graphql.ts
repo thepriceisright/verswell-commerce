@@ -3041,10 +3041,40 @@ export type ProductVariantFragment = (
   )>>> }
 );
 
-export type AddToCartMutationVariables = Exact<{
+export type AddToCartVariantMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
   quantity: Scalars['Int']['input'];
   variantId: Scalars['ID']['input'];
+}>;
+
+
+export type AddToCartVariantMutation = (
+  { __typename?: 'Mutation' }
+  & { addCartItem: Maybe<(
+    { __typename?: 'SwellCart' }
+    & Pick<SwellCart, 'checkoutUrl' | 'grandTotal' | 'currency'>
+    & { items: Maybe<Array<Maybe<(
+      { __typename?: 'SwellCartItem' }
+      & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal'>
+      & { product: Maybe<(
+        { __typename?: 'SwellProduct' }
+        & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+        & { images: Maybe<Array<Maybe<(
+          { __typename?: 'SwellProductImage' }
+          & Pick<SwellProductImage, 'caption'>
+          & { file: Maybe<(
+            { __typename?: 'SwellProductImageFile' }
+            & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
+          )> }
+        )>>> }
+      )> }
+    )>>> }
+  )> }
+);
+
+export type AddToCartMutationVariables = Exact<{
+  productId: Scalars['ID']['input'];
+  quantity: Scalars['Int']['input'];
 }>;
 
 
@@ -3416,11 +3446,18 @@ export const ProductFragmentDoc = gql`
   tags
 }
     ${ProductVariantFragmentDoc}`;
-export const AddToCartDocument = gql`
-    mutation addToCart($productId: ID!, $quantity: Int!, $variantId: ID!) {
+export const AddToCartVariantDocument = gql`
+    mutation addToCartVariant($productId: ID!, $quantity: Int!, $variantId: ID!) {
   addCartItem(
     input: {productId: $productId, quantity: $quantity, variantId: $variantId}
   ) {
+    ...Cart
+  }
+}
+    ${CartFragmentDoc}`;
+export const AddToCartDocument = gql`
+    mutation addToCart($productId: ID!, $quantity: Int!) {
+  addCartItem(input: {productId: $productId, quantity: $quantity}) {
     ...Cart
   }
 }
@@ -3503,6 +3540,7 @@ export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, str
 
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
+const AddToCartVariantDocumentString = print(AddToCartVariantDocument);
 const AddToCartDocumentString = print(AddToCartDocument);
 const EditCartItemDocumentString = print(EditCartItemDocument);
 const RemoveFromCartDocumentString = print(RemoveFromCartDocument);
@@ -3515,6 +3553,9 @@ const GetProductDocumentString = print(GetProductDocument);
 const GetProductsDocumentString = print(GetProductsDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    addToCartVariant(variables: AddToCartVariantMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AddToCartVariantMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AddToCartVariantMutation>(AddToCartVariantDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'addToCartVariant', 'mutation');
+    },
     addToCart(variables: AddToCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AddToCartMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<AddToCartMutation>(AddToCartDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'addToCart', 'mutation');
     },

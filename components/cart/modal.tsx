@@ -24,17 +24,15 @@ export default function CartModal({
   cart: CartFragment;
   cartIdUpdated: boolean;
 }) {
-  if (!cart.items) return null;
-
-  const [, setCookie] = useCookies(['cartId']);
+  const [, setCookie] = useCookies(['sessionToken']);
   const [isOpen, setIsOpen] = useState(false);
-  const quantityRef = useRef(cart.items.length);
+  const quantityRef = useRef(cart.items?.length || 0);
   const openCart = () => setIsOpen(true);
   const closeCart = () => setIsOpen(false);
 
   useEffect(() => {
     if (cartIdUpdated) {
-      setCookie('cartId', cart.id, {
+      setCookie('sessionToken', cart.id, {
         path: '/',
         sameSite: 'strict',
         secure: process.env.NODE_ENV === 'production'
@@ -45,21 +43,21 @@ export default function CartModal({
 
   useEffect(() => {
     // Open cart modal when when quantity changes.
-    if (cart.items.length !== quantityRef.current) {
+    if (cart.items?.length !== quantityRef.current) {
       // But only if it's not already open (quantity also changes when editing items in cart).
       if (!isOpen) {
         setIsOpen(true);
       }
 
       // Always update the quantity reference
-      quantityRef.current = cart.items.length;
+      quantityRef.current = cart.items?.length;
     }
-  }, [isOpen, cart.items.length, quantityRef]);
+  }, [isOpen, cart.items?.length, quantityRef]);
 
   return (
     <>
       <button aria-label="Open cart" onClick={openCart} data-testid="open-cart">
-        <CartIcon quantity={cart.items.length} />
+        <CartIcon quantity={cart.items?.length} />
       </button>
       <Transition show={isOpen}>
         <Dialog onClose={closeCart} className="relative z-50" data-testid="cart">
@@ -96,7 +94,7 @@ export default function CartModal({
                 </button>
               </div>
 
-              {cart.items.length === 0 ? (
+              {cart.items?.length === 0 ? (
                 <div className="mt-20 flex w-full flex-col items-center justify-center overflow-hidden">
                   <ShoppingBagIcon className="h-16" />
                   <p className="mt-6 text-center text-2xl font-bold">Your cart is empty.</p>
@@ -104,7 +102,7 @@ export default function CartModal({
               ) : (
                 <div className="flex h-full flex-col justify-between overflow-hidden">
                   <ul className="flex-grow overflow-auto p-6">
-                    {cart.items.map((item, i) => {
+                    {cart.items?.map((item, i) => {
                       const merchandiseSearchParams = {} as MerchandiseSearchParams;
 
                       // item.merchandise.selectedOptions.forEach(({ name, value }) => {
@@ -145,7 +143,7 @@ export default function CartModal({
                             <Price
                               className="flex flex-col justify-between space-y-2 text-sm"
                               amount={item.price}
-                              currencyCode={item.product.currency}
+                              currencyCode={cart.currency}
                             />
                           </Link>
                           {/* <div className="flex h-9 flex-row">
