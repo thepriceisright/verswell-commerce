@@ -6,13 +6,13 @@ import { removeItem, updateItemQuantity } from 'components/cart/actions';
 import MinusIcon from 'components/icons/minus';
 import PlusIcon from 'components/icons/plus';
 import LoadingDots from 'components/loading-dots';
-import type { CartItem } from 'lib/shopify/types';
+import { CartItemFragment } from 'lib/swell/__generated__/graphql';
 
 export default function EditItemQuantityButton({
   item,
   type
 }: {
-  item: CartItem;
+  item: CartItemFragment;
   type: 'plus' | 'minus';
 }) {
   const router = useRouter();
@@ -28,7 +28,7 @@ export default function EditItemQuantityButton({
               ? await removeItem(item.id)
               : await updateItemQuantity({
                   lineId: item.id,
-                  variantId: item.merchandise.id,
+                  variantId: item.variantId,
                   quantity: type === 'plus' ? item.quantity + 1 : item.quantity - 1
                 });
 

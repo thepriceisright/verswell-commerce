@@ -12,6 +12,8 @@ import { DEFAULT_OPTION } from 'lib/constants';
 import { CartFragment } from 'lib/swell/__generated__/graphql';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
+import DeleteItemButton from './delete-item-button';
+import EditItemQuantityButton from './edit-item-quantity-button';
 
 type MerchandiseSearchParams = {
   [key: string]: string;
@@ -146,33 +148,33 @@ export default function CartModal({
                               currencyCode={cart.currency}
                             />
                           </Link>
-                          {/* <div className="flex h-9 flex-row">
+                          <div className="flex h-9 flex-row">
                             <DeleteItemButton item={item} />
                             <p className="ml-2 flex w-full items-center justify-center border dark:border-gray-700">
                               <span className="w-full px-2">{item.quantity}</span>
                             </p>
                             <EditItemQuantityButton item={item} type="minus" />
                             <EditItemQuantityButton item={item} type="plus" />
-                          </div> */}
+                          </div>
                         </li>
                       );
                     })}
                   </ul>
-                  {/* <div className="border-t border-gray-200 pt-2 text-sm text-black dark:text-white">
+                  <div className="border-t border-gray-200 pt-2 text-sm text-black dark:text-white">
                     <div className="mb-2 flex items-center justify-between">
                       <p>Subtotal</p>
                       <Price
                         className="text-right"
-                        amount={cart.cost.subtotalAmount.amount}
-                        currencyCode={cart.cost.subtotalAmount.currencyCode}
+                        amount={cart.subTotal}
+                        currencyCode={cart.currency}
                       />
                     </div>
                     <div className="mb-2 flex items-center justify-between">
                       <p>Taxes</p>
                       <Price
                         className="text-right"
-                        amount={cart.cost.totalTaxAmount.amount}
-                        currencyCode={cart.cost.totalTaxAmount.currencyCode}
+                        amount={cart.taxes?.amount || 0}
+                        currencyCode={cart.currency}
                       />
                     </div>
                     <div className="mb-2 flex items-center justify-between border-b border-gray-200 pb-2">
@@ -183,8 +185,8 @@ export default function CartModal({
                       <p>Total</p>
                       <Price
                         className="text-right"
-                        amount={cart.cost.totalAmount.amount}
-                        currencyCode={cart.cost.totalAmount.currencyCode}
+                        amount={cart.grandTotal}
+                        currencyCode={cart.currency}
                       />
                     </div>
                   </div>
@@ -193,7 +195,7 @@ export default function CartModal({
                     className="flex w-full items-center justify-center bg-black p-3 text-sm font-medium uppercase text-white opacity-90 hover:opacity-100 dark:bg-white dark:text-black"
                   >
                     <span>Proceed to Checkout</span>
-                  </a> */}
+                  </a>
                 </div>
               )}
             </Dialog.Panel>

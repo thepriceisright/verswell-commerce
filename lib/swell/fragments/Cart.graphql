@@ -1,25 +1,34 @@
 fragment Cart on SwellCart {
   checkoutUrl
+  subTotal
   grandTotal
   currency
+  taxes {
+    amount
+  }
   items {
+    ...CartItem
+  }
+}
+
+fragment CartItem on SwellCartItem {
+  id
+  quantity
+  price
+  discountTotal
+  taxTotal
+  variantId
+  product {
     id
-    quantity
-    price
-    discountTotal
-    taxTotal
-    product {
-      id
-      name
-      currency
-      images {
-        file {
-          url
-          width
-          height
-        }
-        caption
+    name
+    currency
+    images {
+      file {
+        url
+        width
+        height
       }
+      caption
     }
   }
 }
