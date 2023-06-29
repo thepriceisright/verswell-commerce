@@ -73,7 +73,7 @@ export const updateCart = async (
   }
 ) => {
   client.setHeader('X-Session', sessionToken);
-  const updateCart = await SwellClient.editCartItem({
+  const updateCart = await getSdk(client).editCartItem({
     itemId,
     quantity
   });
@@ -82,7 +82,7 @@ export const updateCart = async (
 
 export const removeFromCart = async (sessionToken: string, itemId: string) => {
   client.setHeader('X-Session', sessionToken);
-  const removeCart = await SwellClient.removeFromCart({
+  const removeCart = await getSdk(client).removeFromCart({
     itemId
   });
   return removeCart;

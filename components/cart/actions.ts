@@ -35,12 +35,10 @@ export const removeItem = async (itemId: string): Promise<Error | undefined> => 
 };
 
 export const updateItemQuantity = async ({
-  lineId,
-  variantId,
+  itemId,
   quantity
 }: {
-  lineId: string;
-  variantId: string;
+  itemId: string;
   quantity: number;
 }): Promise<Error | undefined> => {
   const cartId = cookies().get('sessionToken')?.value;
@@ -50,8 +48,7 @@ export const updateItemQuantity = async ({
   }
   try {
     await updateCart(cartId, {
-      id: lineId,
-      variantId,
+      itemId,
       quantity
     });
   } catch (e) {
