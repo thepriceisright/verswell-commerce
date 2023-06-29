@@ -22,6 +22,7 @@ fragment CartItem on SwellCartItem {
     id
     name
     currency
+    slug
     images {
       file {
         url

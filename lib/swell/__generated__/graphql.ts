@@ -2982,7 +2982,7 @@ export type CartFragment = (
     & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
     & { product: Maybe<(
       { __typename?: 'SwellProduct' }
-      & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+      & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
       & { images: Maybe<Array<Maybe<(
         { __typename?: 'SwellProductImage' }
         & Pick<SwellProductImage, 'caption'>
@@ -3000,7 +3000,7 @@ export type CartItemFragment = (
   & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
   & { product: Maybe<(
     { __typename?: 'SwellProduct' }
-    & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+    & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
     & { images: Maybe<Array<Maybe<(
       { __typename?: 'SwellProductImage' }
       & Pick<SwellProductImage, 'caption'>
@@ -3081,7 +3081,7 @@ export type AddToCartMutation = (
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
       & { product: Maybe<(
         { __typename?: 'SwellProduct' }
-        & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+        & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
           { __typename?: 'SwellProductImage' }
           & Pick<SwellProductImage, 'caption'>
@@ -3114,7 +3114,7 @@ export type EditCartItemMutation = (
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
       & { product: Maybe<(
         { __typename?: 'SwellProduct' }
-        & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+        & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
           { __typename?: 'SwellProductImage' }
           & Pick<SwellProductImage, 'caption'>
@@ -3146,7 +3146,7 @@ export type RemoveFromCartMutation = (
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
       & { product: Maybe<(
         { __typename?: 'SwellProduct' }
-        & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+        & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
           { __typename?: 'SwellProductImage' }
           & Pick<SwellProductImage, 'caption'>
@@ -3176,7 +3176,7 @@ export type GetCartQuery = (
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
       & { product: Maybe<(
         { __typename?: 'SwellProduct' }
-        & Pick<SwellProduct, 'id' | 'name' | 'currency'>
+        & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
           { __typename?: 'SwellProductImage' }
           & Pick<SwellProductImage, 'caption'>
@@ -3365,6 +3365,7 @@ export const CartItemFragmentDoc = gql`
     id
     name
     currency
+    slug
     images {
       file {
         url

@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export async function Carousel() {
   // Collections that start with `hidden-*` are hidden from the search page.
-  const products = await getCategoryProducts('hidden-homepage-carousel');
+  const products = await getCategoryProducts('coffee');
 
   if (!products?.length) return null;
 

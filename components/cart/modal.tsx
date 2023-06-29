@@ -105,24 +105,11 @@ export default function CartModal({
                 <div className="flex h-full flex-col justify-between overflow-hidden">
                   <ul className="flex-grow overflow-auto p-6">
                     {cart.items?.map((item, i) => {
-                      const merchandiseSearchParams = {} as MerchandiseSearchParams;
-
-                      // item.merchandise.selectedOptions.forEach(({ name, value }) => {
-                      //   if (value !== DEFAULT_OPTION) {
-                      //     merchandiseSearchParams[name.toLowerCase()] = value;
-                      //   }
-                      // });
-
-                      // const merchandiseUrl = createUrl(
-                      //   `/product/${item.merchandise.product.handle}`,
-                      //   new URLSearchParams(merchandiseSearchParams)
-                      // );
-                      const merchandiseUrl = '';
                       return (
                         <li key={i} data-testid="cart-item">
                           <Link
                             className="flex flex-row space-x-4 py-4"
-                            href={merchandiseUrl}
+                            href={`/product/${item.product.slug}`}
                             onClick={closeCart}
                           >
                             <div className="relative h-16 w-16 cursor-pointer overflow-hidden bg-white">
