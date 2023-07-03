@@ -8,6 +8,6 @@ module.exports = {
     serverActions: true
   },
   images: {
-    domains: ["cdn.schema.io", "cdn.shopify.com", "cdn.swell.store", "media.istockphoto.com"]
+    domains: ['cdn.schema.io', 'cdn.swell.store', 'media.istockphoto.com']
   }
 };

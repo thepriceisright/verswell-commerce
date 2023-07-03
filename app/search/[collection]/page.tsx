@@ -7,6 +7,8 @@ import ProductGridItems from 'components/layout/product-grid-items';
 
 export const runtime = 'edge';
 
+export const revalidate = 60; // revalidate this page every 60 seconds
+
 export async function generateMetadata({
   params
 }: {

@@ -23,7 +23,7 @@ export default async function Navbar() {
         </div>
         {menu?.length ? (
           <ul className="hidden md:flex">
-            {menu.map((item: CategoryFragment) => (
+            {menu.slice(0, 3).map((item: CategoryFragment) => (
               <li key={item.name}>
                 <Link
                   href={`/search/${item.slug}`}
