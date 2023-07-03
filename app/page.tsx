@@ -5,8 +5,6 @@ import { Suspense } from 'react';
 
 export const runtime = 'edge';
 
-export const revalidate = 60; // revalidate this page every 60 seconds
-
 export const metadata = {
   description: 'High-performance ecommerce store built with Next.js, Vercel, and Swell.',
   openGraph: {

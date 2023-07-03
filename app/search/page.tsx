@@ -5,8 +5,6 @@ import { getProducts } from 'lib/swell';
 
 export const runtime = 'edge';
 
-export const revalidate = 60; // revalidate this page every 60 seconds
-
 export const metadata = {
   title: 'Search',
   description: 'Search for products in the store.'
