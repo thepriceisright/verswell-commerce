@@ -4,7 +4,7 @@ const endpoint = `${domain}${SWELL_GRAPHQL_API_ENDPOINT}`;
 const key = process.env.SWELL_STOREFRONT_PUBLIC_KEY!;
 
 import { GraphQLClient } from 'graphql-request';
-import { getSdk } from './__generated__/graphql';
+import { SwellCartItemOptionInput, getSdk } from './__generated__/graphql';
 const client = new GraphQLClient(endpoint, {
   headers: {
     Authorization: key
@@ -50,14 +50,14 @@ export const addToCart = async (
   {
     productId,
     quantity,
-    variantId
-  }: { productId: string; quantity: number; variantId: string | undefined }
+    options
+  }: { productId: string; quantity: number; options: SwellCartItemOptionInput[] | undefined }
 ) => {
   client.setHeader('X-Session', sessionToken);
   const addCartItem = await getSdk(client).addToCart({
     productId,
     quantity,
-    variantId
+    options
   });
   return addCartItem;
 };

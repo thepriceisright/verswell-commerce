@@ -3,9 +3,7 @@ import { notFound } from 'next/navigation';
 import { Suspense } from 'react';
 
 import { AddToCart } from 'components/cart/add-to-cart';
-import Grid from 'components/grid';
 import Footer from 'components/layout/footer';
-import ProductGridItems from 'components/layout/product-grid-items';
 import { Gallery } from 'components/product/gallery';
 import { VariantSelector } from 'components/product/variant-selector';
 import Prose from 'components/prose';
@@ -104,11 +102,7 @@ export default async function ProductPage({ params }: { params: { handle: string
             <Prose className="mb-6 text-sm leading-tight" html={product.description} />
           ) : null}
 
-          <AddToCart
-            product={product}
-            variants={product.variants.results}
-            availableForSale={product.stockPurchasable}
-          />
+          <AddToCart product={product} availableForSale={product.stockPurchasable} />
         </div>
       </div>
       <Suspense>
@@ -116,21 +110,6 @@ export default async function ProductPage({ params }: { params: { handle: string
           <Footer />
         </Suspense>
       </Suspense>
-    </div>
-  );
-}
-
-async function RelatedProducts({ id }: { id: string }) {
-  const relatedProducts = await getProductRecommendations(id);
-
-  if (!relatedProducts.length) return null;
-
-  return (
-    <div className="px-4 py-8">
-      <div className="mb-4 text-3xl font-bold">Related Products</div>
-      <Grid className="grid-cols-2 lg:grid-cols-5">
-        <ProductGridItems products={relatedProducts} />
-      </Grid>
     </div>
   );
 }

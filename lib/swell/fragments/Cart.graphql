@@ -18,6 +18,10 @@ fragment CartItem on SwellCartItem {
   discountTotal
   taxTotal
   variantId
+  options {
+    name
+    value
+  }
   product {
     id
     name

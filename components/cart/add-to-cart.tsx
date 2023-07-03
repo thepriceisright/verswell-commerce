@@ -6,19 +6,16 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState, useTransition } from 'react';
 
 import LoadingDots from 'components/loading-dots';
-import { ProductFragment, ProductVariantFragment } from 'lib/swell/__generated__/graphql';
-// import { ProductVariant } from 'lib/shopify/types';
+import { ProductFragment } from 'lib/swell/__generated__/graphql';
 
 export function AddToCart({
-  variants,
   availableForSale,
   product
 }: {
   product: ProductFragment;
-  variants: ProductVariantFragment[];
   availableForSale: boolean;
 }) {
-  const [selectedVariantID, setSelectedVariantID] = useState(variants[0]?.id);
+  const [selectedOptions, setSelectedOptions] = useState([]);
   const router = useRouter();
   const searchParams = useSearchParams();
   const [isPending, startTransition] = useTransition();
@@ -26,21 +23,10 @@ export function AddToCart({
   useEffect(() => {
     const currentVariantArray: any = [];
     searchParams.forEach((value, key) => {
-      currentVariantArray.push({ value, key });
+      currentVariantArray.push({ value, name: key });
     });
-
-    const currentVariantOptionsArray = currentVariantArray.map((variantItem: any) => {
-      return product.options
-        .find((option) => option.name.toLowerCase() === variantItem.key)
-        ?.values.find((option) => option.name === variantItem.value)?.id;
-    });
-
-    const variant = variants.find((variant: ProductVariantFragment) =>
-      variant.optionValueIds.every((option) => currentVariantOptionsArray.includes(option))
-    );
-
-    setSelectedVariantID(variant?.id);
-  }, [searchParams, variants, selectedVariantID]);
+    setSelectedOptions(currentVariantArray);
+  }, [searchParams]);
 
   return (
     <button
@@ -49,7 +35,7 @@ export function AddToCart({
       onClick={() => {
         if (!availableForSale) return;
         startTransition(async () => {
-          const error = await addItem(product.id, selectedVariantID);
+          const error = await addItem(product.id, selectedOptions);
 
           if (error) {
             alert(error);

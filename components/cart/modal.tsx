@@ -10,6 +10,7 @@ import ShoppingBagIcon from 'components/icons/shopping-bag';
 import Price from 'components/price';
 import { DEFAULT_OPTION } from 'lib/constants';
 import { CartFragment } from 'lib/swell/__generated__/graphql';
+import { createUrl } from 'lib/utils';
 import { Fragment, useEffect, useRef, useState } from 'react';
 import { useCookies } from 'react-cookie';
 import DeleteItemButton from './delete-item-button';
@@ -19,13 +20,11 @@ type MerchandiseSearchParams = {
   [key: string]: string;
 };
 
-export default function CartModal({
-  cart,
-  cartIdUpdated
-}: {
-  cart: CartFragment;
-  cartIdUpdated: boolean;
-}) {
+type Cart = {
+  id: string;
+} & CartFragment;
+
+export default function CartModal({ cart, cartIdUpdated }: { cart: Cart; cartIdUpdated: boolean }) {
   const [, setCookie] = useCookies(['sessionToken']);
   const [isOpen, setIsOpen] = useState(false);
   const quantityRef = useRef(cart.items?.length || 0);
@@ -105,11 +104,24 @@ export default function CartModal({
                 <div className="flex h-full flex-col justify-between overflow-hidden">
                   <ul className="flex-grow overflow-auto p-6">
                     {cart.items?.map((item, i) => {
+                      const merchandiseSearchParams = {} as MerchandiseSearchParams;
+
+                      item.options.forEach(({ name, value }) => {
+                        if (value !== DEFAULT_OPTION) {
+                          merchandiseSearchParams[name.toLowerCase()] = value;
+                        }
+                      });
+
+                      const merchandiseUrl = createUrl(
+                        `/product/${item.product.slug}`,
+                        new URLSearchParams(merchandiseSearchParams)
+                      );
+
                       return (
                         <li key={i} data-testid="cart-item">
                           <Link
                             className="flex flex-row space-x-4 py-4"
-                            href={`/product/${item.product.slug}`}
+                            href={merchandiseUrl}
                             onClick={closeCart}
                           >
                             <div className="relative h-16 w-16 cursor-pointer overflow-hidden bg-white">
@@ -118,7 +130,7 @@ export default function CartModal({
                                 width={64}
                                 height={64}
                                 alt={item.product.images[0]?.caption || item.product.name}
-                                src={item.product.images[0]?.file.url}
+                                src={item.product.images[0]?.file.url || ''}
                               />
                             </div>
                             <div className="flex flex-1 flex-col text-base">

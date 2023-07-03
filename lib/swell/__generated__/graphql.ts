@@ -2980,7 +2980,10 @@ export type CartFragment = (
   )>>>, items: Maybe<Array<Maybe<(
     { __typename?: 'SwellCartItem' }
     & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-    & { product: Maybe<(
+    & { options: Maybe<Array<Maybe<(
+      { __typename?: 'SwellCartItemOption' }
+      & Pick<SwellCartItemOption, 'name' | 'value'>
+    )>>>, product: Maybe<(
       { __typename?: 'SwellProduct' }
       & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
       & { images: Maybe<Array<Maybe<(
@@ -2998,7 +3001,10 @@ export type CartFragment = (
 export type CartItemFragment = (
   { __typename?: 'SwellCartItem' }
   & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-  & { product: Maybe<(
+  & { options: Maybe<Array<Maybe<(
+    { __typename?: 'SwellCartItemOption' }
+    & Pick<SwellCartItemOption, 'name' | 'value'>
+  )>>>, product: Maybe<(
     { __typename?: 'SwellProduct' }
     & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
     & { images: Maybe<Array<Maybe<(
@@ -3027,7 +3033,7 @@ export type ProductFragment = (
   & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
   & { options: Maybe<Array<Maybe<(
     { __typename?: 'SwellProductOption' }
-    & Pick<SwellProductOption, 'name' | 'id' | 'description'>
+    & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
     & { values: Maybe<Array<Maybe<(
       { __typename?: 'SwellProductOptionValue' }
       & Pick<SwellProductOptionValue, 'id' | 'name' | 'price'>
@@ -3064,7 +3070,7 @@ export type ProductVariantFragment = (
 export type AddToCartMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
   quantity: Scalars['Int']['input'];
-  variantId: InputMaybe<Scalars['ID']['input']>;
+  options: InputMaybe<Array<InputMaybe<SwellCartItemOptionInput>> | InputMaybe<SwellCartItemOptionInput>>;
 }>;
 
 
@@ -3079,7 +3085,10 @@ export type AddToCartMutation = (
     )>>>, items: Maybe<Array<Maybe<(
       { __typename?: 'SwellCartItem' }
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-      & { product: Maybe<(
+      & { options: Maybe<Array<Maybe<(
+        { __typename?: 'SwellCartItemOption' }
+        & Pick<SwellCartItemOption, 'name' | 'value'>
+      )>>>, product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
@@ -3112,7 +3121,10 @@ export type EditCartItemMutation = (
     )>>>, items: Maybe<Array<Maybe<(
       { __typename?: 'SwellCartItem' }
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-      & { product: Maybe<(
+      & { options: Maybe<Array<Maybe<(
+        { __typename?: 'SwellCartItemOption' }
+        & Pick<SwellCartItemOption, 'name' | 'value'>
+      )>>>, product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
@@ -3144,7 +3156,10 @@ export type RemoveFromCartMutation = (
     )>>>, items: Maybe<Array<Maybe<(
       { __typename?: 'SwellCartItem' }
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-      & { product: Maybe<(
+      & { options: Maybe<Array<Maybe<(
+        { __typename?: 'SwellCartItemOption' }
+        & Pick<SwellCartItemOption, 'name' | 'value'>
+      )>>>, product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
@@ -3174,7 +3189,10 @@ export type GetCartQuery = (
     )>>>, items: Maybe<Array<Maybe<(
       { __typename?: 'SwellCartItem' }
       & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-      & { product: Maybe<(
+      & { options: Maybe<Array<Maybe<(
+        { __typename?: 'SwellCartItemOption' }
+        & Pick<SwellCartItemOption, 'name' | 'value'>
+      )>>>, product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
@@ -3232,7 +3250,7 @@ export type GetCategoriesProductsQuery = (
       & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
       & { options: Maybe<Array<Maybe<(
         { __typename?: 'SwellProductOption' }
-        & Pick<SwellProductOption, 'name' | 'id' | 'description'>
+        & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
         & { values: Maybe<Array<Maybe<(
           { __typename?: 'SwellProductOptionValue' }
           & Pick<SwellProductOptionValue, 'id' | 'name' | 'price'>
@@ -3285,7 +3303,7 @@ export type GetProductQuery = (
     & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
     & { options: Maybe<Array<Maybe<(
       { __typename?: 'SwellProductOption' }
-      & Pick<SwellProductOption, 'name' | 'id' | 'description'>
+      & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
       & { values: Maybe<Array<Maybe<(
         { __typename?: 'SwellProductOptionValue' }
         & Pick<SwellProductOptionValue, 'id' | 'name' | 'price'>
@@ -3326,7 +3344,7 @@ export type GetProductsQuery = (
       & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
       & { options: Maybe<Array<Maybe<(
         { __typename?: 'SwellProductOption' }
-        & Pick<SwellProductOption, 'name' | 'id' | 'description'>
+        & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
         & { values: Maybe<Array<Maybe<(
           { __typename?: 'SwellProductOptionValue' }
           & Pick<SwellProductOptionValue, 'id' | 'name' | 'price'>
@@ -3361,6 +3379,10 @@ export const CartItemFragmentDoc = gql`
   discountTotal
   taxTotal
   variantId
+  options {
+    name
+    value
+  }
   product {
     id
     name
@@ -3434,6 +3456,7 @@ export const ProductFragmentDoc = gql`
     name
     id
     description
+    variant
     values {
       id
       name
@@ -3460,9 +3483,9 @@ export const ProductFragmentDoc = gql`
 }
     ${ProductVariantFragmentDoc}`;
 export const AddToCartDocument = gql`
-    mutation addToCart($productId: ID!, $quantity: Int!, $variantId: ID) {
+    mutation addToCart($productId: ID!, $quantity: Int!, $options: [SwellCartItemOptionInput]) {
   addCartItem(
-    input: {productId: $productId, quantity: $quantity, variantId: $variantId}
+    input: {productId: $productId, quantity: $quantity, options: $options}
   ) {
     ...Cart
   }

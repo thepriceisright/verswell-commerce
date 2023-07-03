@@ -1,7 +1,7 @@
 'use client';
 
 import clsx from 'clsx';
-import { SwellProductOption, SwellProductVariant } from 'lib/swell/__generated__/graphql';
+import { ProductFragment } from 'lib/swell/__generated__/graphql';
 import { createUrl } from 'lib/utils';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -22,8 +22,8 @@ export function VariantSelector({
   variants,
   stockPurchasable
 }: {
-  options: SwellProductOption[];
-  variants: SwellProductVariant[];
+  options: ProductFragment['options'];
+  variants: ProductFragment['variants']['results'];
   stockPurchasable: boolean;
 }) {
   const pathname = usePathname();
@@ -35,6 +35,18 @@ export function VariantSelector({
   if (hasNoOptionsOrJustOneOption) {
     return null;
   }
+
+  // Discard any unexpected options or values from url and create params map.
+  const variantParamsMap: ParamsMap = Object.fromEntries(
+    Array.from(currentParams.entries()).filter(([key, value]) =>
+      options.find(
+        (option) =>
+          option.variant &&
+          option.name.toLowerCase() === key &&
+          option.values.find((v) => v.name === value)
+      )
+    )
+  );
 
   // Discard any unexpected options or values from url and create params map.
   const paramsMap: ParamsMap = Object.fromEntries(
@@ -84,16 +96,12 @@ export function VariantSelector({
     optimizedVariants.find(
       (variant) =>
         variant.availableForSale &&
-        Object.entries(paramsMap).every(([key, value]) => variant[key] === value)
+        Object.entries(variantParamsMap).every(([key, value]) => {
+          return variant[key] === value;
+        })
     ) || optimizedVariants.find((variant) => variant.availableForSale);
 
   const selectedVariantParams = new URLSearchParams(selectedVariant?.params);
-  const currentUrl = createUrl(pathname, currentParams);
-  const selectedVariantUrl = createUrl(pathname, selectedVariantParams);
-
-  if (currentUrl !== selectedVariantUrl) {
-    router.replace(selectedVariantUrl);
-  }
 
   return options.map((option) => (
     <dl className="mb-8" key={option.id}>
@@ -108,16 +116,20 @@ export function VariantSelector({
           const optionUrl = createUrl(pathname, optionParams);
 
           // The option is active if it in the url params.
-          const isActive = selectedVariantParams.get(option.name.toLowerCase()) === value.name;
+          const isActive = option.variant
+            ? selectedVariantParams.get(option.name.toLowerCase()) === value.name
+            : paramsMap[option.name.toLowerCase()] === value.name;
 
           // The option is available for sale if it fully matches the variant in the option's url params.
           // It's super important to note that this is the options params, *not* the selected variant's params.
           // This is the "magic" that will cross check possible future variant combinations and preemptively
           // disable combinations that are not possible.
 
-          const isAvailableForSale = optimizedVariants.find((a) => {
-            return Array.from(optionParams.entries()).every(([key, value]) => a[key] === value);
-          })?.availableForSale;
+          const isAvailableForSale = option.variant
+            ? optimizedVariants.find((a) => {
+                return Array.from(optionParams.entries()).every(([key, value]) => a[key] === value);
+              })?.availableForSale
+            : true;
 
           const DynamicTag = isAvailableForSale ? Link : 'p';
 
