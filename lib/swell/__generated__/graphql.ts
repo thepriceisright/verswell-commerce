@@ -217,8 +217,6 @@ export type Query = {
   categories: Maybe<SwellCategories>;
   categoryById: Maybe<SwellCategory>;
   categoryBySlug: Maybe<SwellCategory>;
-  contentAttributeGroupById: Maybe<SwellContentAttributeGroup>;
-  contentAttributeGroups: Maybe<SwellContentAttributeGroups>;
   contentPageById: Maybe<SwellContentPage>;
   contentPageBySlug: Maybe<SwellContentPage>;
   contentPages: Maybe<SwellContentPages>;
@@ -293,26 +291,6 @@ export type QueryCategoryBySlugArgs = {
 };
 
 
-export type QueryContentAttributeGroupByIdArgs = {
-  _currency: InputMaybe<Scalars['String']['input']>;
-  _locale: InputMaybe<Scalars['String']['input']>;
-  _preview: InputMaybe<Scalars['Boolean']['input']>;
-  id: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryContentAttributeGroupsArgs = {
-  _currency: InputMaybe<Scalars['String']['input']>;
-  _locale: InputMaybe<Scalars['String']['input']>;
-  _preview: InputMaybe<Scalars['Boolean']['input']>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  page: InputMaybe<Scalars['Int']['input']>;
-  search: InputMaybe<Scalars['String']['input']>;
-  sort: InputMaybe<Scalars['String']['input']>;
-  where: InputMaybe<Scalars['JSON']['input']>;
-};
-
-
 export type QueryContentPageByIdArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
@@ -382,6 +360,8 @@ export type QueryProductByIdArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   _pricing: InputMaybe<ProductPricing>;
+  categories: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  category: InputMaybe<Scalars['String']['input']>;
   id: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -390,6 +370,8 @@ export type QueryProductBySlugArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   _pricing: InputMaybe<ProductPricing>;
+  categories: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  category: InputMaybe<Scalars['String']['input']>;
   slug: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -398,6 +380,8 @@ export type QueryProductsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   _pricing: InputMaybe<ProductPricing>;
+  categories: InputMaybe<Array<InputMaybe<Scalars['String']['input']>>>;
+  category: InputMaybe<Scalars['String']['input']>;
   limit: InputMaybe<Scalars['Int']['input']>;
   page: InputMaybe<Scalars['Int']['input']>;
   search: InputMaybe<Scalars['String']['input']>;
@@ -449,11 +433,15 @@ export type SuccessfulResponse = {
   success: Maybe<Scalars['Boolean']['output']>;
 };
 
+/** Customer */
 export type SwellAccount = {
   __typename?: 'SwellAccount';
+  /** Stored addresses used by an account */
   addresses: Maybe<SwellAccountsAddresses>;
   balance: Maybe<Scalars['SafeNumber']['output']>;
+  /** Default account billing information */
   billing: Maybe<SwellAccountBilling>;
+  /** Stored credit cards used by an account */
   cards: Maybe<SwellAccountsCards>;
   dateCreated: Maybe<Scalars['DateTime']['output']>;
   dateFirstOrder: Maybe<Scalars['DateTime']['output']>;
@@ -464,51 +452,65 @@ export type SwellAccount = {
   group: Maybe<Scalars['String']['output']>;
   lastName: Maybe<Scalars['String']['output']>;
   metadata: Maybe<Scalars['JSON']['output']>;
+  /** Account Name */
   name: Maybe<Scalars['String']['output']>;
   orderCount: Maybe<Scalars['Int']['output']>;
   orderValue: Maybe<Scalars['SafeNumber']['output']>;
   orders: Maybe<Array<Maybe<SwellOrder>>>;
   phone: Maybe<Scalars['String']['output']>;
+  /** Default account shipping information */
   shipping: Maybe<SwellAccountShipping>;
   subscriptions: Maybe<Array<Maybe<SwellSubscription>>>;
+  /** Account Type */
   type: Maybe<Scalars['String']['output']>;
   vatNumber: Maybe<Scalars['String']['output']>;
 };
 
 
+/** Customer */
 export type SwellAccountOrdersArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
 
+/** Customer */
 export type SwellAccountSubscriptionsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Stored addresses used by an account */
 export type SwellAccountAddress = {
   __typename?: 'SwellAccountAddress';
   active: Maybe<Scalars['Boolean']['output']>;
+  /** Address Line 1 */
   address1: Maybe<Scalars['String']['output']>;
+  /** Address Line 2 */
   address2: Maybe<Scalars['String']['output']>;
   city: Maybe<Scalars['String']['output']>;
   country: Maybe<Scalars['String']['output']>;
   dateCreated: Maybe<Scalars['DateTime']['output']>;
   dateUpdated: Maybe<Scalars['DateTime']['output']>;
   fingerprint: Maybe<Scalars['String']['output']>;
+  /** First Name */
   firstName: Maybe<Scalars['String']['output']>;
   id: Maybe<Scalars['ID']['output']>;
+  /** Last Name */
   lastName: Maybe<Scalars['String']['output']>;
   name: Maybe<Scalars['String']['output']>;
   parent: Maybe<SwellAccount>;
   parentId: Maybe<Scalars['ID']['output']>;
+  /** Phone Number */
   phone: Maybe<Scalars['String']['output']>;
+  /** State/Province */
   state: Maybe<Scalars['String']['output']>;
+  /** Zip/Postal Code */
   zip: Maybe<Scalars['String']['output']>;
 };
 
 
+/** Stored addresses used by an account */
 export type SwellAccountAddressParentArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
@@ -533,23 +535,35 @@ export type SwellAccountAddressInput = {
   zip: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Default account billing information */
 export type SwellAccountBilling = {
   __typename?: 'SwellAccountBilling';
   accountCardId: Maybe<Scalars['ID']['output']>;
+  /** Address Line 1 */
   address1: Maybe<Scalars['String']['output']>;
+  /** Address Line 2 */
   address2: Maybe<Scalars['String']['output']>;
+  /** Payment Card */
   card: Maybe<SwellAccountBillingCard>;
   city: Maybe<Scalars['String']['output']>;
   country: Maybe<Scalars['String']['output']>;
+  /** Billing First Name */
   firstName: Maybe<Scalars['String']['output']>;
+  /** Billing Last Name */
   lastName: Maybe<Scalars['String']['output']>;
+  /** Payment Method */
   method: Maybe<Scalars['String']['output']>;
+  /** Billing Name */
   name: Maybe<Scalars['String']['output']>;
+  /** Phone Number */
   phone: Maybe<Scalars['String']['output']>;
+  /** State/Province */
   state: Maybe<Scalars['String']['output']>;
+  /** Zip/Postal Code */
   zip: Maybe<Scalars['String']['output']>;
 };
 
+/** Payment Card */
 export type SwellAccountBillingCard = {
   __typename?: 'SwellAccountBillingCard';
   addressCheck: Maybe<Scalars['String']['output']>;
@@ -593,6 +607,7 @@ export type SwellAccountBillingInput = {
   zip: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Stored credit cards used by an account */
 export type SwellAccountCard = {
   __typename?: 'SwellAccountCard';
   active: Maybe<Scalars['Boolean']['output']>;
@@ -607,6 +622,7 @@ export type SwellAccountCard = {
   fingerprint: Maybe<Scalars['String']['output']>;
   gateway: Maybe<Scalars['String']['output']>;
   id: Maybe<Scalars['ID']['output']>;
+  /** Last 4 Digits */
   last4: Maybe<Scalars['String']['output']>;
   parent: Maybe<SwellAccount>;
   parentId: Maybe<Scalars['ID']['output']>;
@@ -616,6 +632,7 @@ export type SwellAccountCard = {
 };
 
 
+/** Stored credit cards used by an account */
 export type SwellAccountCardParentArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
@@ -623,18 +640,28 @@ export type SwellAccountCardParentArgs = {
 
 export type SwellAccountCardBilling = {
   __typename?: 'SwellAccountCardBilling';
+  /** Address Line 1 */
   address1: Maybe<Scalars['String']['output']>;
+  /** Address Line 2 */
   address2: Maybe<Scalars['String']['output']>;
   city: Maybe<Scalars['String']['output']>;
+  /** Billing Company Name */
   company: Maybe<Scalars['String']['output']>;
   country: Maybe<Scalars['String']['output']>;
+  /** Billing Email */
   email: Maybe<Scalars['String']['output']>;
+  /** Billing First Name */
   firstName: Maybe<Scalars['String']['output']>;
+  /** Billing Last Name */
   lastName: Maybe<Scalars['String']['output']>;
+  /** Billing Name */
   name: Maybe<Scalars['String']['output']>;
+  /** Phone Number */
   phone: Maybe<Scalars['String']['output']>;
+  /** State/Province */
   state: Maybe<Scalars['String']['output']>;
   vatNumber: Maybe<Scalars['String']['output']>;
+  /** Zip/Postal Code */
   zip: Maybe<Scalars['String']['output']>;
 };
 
@@ -694,18 +721,27 @@ export type SwellAccountInput = {
   vatNumber: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Default account shipping information */
 export type SwellAccountShipping = {
   __typename?: 'SwellAccountShipping';
   accountAddressId: Maybe<Scalars['ID']['output']>;
+  /** Address Line 1 */
   address1: Maybe<Scalars['String']['output']>;
+  /** Address Line 2 */
   address2: Maybe<Scalars['String']['output']>;
   city: Maybe<Scalars['String']['output']>;
   country: Maybe<Scalars['String']['output']>;
+  /** Shipping First Name */
   firstName: Maybe<Scalars['String']['output']>;
+  /** Shipping Last Name */
   lastName: Maybe<Scalars['String']['output']>;
+  /** Shipping Name */
   name: Maybe<Scalars['String']['output']>;
+  /** Phone Number */
   phone: Maybe<Scalars['String']['output']>;
+  /** State/Province */
   state: Maybe<Scalars['String']['output']>;
+  /** Zip/Postal Code */
   zip: Maybe<Scalars['String']['output']>;
 };
 
@@ -741,6 +777,7 @@ export type SwellAccountsCards = {
   results: Maybe<Array<Maybe<SwellAccountCard>>>;
 };
 
+/** Attribute */
 export type SwellAttribute = {
   __typename?: 'SwellAttribute';
   default: Maybe<Scalars['JSON']['output']>;
@@ -762,71 +799,123 @@ export type SwellAttributes = {
   results: Maybe<Array<Maybe<SwellAttribute>>>;
 };
 
+/** Cart */
 export type SwellCart = {
   __typename?: 'SwellCart';
+  /** Indicates the cart was abandoned after 3 hours of inactivity. After being marked as abandoned, this field is automatically set back to `false` after an update to items, billing, or shipping info. */
   abandoned: Maybe<Scalars['Boolean']['output']>;
+  /** Number of abandoned cart notifications sent to the customer. */
   abandonedNotifications: Maybe<Scalars['Int']['output']>;
   account: Maybe<SwellAccount>;
+  /** Amount of customer's account credit applied for initial payment, if applicable. */
   accountCreditAmount: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates the customer's account credit is applied to the initial payment. */
   accountCreditApplied: Maybe<Scalars['Boolean']['output']>;
+  /** ID of the customer's account. */
   accountId: Maybe<Scalars['ID']['output']>;
+  /** Indicates the customer chose to save shipping and billing information to their account when submitting the order. */
   accountInfoSaved: Maybe<Scalars['Boolean']['output']>;
+  /** Indicates the customer was logged into their account when placing the order. */
   accountLoggedIn: Maybe<Scalars['Boolean']['output']>;
   authTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** The customer's billing details. Defaults to `account.billing`. Updating billing will also update the corresponding account billing object. */
   billing: Maybe<SwellCartBilling>;
   captureTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Customer-facing unique identifier for the cart used in URLs and for abandoned cart recovery. */
   checkoutId: Maybe<Scalars['String']['output']>;
+  /** URL to checkout for the cart, set automatically when the cart has at least `items`, `shipping`, or `billing` details set. Can also be set explicitly when creating or updating the cart for custom checkouts. */
   checkoutUrl: Maybe<Scalars['String']['output']>;
+  /** Customer notes provided when placing the order, if any. */
   comments: Maybe<Scalars['String']['output']>;
-  content: Maybe<SwellCartContent>;
   coupon: Maybe<SwellCartCoupon>;
+  /** Coupon code applied to the cart. */
   couponCode: Maybe<Scalars['String']['output']>;
+  /** ID of the coupon applied to the cart. */
   couponId: Maybe<Scalars['ID']['output']>;
   currency: Maybe<Scalars['String']['output']>;
+  /** Currency percentage used in calculating the fixed amount. */
   currencyRate: Maybe<Scalars['SafeNumber']['output']>;
+  /** Date the cart was or will be marked as abandoned. */
   dateAbandoned: Maybe<Scalars['DateTime']['output']>;
+  /** Next date the cart will be marked as abandoned when using a series of abandoned cart recovery notices (advanced cart recovery). */
   dateAbandonedNext: Maybe<Scalars['DateTime']['output']>;
   dateCreated: Maybe<Scalars['DateTime']['output']>;
+  /** Total discount amount. */
   discountTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** List of discounts applied to the cart. */
   discounts: Maybe<Array<Maybe<SwellCartDiscount>>>;
+  /** Three-letter [ISO currency code](https://www.iso.org/iso-4217-currency-codes.html) representing the user's preferred display currency, if applicable. */
   displayCurrency: Maybe<Scalars['String']['output']>;
+  /** Locale code representing the user's preferred display locale, if applicable. */
   displayLocale: Maybe<Scalars['String']['output']>;
+  /** Indicates the order is intended as a gift for the recipient. */
   gift: Maybe<Scalars['Boolean']['output']>;
+  /** Optional message to include with the order when shipping to the recipient. */
   giftMessage: Maybe<Scalars['String']['output']>;
+  /** Indicates the cart has at least one line item with     `delivery=giftcard`. */
   giftcardDelivery: Maybe<Scalars['Boolean']['output']>;
+  /** Total payment amount applied to the order from `giftcards`. */
   giftcardTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** List of gift cards applied to the cart. */
   giftcards: Maybe<Array<Maybe<SwellCartGiftcard>>>;
+  /** Grand total including items, shipping, and taxes. */
   grandTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates the customer was not logged in when placing the order. */
   guest: Maybe<Scalars['Boolean']['output']>;
+  /** Total discount applied to line items. */
   itemDiscount: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total quantity of all line items. */
   itemQuantity: Maybe<Scalars['Int']['output']>;
+  /** Total shipping weight of all line items. */
   itemShipmentWeight: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total taxes applied to line items. */
   itemTax: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates line item prices include taxes. */
   itemTaxIncluded: Maybe<Scalars['Boolean']['output']>;
+  /** List of line items describing the products ordered. */
   items: Maybe<Array<Maybe<SwellCartItem>>>;
+  /** Arbitrary data, typically set in a checkout flow to store custom values. See Frontend API for more details. */
   metadata: Maybe<Scalars['JSON']['output']>;
   order: Maybe<SwellOrder>;
+  /** ID of the the converted order, if applicable. */
   orderId: Maybe<Scalars['ID']['output']>;
+  /** List of promotion IDs applied to the cart. */
   promotionIds: Maybe<Array<Maybe<Scalars['ID']['output']>>>;
   promotions: Maybe<SwellCartsPromotions>;
+  /** List of purchase link errors applied to the cart. Added when clicking on the purchase link, if any resources are blocking the creation of the cart. */
   purchaseLinksErrors: Maybe<Array<Maybe<SwellCartPurchaseLinksError>>>;
+  /** Indicates the cart was recovered and converted to an order after being abandoned. */
   recovered: Maybe<Scalars['Boolean']['output']>;
+  /** Indicates the cart has at least one line item with   `delivery=shipment`. */
   shipmentDelivery: Maybe<Scalars['Boolean']['output']>;
+  /** Shipping discount applied by coupons, promotions, or custom logic. */
   shipmentDiscount: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total shipping price before discounts. */
   shipmentPrice: Maybe<Scalars['SafeNumber']['output']>;
+  /** Object describing the shipping services and rates available for the cart. Shipping `country` must be set before retrieving shipping rates. */
   shipmentRating: Maybe<SwellCartShipmentRating>;
+  /** Shipping tax amount, if applicable. */
   shipmentTax: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates shipping total includes taxes, if applicable. */
   shipmentTaxIncluded: Maybe<Scalars['Boolean']['output']>;
+  /** Total shipping price after discounts. */
   shipmentTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** The customer's shipping details. Defaults to `account.shipping`. Updating shipping will also update the corresponding account shipping object. */
   shipping: Maybe<SwellCartShipping>;
+  /** Sum of all line items before discounts, taxes and shipping. */
   subTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates the cart has at least one line item with `delivery=subscription`. */
   subscriptionDelivery: Maybe<Scalars['Boolean']['output']>;
+  /** Total with shipping and item taxes included. Allows for an alternate display style, as normally `sub_total` and `tax_total` are shown separately. */
   taxIncludedTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total tax amount applied to the cart including line items and shipping. */
   taxTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** List of taxes applied to the cart. */
   taxes: Maybe<Array<Maybe<SwellCartTax>>>;
+  /** Indicates the order is tax-exempt. Taxes will not be calculated or applied when true. */
   taxesFixed: Maybe<Scalars['Boolean']['output']>;
+  /** Indicates the cart was made in test mode. */
   test: Maybe<Scalars['Boolean']['output']>;
-  testTextField: Maybe<Scalars['String']['output']>;
   trial: Maybe<Scalars['Boolean']['output']>;
   trialAuthTotal: Maybe<Scalars['SafeNumber']['output']>;
   trialGrandTotal: Maybe<Scalars['SafeNumber']['output']>;
@@ -837,42 +926,56 @@ export type SwellCart = {
 };
 
 
+/** Cart */
 export type SwellCartAccountArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
 
+/** Cart */
 export type SwellCartOrderArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
+/** The customer's billing details. Defaults to `account.billing`. Updating billing will also update the corresponding account billing object. */
 export type SwellCartBilling = {
   __typename?: 'SwellCartBilling';
   accountCardId: Maybe<Scalars['ID']['output']>;
+  /** Address Line 1 */
   address1: Maybe<Scalars['String']['output']>;
+  /** Address Line 2 */
   address2: Maybe<Scalars['String']['output']>;
   affirm: Maybe<SwellCartBillingAffirm>;
   amazon: Maybe<SwellCartBillingAmazon>;
   apple: Maybe<SwellCartBillingApple>;
   bancontact: Maybe<SwellCartBillingBancontact>;
+  /** Payment Card */
   card: Maybe<SwellCartBillingCard>;
   city: Maybe<Scalars['String']['output']>;
   country: Maybe<Scalars['String']['output']>;
+  /** Default Billing */
   default: Maybe<Scalars['Boolean']['output']>;
+  /** Billing First Name */
   firstName: Maybe<Scalars['String']['output']>;
   google: Maybe<SwellCartBillingGoogle>;
   ideal: Maybe<SwellCartBillingIdeal>;
   intent: Maybe<Scalars['JSON']['output']>;
   klarna: Maybe<SwellCartBillingKlarna>;
+  /** Billing Last Name */
   lastName: Maybe<Scalars['String']['output']>;
+  /** Payment Method */
   method: Maybe<Scalars['String']['output']>;
+  /** Billing Name */
   name: Maybe<Scalars['String']['output']>;
   paypal: Maybe<SwellCartBillingPaypal>;
+  /** Phone Number */
   phone: Maybe<Scalars['String']['output']>;
   resolve: Maybe<SwellCartBillingResolve>;
+  /** State/Province */
   state: Maybe<Scalars['String']['output']>;
+  /** Zip/Postal Code */
   zip: Maybe<Scalars['String']['output']>;
 };
 
@@ -918,6 +1021,7 @@ export type SwellCartBillingBancontactInput = {
   source: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Payment Card */
 export type SwellCartBillingCard = {
   __typename?: 'SwellCartBillingCard';
   addressCheck: Maybe<Scalars['String']['output']>;
@@ -1027,29 +1131,30 @@ export type SwellCartBillingResolveInput = {
   chargeId: InputMaybe<Scalars['String']['input']>;
 };
 
-export type SwellCartContent = {
-  __typename?: 'SwellCartContent';
-  wishlistSlug: Maybe<Scalars['String']['output']>;
-};
-
 export type SwellCartCoupon = {
   __typename?: 'SwellCartCoupon';
+  /** A brief description of the coupon, as it may be displayed to customers. */
   description: Maybe<Scalars['String']['output']>;
   id: Maybe<Scalars['ID']['output']>;
+  /** A short descriptive name of the coupon. */
   name: Maybe<Scalars['String']['output']>;
 };
 
+/** List of discounts applied to the cart. */
 export type SwellCartDiscount = {
   __typename?: 'SwellCartDiscount';
   amount: Maybe<Scalars['SafeNumber']['output']>;
   id: Maybe<Scalars['String']['output']>;
   rule: Maybe<Scalars['JSON']['output']>;
+  /** References the related discount source object (e.g., promotion or coupon) */
   sourceId: Maybe<Scalars['ID']['output']>;
   type: Maybe<Scalars['String']['output']>;
 };
 
+/** List of gift cards applied to the cart. */
 export type SwellCartGiftcard = {
   __typename?: 'SwellCartGiftcard';
+  /** Amount of gift card credit to spend for automatic payment */
   amount: Maybe<Scalars['SafeNumber']['output']>;
   code: Maybe<Scalars['String']['output']>;
   codeFormatted: Maybe<Scalars['String']['output']>;
@@ -1067,9 +1172,11 @@ export type SwellCartInput = {
   shipping: InputMaybe<SwellCartShippingInput>;
 };
 
+/** List of line items describing the products ordered. */
 export type SwellCartItem = {
   __typename?: 'SwellCartItem';
   bundleItems: Maybe<Array<Maybe<SwellCartItemBundleItem>>>;
+  /** Discount Amount */
   discountEach: Maybe<Scalars['SafeNumber']['output']>;
   discountTotal: Maybe<Scalars['SafeNumber']['output']>;
   id: Maybe<Scalars['ID']['output']>;
@@ -1083,6 +1190,7 @@ export type SwellCartItem = {
   purchaseOption: Maybe<SwellCartItemPurchaseOption>;
   quantity: Maybe<Scalars['Int']['output']>;
   shipmentWeight: Maybe<Scalars['SafeNumber']['output']>;
+  /** Tax Amount */
   taxEach: Maybe<Scalars['SafeNumber']['output']>;
   taxTotal: Maybe<Scalars['SafeNumber']['output']>;
   taxes: Maybe<Array<Maybe<SwellCartItemTax>>>;
@@ -1097,6 +1205,7 @@ export type SwellCartItemBundleItem = {
   product: Maybe<SwellProduct>;
   productId: Maybe<Scalars['ID']['output']>;
   quantity: Maybe<Scalars['Int']['output']>;
+  /** Bundled Quantity */
   quantityTotal: Maybe<Scalars['Int']['output']>;
   variant: Maybe<SwellProductVariant>;
   variantId: Maybe<Scalars['ID']['output']>;
@@ -1209,12 +1318,17 @@ export type SwellCartItemTax = {
 
 export type SwellCartPromotion = {
   __typename?: 'SwellCartPromotion';
+  /** Date the promo ends and is no longer available. When defined, the promo will not be applied after this date. */
   dateEnd: Maybe<Scalars['DateTime']['output']>;
+  /** Date the promo is first available. When defined, the promo will not be valid until after this date and before `date_end`. */
   dateStart: Maybe<Scalars['DateTime']['output']>;
+  /** A brief description of the promo, as it may be displayed to customers. */
   description: Maybe<Scalars['String']['output']>;
+  /** A short descriptive name of the promo. */
   name: Maybe<Scalars['String']['output']>;
 };
 
+/** List of purchase link errors applied to the cart. Added when clicking on the purchase link, if any resources are blocking the creation of the cart. */
 export type SwellCartPurchaseLinksError = {
   __typename?: 'SwellCartPurchaseLinksError';
   error: Maybe<SwellCartPurchaseLinksErrorError>;
@@ -1236,6 +1350,7 @@ export type SwellCartPurchaseLinksErrorErrorResource = {
   name: Maybe<Scalars['String']['output']>;
 };
 
+/** Object describing the shipping services and rates available for the cart. Shipping `country` must be set before retrieving shipping rates. */
 export type SwellCartShipmentRating = {
   __typename?: 'SwellCartShipmentRating';
   dateCreated: Maybe<Scalars['DateTime']['output']>;
@@ -1281,23 +1396,36 @@ export type SwellCartShipmentRatingServiceInput = {
   taxCode: InputMaybe<Scalars['String']['input']>;
 };
 
+/** The customer's shipping details. Defaults to `account.shipping`. Updating shipping will also update the corresponding account shipping object. */
 export type SwellCartShipping = {
   __typename?: 'SwellCartShipping';
   accountAddressId: Maybe<Scalars['ID']['output']>;
+  /** Address Line 1 */
   address1: Maybe<Scalars['String']['output']>;
+  /** Address Line 2 */
   address2: Maybe<Scalars['String']['output']>;
   city: Maybe<Scalars['String']['output']>;
   country: Maybe<Scalars['String']['output']>;
+  /** Default Shipping */
   default: Maybe<Scalars['Boolean']['output']>;
+  /** Shipping First Name */
   firstName: Maybe<Scalars['String']['output']>;
+  /** Shipping Last Name */
   lastName: Maybe<Scalars['String']['output']>;
+  /** Shipping Name */
   name: Maybe<Scalars['String']['output']>;
+  /** Phone Number */
   phone: Maybe<Scalars['String']['output']>;
   pickup: Maybe<Scalars['Boolean']['output']>;
+  /** Shipping Price */
   price: Maybe<Scalars['SafeNumber']['output']>;
+  /** Shipping Service ID */
   service: Maybe<Scalars['String']['output']>;
+  /** Shipping Service Name */
   serviceName: Maybe<Scalars['String']['output']>;
+  /** State/Province */
   state: Maybe<Scalars['String']['output']>;
+  /** Zip/Postal Code */
   zip: Maybe<Scalars['String']['output']>;
 };
 
@@ -1320,6 +1448,7 @@ export type SwellCartShippingInput = {
   zip: InputMaybe<Scalars['String']['input']>;
 };
 
+/** List of taxes applied to the cart. */
 export type SwellCartTax = {
   __typename?: 'SwellCartTax';
   amount: Maybe<Scalars['SafeNumber']['output']>;
@@ -1348,45 +1477,61 @@ export type SwellCategories = {
   results: Maybe<Array<Maybe<SwellCategory>>>;
 };
 
+/** Category */
 export type SwellCategory = {
   __typename?: 'SwellCategory';
   children: Maybe<Array<Maybe<SwellCategory>>>;
   content: Maybe<SwellCategoryContent>;
+  /** A long-form description of the category. Can contain HTML or other markup languages. */
   description: Maybe<Scalars['String']['output']>;
+  /** Image depicting the category. */
   image: Maybe<SwellCategoryImage>;
+  /** List of images depicting the category. */
   images: Maybe<Array<Maybe<SwellCategoryImage>>>;
+  /** Page description used for search engine optimization purposes. */
   metaDescription: Maybe<Scalars['String']['output']>;
+  /** Page keywords used for search engine optimization purposes. */
   metaKeywords: Maybe<Scalars['String']['output']>;
+  /** A human-friendly name for the category. */
   name: Maybe<Scalars['String']['output']>;
   parent: Maybe<SwellCategory>;
+  /** ID of the parent category, if applicable. */
   parentId: Maybe<Scalars['ID']['output']>;
   products: Maybe<Array<Maybe<SwellProduct>>>;
+  /** Unique identifier typically used in URLs. Defaults to `name` converted to lowercase and hyphenated. If the category has a parent, the default slug will be prefixed with the parent slug. Maximum length of 1,000 characters. */
   slug: Maybe<Scalars['String']['output']>;
+  /** Position of the category in a list. */
   sort: Maybe<Scalars['Int']['output']>;
+  /** Default product sorting applied when retrieving products using the `category` or `categories` filter. Can be one of `popularity`, `price_asc`, `price_desc`, `date_asc`. `date_desc`. If not specified, products are sorted by their manually defined `sort` value. */
   sorting: Maybe<Scalars['String']['output']>;
   top: Maybe<SwellCategory>;
+  /** ID of the top level category in the hierarchy. */
   topId: Maybe<Scalars['ID']['output']>;
 };
 
 
+/** Category */
 export type SwellCategoryChildrenArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
 
+/** Category */
 export type SwellCategoryParentArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
 
+/** Category */
 export type SwellCategoryProductsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
 
+/** Category */
 export type SwellCategoryTopArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
@@ -1402,6 +1547,7 @@ export type SwellCategoryContent = {
   textColor: Maybe<Scalars['String']['output']>;
 };
 
+/** List of images depicting the category. */
 export type SwellCategoryImage = {
   __typename?: 'SwellCategoryImage';
   caption: Maybe<Scalars['String']['output']>;
@@ -1426,41 +1572,7 @@ export type SwellCategoryImageFile = {
   width: Maybe<Scalars['Int']['output']>;
 };
 
-export type SwellContentAttributeGroup = {
-  __typename?: 'SwellContentAttributeGroup';
-  content: Maybe<SwellContentAttributeGroupContent>;
-  dateCreated: Maybe<Scalars['DateTime']['output']>;
-  dateUpdated: Maybe<Scalars['DateTime']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-};
-
-export type SwellContentAttributeGroupContent = {
-  __typename?: 'SwellContentAttributeGroupContent';
-  attributes: Maybe<Array<Maybe<SwellContentAttributeGroupContentAttribute>>>;
-};
-
-export type SwellContentAttributeGroupContentAttribute = {
-  __typename?: 'SwellContentAttributeGroupContentAttribute';
-  attributeId: Maybe<SwellAttribute>;
-  attributeIdId: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-};
-
-
-export type SwellContentAttributeGroupContentAttributeAttributeIdArgs = {
-  _currency: InputMaybe<Scalars['String']['input']>;
-  _locale: InputMaybe<Scalars['String']['input']>;
-};
-
-export type SwellContentAttributeGroups = {
-  __typename?: 'SwellContentAttributeGroups';
-  count: Maybe<Scalars['Int']['output']>;
-  page: Maybe<Scalars['Int']['output']>;
-  pageCount: Maybe<Scalars['Int']['output']>;
-  pages: Maybe<Array<Maybe<Page>>>;
-  results: Maybe<Array<Maybe<SwellContentAttributeGroup>>>;
-};
-
+/** Page */
 export type SwellContentPage = {
   __typename?: 'SwellContentPage';
   content: Maybe<Scalars['String']['output']>;
@@ -1662,106 +1774,183 @@ export type SwellContentPages = {
   results: Maybe<Array<Maybe<SwellContentPage>>>;
 };
 
+/** Order */
 export type SwellOrder = {
   __typename?: 'SwellOrder';
+  /** Amount of customer's account credit applied for initial payment, if applicable. */
   accountCreditAmount: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates the customer’s account credit is applied when submitting the order. */
   accountCreditApplied: Maybe<Scalars['Boolean']['output']>;
+  /** The `id` of the customer's account. During checkout, customer accounts without a password are designated as `guest=true`. */
   accountId: Maybe<Scalars['ID']['output']>;
+  /** Indicates the customer chose to save shipping and billing information to their account when submitting the order. */
   accountInfoSaved: Maybe<Scalars['Boolean']['output']>;
+  /** Indicates the customer was logged into their account when placing the order. */
   accountLoggedIn: Maybe<Scalars['Boolean']['output']>;
+  /** The customer's billing details. Defaults to `account.billing`. Updating billing will also update the corresponding account billing object. */
   billing: Maybe<SwellOrderBilling>;
+  /** Indicates the order was completely canceled. */
   canceled: Maybe<Scalars['Boolean']['output']>;
+  /** Customer notes provided when placing the order, if any. */
   comments: Maybe<Scalars['String']['output']>;
   coupon: Maybe<SwellOrderCoupon>;
+  /** Coupon code applied to the order. */
   couponCode: Maybe<Scalars['String']['output']>;
   currency: Maybe<Scalars['String']['output']>;
+  /** The store’s base currency. */
   currencyBase: Maybe<Scalars['String']['output']>;
+  /** Currency percentage used in calculating the fixed amount. */
   currencyRate: Maybe<Scalars['SafeNumber']['output']>;
   dateCreated: Maybe<Scalars['DateTime']['output']>;
+  /** Indicates the order was completely fulfilled. Always `true` when `delivery_marked=true`, otherwise depends on the sum of `shipments`, `giftcards`, and `subscriptions`. */
   delivered: Maybe<Scalars['Boolean']['output']>;
+  /** Total discount amount. */
   discountTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** List of discounts applied to the order. */
   discounts: Maybe<Array<Maybe<SwellOrderDiscount>>>;
+  /** Indicates the order is intended as a gift for the recipient. */
   gift: Maybe<Scalars['Boolean']['output']>;
+  /** Optional message to include with the order when shipping to the recipient. */
   giftMessage: Maybe<Scalars['String']['output']>;
+  /** Indicates the order has at least one line item with `delivery=giftcard`. */
   giftcardDelivery: Maybe<Scalars['Boolean']['output']>;
+  /** Total payment amount applied to the order from `giftcards`. */
   giftcardTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** List of gift cards applied to the order. */
   giftcards: Maybe<Array<Maybe<SwellOrderGiftcard>>>;
+  /** Grand total including items, shipping and taxes. */
   grandTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates the customer was not logged in when placing the order. */
   guest: Maybe<Scalars['Boolean']['output']>;
   id: Maybe<Scalars['ID']['output']>;
+  /** Total discount applied to line items. */
   itemDiscount: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total quantity of all line items. */
   itemQuantity: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of cancelable items on the order. */
   itemQuantityCancelable: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of line items canceled. */
   itemQuantityCanceled: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of line items that can be credited. */
   itemQuantityCreditable: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of items credited on the order. */
   itemQuantityCredited: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of line items that can be fulfilled. */
   itemQuantityDeliverable: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of line items that have been fulfilled. */
   itemQuantityDelivered: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of line items that can be fulfilled by gift card. Applies when `item.delivery=giftcard`. */
   itemQuantityGiftcardDeliverable: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of items eligible for invoicing on the order. */
   itemQuantityInvoiceable: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of items invoiced on the order. */
   itemQuantityInvoiced: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of line items that can still be returned. */
   itemQuantityReturnable: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of line items that have been returned. */
   itemQuantityReturned: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of line items that can be fulfilled by shipment. Applies when `item.delivery=shipment`. */
   itemQuantityShipmentDeliverable: Maybe<Scalars['Int']['output']>;
+  /** Total quantity of line items that can be fulfilled by subscription. Applies when `item.delivery=subscription`. */
   itemQuantitySubscriptionDeliverable: Maybe<Scalars['Int']['output']>;
+  /** Total shipping weight of all line items. */
   itemShipmentWeight: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total taxes applied to line items. */
   itemTax: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates line item prices include taxes. */
   itemTaxIncluded: Maybe<Scalars['Boolean']['output']>;
+  /** List of line items describing the products ordered. */
   items: Maybe<Array<Maybe<SwellOrderItem>>>;
+  /** Arbitrary data, typically set in a checkout flow to store custom values. See Frontend API for details. */
   metadata: Maybe<Scalars['JSON']['output']>;
+  /** Unique incremental order number, assigned automatically using a format configured in general settings. */
   number: Maybe<Scalars['String']['output']>;
+  /** Indicates the order was paid in full. Always `true` when `payment_marked=true`, otherwise depends on the sum of `payments`. */
   paid: Maybe<Scalars['Boolean']['output']>;
   payments: Maybe<SwellOrdersPayments>;
+  /** List of promotion IDs applied to the order. */
   promotionIds: Maybe<Array<Maybe<Scalars['ID']['output']>>>;
   promotions: Maybe<SwellOrdersPromotions>;
+  /** Expandable list of refunds issued for the payment. */
   refunds: Maybe<SwellOrdersRefunds>;
+  /** Indicates the order has at least one line item with `delivery=shipment`. */
   shipmentDelivery: Maybe<Scalars['Boolean']['output']>;
+  /** Shipping discount applied by coupons, promotions, or custom logic. */
   shipmentDiscount: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total shipping price before discounts. */
   shipmentPrice: Maybe<Scalars['SafeNumber']['output']>;
+  /** Object describing the shipping services and rates available for the order. Shipping `country` must be set before retrieving shipping rates. */
   shipmentRating: Maybe<SwellOrderShipmentRating>;
+  /** Shipping tax amount, if applicable. */
   shipmentTax: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates shipping total includes taxes, if applicable. */
   shipmentTaxIncluded: Maybe<Scalars['Boolean']['output']>;
+  /** Total shipping price including taxes and discount. Allows for an alternate display style as normally `shipment_total` and `tax_total` are shown separately. */
   shipmentTaxIncludedTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total shipping price after discounts. */
   shipmentTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total shipping price for items credited on the order. */
   shipmentTotalCredited: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total shipping price for items invoiced on the order. */
   shipmentTotalInvoiced: Maybe<Scalars['SafeNumber']['output']>;
   shipments: Maybe<SwellOrdersShipments>;
+  /** The customer's shipping details. Defaults to `account.shipping`. Updating shipping will also update the corresponding account shipping object. */
   shipping: Maybe<SwellOrderShipping>;
+  /** Current status of the order. Can be `pending`, `draft`, `payment_pending`, `delivery_pending`, `hold`, `complete`, or `canceled`. */
   status: Maybe<Scalars['String']['output']>;
+  /** Sum of all line items before discounts, taxes and shipping. */
   subTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates the order has at least one line item with `delivery=subscription`. */
   subscriptionDelivery: Maybe<Scalars['Boolean']['output']>;
+  /** Total of taxes applied separately from line items. */
   taxIncludedTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total tax amount applied to the order including line items and shipping. */
   taxTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** List of taxes applied to the order. */
   taxes: Maybe<Array<Maybe<SwellOrderTax>>>;
+  /** Indicates the order is tax-exempt. Taxes will not be calculated or applied when true. */
   taxesFixed: Maybe<Scalars['Boolean']['output']>;
 };
 
+/** The customer's billing details. Defaults to `account.billing`. Updating billing will also update the corresponding account billing object. */
 export type SwellOrderBilling = {
   __typename?: 'SwellOrderBilling';
   accountCardId: Maybe<Scalars['ID']['output']>;
+  /** Address Line 1 */
   address1: Maybe<Scalars['String']['output']>;
+  /** Address Line 2 */
   address2: Maybe<Scalars['String']['output']>;
   affirm: Maybe<SwellOrderBillingAffirm>;
   amazon: Maybe<SwellOrderBillingAmazon>;
   apple: Maybe<SwellOrderBillingApple>;
   bancontact: Maybe<SwellOrderBillingBancontact>;
+  /** Payment Card */
   card: Maybe<SwellOrderBillingCard>;
   city: Maybe<Scalars['String']['output']>;
   country: Maybe<Scalars['String']['output']>;
+  /** Default Billing */
   default: Maybe<Scalars['Boolean']['output']>;
+  /** Billing First Name */
   firstName: Maybe<Scalars['String']['output']>;
   google: Maybe<SwellOrderBillingGoogle>;
   ideal: Maybe<SwellOrderBillingIdeal>;
+  /** Payment Instructions */
   instructions: Maybe<Scalars['String']['output']>;
   intent: Maybe<Scalars['JSON']['output']>;
   klarna: Maybe<SwellOrderBillingKlarna>;
+  /** Billing Last Name */
   lastName: Maybe<Scalars['String']['output']>;
+  /** Payment Method */
   method: Maybe<Scalars['String']['output']>;
+  /** Billing Name */
   name: Maybe<Scalars['String']['output']>;
   paypal: Maybe<SwellOrderBillingPaypal>;
+  /** Phone Number */
   phone: Maybe<Scalars['String']['output']>;
   resolve: Maybe<SwellOrderBillingResolve>;
+  /** State/Province */
   state: Maybe<Scalars['String']['output']>;
+  /** Zip/Postal Code */
   zip: Maybe<Scalars['String']['output']>;
 };
 
@@ -1788,6 +1977,7 @@ export type SwellOrderBillingBancontact = {
   source: Maybe<Scalars['String']['output']>;
 };
 
+/** Payment Card */
 export type SwellOrderBillingCard = {
   __typename?: 'SwellOrderBillingCard';
   addressCheck: Maybe<Scalars['String']['output']>;
@@ -1834,22 +2024,28 @@ export type SwellOrderBillingResolve = {
 
 export type SwellOrderCoupon = {
   __typename?: 'SwellOrderCoupon';
+  /** A brief description of the coupon, as it may be displayed to customers. */
   description: Maybe<Scalars['String']['output']>;
   id: Maybe<Scalars['ID']['output']>;
+  /** A short descriptive name of the coupon. */
   name: Maybe<Scalars['String']['output']>;
 };
 
+/** List of discounts applied to the order. */
 export type SwellOrderDiscount = {
   __typename?: 'SwellOrderDiscount';
   amount: Maybe<Scalars['SafeNumber']['output']>;
   id: Maybe<Scalars['String']['output']>;
   rule: Maybe<Scalars['JSON']['output']>;
+  /** References the related discount source object (e.g., promotion or coupon) */
   sourceId: Maybe<Scalars['ID']['output']>;
   type: Maybe<Scalars['String']['output']>;
 };
 
+/** List of gift cards applied to the order. */
 export type SwellOrderGiftcard = {
   __typename?: 'SwellOrderGiftcard';
+  /** Amount of gift card credit to spend for automatic payment */
   amount: Maybe<Scalars['SafeNumber']['output']>;
   code: Maybe<Scalars['String']['output']>;
   codeFormatted: Maybe<Scalars['String']['output']>;
@@ -1857,9 +2053,11 @@ export type SwellOrderGiftcard = {
   last4: Maybe<Scalars['String']['output']>;
 };
 
+/** List of line items describing the products ordered. */
 export type SwellOrderItem = {
   __typename?: 'SwellOrderItem';
   bundleItems: Maybe<Array<Maybe<SwellOrderItemBundleItem>>>;
+  /** Discount Amount */
   discountEach: Maybe<Scalars['SafeNumber']['output']>;
   discountTotal: Maybe<Scalars['SafeNumber']['output']>;
   id: Maybe<Scalars['ID']['output']>;
@@ -1889,6 +2087,7 @@ export type SwellOrderItem = {
   quantitySubscriptionDelivered: Maybe<Scalars['Int']['output']>;
   quantityTotal: Maybe<Scalars['Int']['output']>;
   shipmentWeight: Maybe<Scalars['SafeNumber']['output']>;
+  /** Tax Amount */
   taxEach: Maybe<Scalars['SafeNumber']['output']>;
   taxTotal: Maybe<Scalars['SafeNumber']['output']>;
   taxes: Maybe<Array<Maybe<SwellOrderItemTax>>>;
@@ -1979,22 +2178,35 @@ export type SwellOrderItemTax = {
 
 export type SwellOrderPayment = {
   __typename?: 'SwellOrderPayment';
+  /** Payment amount denominated in `currency`. Minimum of 0.01 */
   amount: Maybe<Scalars['SafeNumber']['output']>;
+  /** Remaining amount that can be refunded. */
   amountRefundable: Maybe<Scalars['SafeNumber']['output']>;
+  /** Amount of the payment that has been refunded. */
   amountRefunded: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates the payment was authorized before being captured. */
   authorized: Maybe<Scalars['Boolean']['output']>;
+  /** Indicates the payment has been captured. */
   captured: Maybe<Scalars['Boolean']['output']>;
+  /** Credit card details used to make the payment, if applicable. */
   card: Maybe<SwellOrderPaymentCard>;
   currency: Maybe<Scalars['String']['output']>;
+  /** Currency percentage used in calculating the fixed amount. */
   currencyRate: Maybe<Scalars['SafeNumber']['output']>;
   dateCreated: Maybe<Scalars['DateTime']['output']>;
+  /** ID of the payment gateway that was used to process the payment. */
   gateway: Maybe<Scalars['String']['output']>;
+  /** Method of payment. Can be `card`, `account`, `amazon`, `paypal` or any one of the manual methods defined in payment settings. */
   method: Maybe<Scalars['String']['output']>;
+  /** Unique incremental payment number assigned automatically. */
   number: Maybe<Scalars['String']['output']>;
+  /** Status of the payment. Can be `pending`, which is awaiting async processing, `error`, `success` or `authorized`. */
   status: Maybe<Scalars['String']['output']>;
+  /** Indicates the payment was successful. When an error occurs with a payment gateway, this status will be `false` and `error` field will be populated. */
   success: Maybe<Scalars['Boolean']['output']>;
 };
 
+/** Credit card details used to make the payment, if applicable. */
 export type SwellOrderPaymentCard = {
   __typename?: 'SwellOrderPaymentCard';
   addressCheck: Maybe<Scalars['String']['output']>;
@@ -2010,12 +2222,17 @@ export type SwellOrderPaymentCard = {
 
 export type SwellOrderPromotion = {
   __typename?: 'SwellOrderPromotion';
+  /** Date the promo ends and is no longer available. When defined, the promo will not be applied after this date. */
   dateEnd: Maybe<Scalars['DateTime']['output']>;
+  /** Date the promo is first available. When defined, the promo will not be valid until after this date and before `date_end`. */
   dateStart: Maybe<Scalars['DateTime']['output']>;
+  /** A brief description of the promo, as it may be displayed to customers. */
   description: Maybe<Scalars['String']['output']>;
+  /** A short descriptive name of the promo. */
   name: Maybe<Scalars['String']['output']>;
 };
 
+/** Expandable list of refunds issued for the payment. */
 export type SwellOrderRefund = {
   __typename?: 'SwellOrderRefund';
   amount: Maybe<Scalars['SafeNumber']['output']>;
@@ -2025,25 +2242,38 @@ export type SwellOrderRefund = {
   method: Maybe<Scalars['String']['output']>;
   number: Maybe<Scalars['String']['output']>;
   status: Maybe<Scalars['String']['output']>;
+  /** Indicates the refund was successfully processed */
   success: Maybe<Scalars['Boolean']['output']>;
 };
 
 export type SwellOrderShipment = {
   __typename?: 'SwellOrderShipment';
+  /** Indicates the shipment was canceled. */
   canceled: Maybe<Scalars['Boolean']['output']>;
+  /** The id of a third-party carrier offering the service, if applicable. */
   carrier: Maybe<Scalars['String']['output']>;
+  /** Name of a third-party carrier offering the service, if applicable. */
   carrierName: Maybe<Scalars['String']['output']>;
   dateCreated: Maybe<Scalars['DateTime']['output']>;
+  /** Date the expected shipment is meant to arrive at the destination, if applicable. */
   dateEstimated: Maybe<Scalars['DateTime']['output']>;
+  /** The customer's shipping address. */
   destination: Maybe<SwellOrderShipmentDestination>;
+  /** List of line items describing the products shipped. */
   items: Maybe<Array<Maybe<SwellOrderShipmentItem>>>;
+  /** Unique incremental shipment number, assigned automatically. */
   number: Maybe<Scalars['String']['output']>;
+  /** The shipment origin location. */
   origin: Maybe<SwellOrderShipmentOrigin>;
+  /** The id of a shipping service as configured in shipment settings. */
   service: Maybe<Scalars['String']['output']>;
+  /** Name of the shipping service. */
   serviceName: Maybe<Scalars['String']['output']>;
+  /** Tracking code used to identify the shipment, if applicable. */
   trackingCode: Maybe<Scalars['String']['output']>;
 };
 
+/** The customer's shipping address. */
 export type SwellOrderShipmentDestination = {
   __typename?: 'SwellOrderShipmentDestination';
   address1: Maybe<Scalars['String']['output']>;
@@ -2056,6 +2286,7 @@ export type SwellOrderShipmentDestination = {
   zip: Maybe<Scalars['String']['output']>;
 };
 
+/** List of line items describing the products shipped. */
 export type SwellOrderShipmentItem = {
   __typename?: 'SwellOrderShipmentItem';
   bundleItemId: Maybe<Scalars['ID']['output']>;
@@ -2069,6 +2300,7 @@ export type SwellOrderShipmentItem = {
 };
 
 
+/** List of line items describing the products shipped. */
 export type SwellOrderShipmentItemProductArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
@@ -2081,11 +2313,13 @@ export type SwellOrderShipmentItemOption = {
   value: Maybe<Scalars['String']['output']>;
 };
 
+/** The shipment origin location. */
 export type SwellOrderShipmentOrigin = {
   __typename?: 'SwellOrderShipmentOrigin';
   location: Maybe<Scalars['String']['output']>;
 };
 
+/** Object describing the shipping services and rates available for the order. Shipping `country` must be set before retrieving shipping rates. */
 export type SwellOrderShipmentRating = {
   __typename?: 'SwellOrderShipmentRating';
   dateCreated: Maybe<Scalars['DateTime']['output']>;
@@ -2110,26 +2344,40 @@ export type SwellOrderShipmentRatingService = {
   taxCode: Maybe<Scalars['String']['output']>;
 };
 
+/** The customer's shipping details. Defaults to `account.shipping`. Updating shipping will also update the corresponding account shipping object. */
 export type SwellOrderShipping = {
   __typename?: 'SwellOrderShipping';
   accountAddressId: Maybe<Scalars['ID']['output']>;
+  /** Address Line 1 */
   address1: Maybe<Scalars['String']['output']>;
+  /** Address Line 2 */
   address2: Maybe<Scalars['String']['output']>;
   city: Maybe<Scalars['String']['output']>;
   country: Maybe<Scalars['String']['output']>;
+  /** Default Shipping */
   default: Maybe<Scalars['Boolean']['output']>;
+  /** Shipping First Name */
   firstName: Maybe<Scalars['String']['output']>;
+  /** Shipping Last Name */
   lastName: Maybe<Scalars['String']['output']>;
+  /** Shipping Name */
   name: Maybe<Scalars['String']['output']>;
+  /** Phone Number */
   phone: Maybe<Scalars['String']['output']>;
   pickup: Maybe<Scalars['Boolean']['output']>;
+  /** Shipping Price */
   price: Maybe<Scalars['SafeNumber']['output']>;
+  /** Shipping Service ID */
   service: Maybe<Scalars['String']['output']>;
+  /** Shipping Service Name */
   serviceName: Maybe<Scalars['String']['output']>;
+  /** State/Province */
   state: Maybe<Scalars['String']['output']>;
+  /** Zip/Postal Code */
   zip: Maybe<Scalars['String']['output']>;
 };
 
+/** List of taxes applied to the order. */
 export type SwellOrderTax = {
   __typename?: 'SwellOrderTax';
   amount: Maybe<Scalars['SafeNumber']['output']>;
@@ -2185,45 +2433,73 @@ export type SwellOrdersShipments = {
   results: Maybe<Array<Maybe<SwellOrderShipment>>>;
 };
 
+/** Product */
 export type SwellProduct = {
   __typename?: 'SwellProduct';
+  /** An object containing custom attribute key/value pairs. */
   attributes: Maybe<Scalars['JSON']['output']>;
+  /** Indicates whether the product is a bundle of other products. */
   bundle: Maybe<Scalars['Boolean']['output']>;
+  /** List of products sold as a bundle. Applicable only when `bundle=true`. */
   bundleItems: Maybe<Array<Maybe<SwellProductBundleItem>>>;
   categories: Maybe<Array<Maybe<SwellCategory>>>;
   content: Maybe<SwellProductContent>;
+  /** List of products to display as cross-sells on a shopping cart page. */
   crossSells: Maybe<Array<Maybe<SwellProductCrossSell>>>;
   currency: Maybe<Scalars['String']['output']>;
+  /** A long-form description of the product. May contain HTML or other markup languages. */
   description: Maybe<Scalars['String']['output']>;
   id: Maybe<Scalars['ID']['output']>;
+  /** List of images depicting the bundle. */
   images: Maybe<Array<Maybe<SwellProductImage>>>;
+  /** Page description used for search engine optimization purposes. */
   metaDescription: Maybe<Scalars['String']['output']>;
+  /** Page title used to override product name in storefronts. */
   metaTitle: Maybe<Scalars['String']['output']>;
+  /** Human-friendly name of the product. */
   name: Maybe<Scalars['String']['output']>;
+  /** Options that allow for variations of the base product. If the option is part of a variant or `required=true`, an option value must be set for the product to be added to a cart. */
   options: Maybe<Array<Maybe<SwellProductOption>>>;
+  /** Reflects the non-sale price of the product */
   origPrice: Maybe<Scalars['SafeNumber']['output']>;
+  /** List price used when `sale=false` or `sale_price` is not defined. This value is intended for use via the frontend. See the `purchase_options` array to manage a product's price. */
   price: Maybe<Scalars['SafeNumber']['output']>;
+  /** Price rules determined by cart quantity or customer account group. Overrides `price` and `sale_price` when conditions match. */
   prices: Maybe<Array<Maybe<SwellProductPrice>>>;
+  /** Configuration of one or more purchase options for the product. Can be `standard` for one-time purchases or `subscription` for a subscription plan. Products can support both purchase options simultaneously. */
   purchaseOptions: Maybe<SwellProductPurchaseOptions>;
+  /** Indicates whether the product is on sale. If `true`, the `sale_price` will be used by default when the product is added to a cart. */
   sale: Maybe<Scalars['Boolean']['output']>;
+  /** Sale price used to override list price when `sale=true`. */
   salePrice: Maybe<Scalars['SafeNumber']['output']>;
+  /** Stock keeping unit (SKU) used to track inventory in a warehouse. */
   sku: Maybe<Scalars['String']['output']>;
+  /** Lowercase, hyphenated identifier typically used in URLs. When creating a product, a `slug `will be generated automatically from the `name`. Maximum length of 1,000 characters. */
   slug: Maybe<Scalars['String']['output']>;
+  /** Quantity of the product currently in stock (including all variants), based on the sum of the stock entries. */
   stockLevel: Maybe<Scalars['Int']['output']>;
+  /** Indicates whether the product's stock is purchasable. */
   stockPurchasable: Maybe<Scalars['Boolean']['output']>;
+  /** String indicating the product's stock status for the purpose of ordering. When `stock_purchasable=true`, an order can be placed for this product regardless of current stock status. Otherwise an order submission will be blocked unless stock status is `available`, `preorder`, or `backorder`. */
   stockStatus: Maybe<Scalars['String']['output']>;
+  /** Indicates whether the product has stock tracking enabled. */
   stockTracking: Maybe<Scalars['Boolean']['output']>;
+  /** Array of searchable tags to aid in search discoverability. */
   tags: Maybe<Array<Maybe<Scalars['String']['output']>>>;
+  /** List of products to display as up-sells on a product detail page. */
   upSells: Maybe<Array<Maybe<SwellProductUpSell>>>;
+  /** Expandable list of variants representing unique variations of the product. Each variant is a combination of one or more `options`. For example, Size and Color. */
   variants: Maybe<SwellProductsVariants>;
 };
 
 
+/** Product */
 export type SwellProductCategoriesArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
+/** List of products sold as a bundle. Applicable only when `bundle=true`. */
 export type SwellProductBundleItem = {
   __typename?: 'SwellProductBundleItem';
   id: Maybe<Scalars['ID']['output']>;
@@ -2236,6 +2512,7 @@ export type SwellProductBundleItem = {
 };
 
 
+/** List of products sold as a bundle. Applicable only when `bundle=true`. */
 export type SwellProductBundleItemProductArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
@@ -2243,10 +2520,22 @@ export type SwellProductBundleItemProductArgs = {
 
 export type SwellProductContent = {
   __typename?: 'SwellProductContent';
-  productType: Maybe<Scalars['String']['output']>;
-  sampleText: Maybe<Scalars['String']['output']>;
+  enableQuantity: Maybe<Scalars['Boolean']['output']>;
+  enableSocialSharing: Maybe<Scalars['Boolean']['output']>;
+  maxQuantity: Maybe<Scalars['Int']['output']>;
+  productBenefits: Maybe<Array<Maybe<SwellProductContentProductBenefit>>>;
+  showStockLevel: Maybe<Scalars['Boolean']['output']>;
+  upSellCols: Maybe<Scalars['Int']['output']>;
 };
 
+export type SwellProductContentProductBenefit = {
+  __typename?: 'SwellProductContentProductBenefit';
+  icon: Maybe<Scalars['String']['output']>;
+  id: Maybe<Scalars['ID']['output']>;
+  text: Maybe<Scalars['String']['output']>;
+};
+
+/** List of products to display as cross-sells on a shopping cart page. */
 export type SwellProductCrossSell = {
   __typename?: 'SwellProductCrossSell';
   discountAmount: Maybe<Scalars['SafeNumber']['output']>;
@@ -2258,11 +2547,13 @@ export type SwellProductCrossSell = {
 };
 
 
+/** List of products to display as cross-sells on a shopping cart page. */
 export type SwellProductCrossSellProductArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
+/** List of images depicting the bundle. */
 export type SwellProductImage = {
   __typename?: 'SwellProductImage';
   caption: Maybe<Scalars['String']['output']>;
@@ -2278,6 +2569,7 @@ export type SwellProductImageFile = {
   width: Maybe<Scalars['Int']['output']>;
 };
 
+/** Options that allow for variations of the base product. If the option is part of a variant or `required=true`, an option value must be set for the product to be added to a cart. */
 export type SwellProductOption = {
   __typename?: 'SwellProductOption';
   active: Maybe<Scalars['Boolean']['output']>;
@@ -2291,12 +2583,16 @@ export type SwellProductOption = {
   parentId: Maybe<Scalars['ID']['output']>;
   parentValueIds: Maybe<Array<Maybe<Scalars['ID']['output']>>>;
   price: Maybe<Scalars['SafeNumber']['output']>;
+  /** Indicates the option requires a value */
   required: Maybe<Scalars['Boolean']['output']>;
   subscription: Maybe<Scalars['Boolean']['output']>;
+  /** List of values for this option */
   values: Maybe<Array<Maybe<SwellProductOptionValue>>>;
+  /** Indicates the option is an aspect of variants */
   variant: Maybe<Scalars['Boolean']['output']>;
 };
 
+/** List of values for this option */
 export type SwellProductOptionValue = {
   __typename?: 'SwellProductOptionValue';
   color: Maybe<Scalars['String']['output']>;
@@ -2306,6 +2602,7 @@ export type SwellProductOptionValue = {
   images: Maybe<Array<Maybe<SwellProductOptionValueImage>>>;
   name: Maybe<Scalars['String']['output']>;
   price: Maybe<Scalars['SafeNumber']['output']>;
+  /** Shipment weight added if the option value is selected */
   shipmentWeight: Maybe<Scalars['SafeNumber']['output']>;
   subscriptionInterval: Maybe<Scalars['String']['output']>;
   subscriptionIntervalCount: Maybe<Scalars['Int']['output']>;
@@ -2346,6 +2643,7 @@ export type SwellProductOptionValueImageFile = {
   width: Maybe<Scalars['Int']['output']>;
 };
 
+/** Price rules determined by cart quantity or customer account group. Overrides `price` and `sale_price` when conditions match. */
 export type SwellProductPrice = {
   __typename?: 'SwellProductPrice';
   accountGroup: Maybe<Scalars['String']['output']>;
@@ -2355,6 +2653,7 @@ export type SwellProductPrice = {
   quantityMin: Maybe<Scalars['Int']['output']>;
 };
 
+/** Configuration of one or more purchase options for the product. Can be `standard` for one-time purchases or `subscription` for a subscription plan. Products can support both purchase options simultaneously. */
 export type SwellProductPurchaseOptions = {
   __typename?: 'SwellProductPurchaseOptions';
   standard: Maybe<SwellProductPurchaseOptionsStandard>;
@@ -2439,6 +2738,7 @@ export type SwellProductPurchaseOptionsTrialPrice = {
   trialDays: Maybe<Scalars['Int']['output']>;
 };
 
+/** List of products to display as up-sells on a product detail page. */
 export type SwellProductUpSell = {
   __typename?: 'SwellProductUpSell';
   product: Maybe<SwellProduct>;
@@ -2446,11 +2746,13 @@ export type SwellProductUpSell = {
 };
 
 
+/** List of products to display as up-sells on a product detail page. */
 export type SwellProductUpSellProductArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Expandable list of variants representing unique variations of the product. Each variant is a combination of one or more `options`. For example, Size and Color. */
 export type SwellProductVariant = {
   __typename?: 'SwellProductVariant';
   attributes: Maybe<Scalars['JSON']['output']>;
@@ -2463,6 +2765,7 @@ export type SwellProductVariant = {
   price: Maybe<Scalars['SafeNumber']['output']>;
   prices: Maybe<Array<Maybe<SwellProductVariantPrice>>>;
   purchaseOptions: Maybe<SwellProductVariantPurchaseOptions>;
+  /** SKU */
   sku: Maybe<Scalars['String']['output']>;
   stockLevel: Maybe<Scalars['Int']['output']>;
 };
@@ -2599,79 +2902,139 @@ export type SwellSettingsSubscriptions = {
   pauseNextSkipThreshold: Maybe<Scalars['Int']['output']>;
 };
 
+/** Subscription */
 export type SwellSubscription = {
   __typename?: 'SwellSubscription';
+  /** ID of the subscribed customer's account. */
   accountId: Maybe<Scalars['ID']['output']>;
+  /** Indicates the subscription is currently active. */
   active: Maybe<Scalars['Boolean']['output']>;
+  /** Subscription billing details. */
   billing: Maybe<SwellSubscriptionBilling>;
+  /** Billing schedule for subscription plan. */
   billingSchedule: Maybe<SwellSubscriptionBillingSchedule>;
+  /** When `true`, indicates the subscription was or will be canceled at the end of the billing period. */
   cancelAtEnd: Maybe<Scalars['Boolean']['output']>;
+  /** Indicates the subscription was canceled. */
   canceled: Maybe<Scalars['Boolean']['output']>;
+  /** Coupon code applied to the subscription. See coupons for details. */
   couponCode: Maybe<Scalars['String']['output']>;
   currency: Maybe<Scalars['String']['output']>;
+  /** Currency rate used in calculating the fixed amount. */
   currencyRate: Maybe<Scalars['SafeNumber']['output']>;
+  /** Date the subscription was canceled, if applicable. */
   dateCanceled: Maybe<Scalars['DateTime']['output']>;
   dateCreated: Maybe<Scalars['DateTime']['output']>;
+  /** End date for the subscription order period. */
   dateOrderPeriodEnd: Maybe<Scalars['DateTime']['output']>;
+  /** Date the subscription was unpaused, if applicable. */
   datePauseEnd: Maybe<Scalars['DateTime']['output']>;
+  /** Date the subscription was paused, if applicable. */
   datePaused: Maybe<Scalars['DateTime']['output']>;
+  /** When automated payment has failed, this is the date when the system will automatically retry. */
   datePaymentRetry: Maybe<Scalars['DateTime']['output']>;
+  /** End date of the current billing period. */
   datePeriodEnd: Maybe<Scalars['DateTime']['output']>;
+  /** Start date of the current billing period. */
   datePeriodStart: Maybe<Scalars['DateTime']['output']>;
+  /** Date the trial period did end in the past or will end in the future. Changing this value can be used to update the billing period of a subscription with or without a trial. For example, to set the monthly billing date to the 1st of the month, update `date_trial_end `to the first of the next month. */
   dateTrialEnd: Maybe<Scalars['DateTime']['output']>;
+  /** Date the trial period started, if applicable. */
   dateTrialStart: Maybe<Scalars['DateTime']['output']>;
   dateUpdated: Maybe<Scalars['DateTime']['output']>;
+  /** Total discount amount. */
   discountTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Grand total of the next invoice including line items and taxes. */
   grandTotal: Maybe<Scalars['SafeNumber']['output']>;
   id: Maybe<Scalars['ID']['output']>;
   interval: Maybe<Scalars['String']['output']>;
   intervalCount: Maybe<Scalars['Int']['output']>;
+  /** Amount invoiced for the last billing period. */
   invoiceTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total discount applied to line items. */
   itemDiscount: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total taxes applied to line items. */
   itemTax: Maybe<Scalars['SafeNumber']['output']>;
+  /** Amount invoiced for the last billing period. */
   itemTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** List of invoice line items added to the subscription. Recurring items are charged repeatedly, otherwise they are charged on the next invoice and then removed from the subscription. */
   items: Maybe<Array<Maybe<SwellSubscriptionItem>>>;
+  /** Plan options matching one or more of `product.options`. When setting this value, specify either option `id` or `name` (case-insensitive) to identify the option. */
   options: Maybe<Array<Maybe<SwellSubscriptionOption>>>;
+  /** ID of the order that originated the subscription, if applicable. */
   orderId: Maybe<Scalars['ID']['output']>;
+  /** Order schedule for the subscription plan. */
   orderSchedule: Maybe<SwellSubscriptionOrderSchedule>;
   orders: Maybe<SwellOrders>;
+  /** Indicates the last invoice was fully paid. */
   paid: Maybe<Scalars['Boolean']['output']>;
+  /** Indicates whether or not a subscription is paused. */
   paused: Maybe<Scalars['Boolean']['output']>;
+  /** Balance of payments on the invoice for the last billing period. A negative number indicates payment is owed, while a positive balance indicates refund is due. Zero balance indicates the invoice was fully paid. */
   paymentBalance: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total amount of payments for the last billing period. */
   paymentTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** ID of the subscription plan. */
   planId: Maybe<Scalars['ID']['output']>;
+  /** Name of the subscription plan. */
   planName: Maybe<Scalars['String']['output']>;
+  /** Price of the plan. Plan price can be overridden when creating or updating a subscription. */
   price: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total price of the plan (`price * quantity`). */
   priceTotal: Maybe<Scalars['SafeNumber']['output']>;
   product: Maybe<SwellProduct>;
+  /** Total discount amount of the subscription plan, divided by quantity. */
   productDiscountEach: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total discount applied to the subscription plan. */
   productDiscountTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** ID of the subscription plan product. */
   productId: Maybe<Scalars['ID']['output']>;
+  /** Total tax amount of the subscription plan, divided by quantity. */
   productTaxEach: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total tax applied to the subscription plan. */
   productTaxTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Quantity of the plan to charge. */
   quantity: Maybe<Scalars['Int']['output']>;
+  /** Total recurring discount applied to the subscription including line items. */
   recurringDiscountTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total discount applied to recurring line items. */
   recurringItemDiscount: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total taxes applied to recurring line items. */
   recurringItemTax: Maybe<Scalars['SafeNumber']['output']>;
+  /** Sum of all recurring line items before discounts and taxes. */
   recurringItemTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total of taxes applied separately from the subscription plan and recurring line items. */
   recurringTaxIncludedTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total taxes applied to the subscription including recurring line items. */
   recurringTaxTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Recurring total of the subscription including line items and taxes. */
   recurringTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Subscription shipping details. */
   shipping: Maybe<SwellSubscriptionShipping>;
+  /** Current status of the subscription. Can be `pending`, `active`, `trial`, `pastdue`, `unpaid`, `canceled`, or `paid`. */
   status: Maybe<Scalars['String']['output']>;
+  /** Sum of all line items before discounts and taxes. */
   subTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total of taxes applied separately from the subscription plan and line items. */
   taxIncludedTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** Total taxes applied to the subscription including line items. */
   taxTotal: Maybe<Scalars['SafeNumber']['output']>;
+  /** List of taxes applied to the subscription. */
   taxes: Maybe<Array<Maybe<SwellSubscriptionTax>>>;
+  /** When true, taxes are not applied to the subscription. When false, taxes are calculated and applied to the subscription. */
   taxesFixed: Maybe<Scalars['Boolean']['output']>;
+  /** Indicates the subscription is in a trial period and the first invoice will be issued on `date_trial_end`. */
   trial: Maybe<Scalars['Boolean']['output']>;
   trialDays: Maybe<Scalars['Int']['output']>;
+  /** Indicates the last invoice was marked as unpaid. This occurs automatically after all payment attempts are exhausted, as configured in subscription settings. */
   unpaid: Maybe<Scalars['Boolean']['output']>;
   variant: Maybe<SwellProductVariant>;
+  /** ID of the subscription plan variant, if applicable. */
   variantId: Maybe<Scalars['ID']['output']>;
 };
 
 
+/** Subscription */
 export type SwellSubscriptionOrdersArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
@@ -2682,6 +3045,7 @@ export type SwellSubscriptionOrdersArgs = {
   where: InputMaybe<Scalars['JSON']['input']>;
 };
 
+/** Subscription billing details. */
 export type SwellSubscriptionBilling = {
   __typename?: 'SwellSubscriptionBilling';
   accountCardId: Maybe<Scalars['ID']['output']>;
@@ -2748,6 +3112,7 @@ export type SwellSubscriptionBillingInput = {
   zip: InputMaybe<Scalars['String']['input']>;
 };
 
+/** Billing schedule for subscription plan. */
 export type SwellSubscriptionBillingSchedule = {
   __typename?: 'SwellSubscriptionBillingSchedule';
   dateLimitEnd: Maybe<Scalars['DateTime']['output']>;
@@ -2784,6 +3149,7 @@ export type SwellSubscriptionInput = {
   variantId: InputMaybe<Scalars['ID']['input']>;
 };
 
+/** List of invoice line items added to the subscription. Recurring items are charged repeatedly, otherwise they are charged on the next invoice and then removed from the subscription. */
 export type SwellSubscriptionItem = {
   __typename?: 'SwellSubscriptionItem';
   bundleItems: Maybe<Array<Maybe<SwellSubscriptionItemBundleItem>>>;
@@ -2816,6 +3182,7 @@ export type SwellSubscriptionItem = {
 };
 
 
+/** List of invoice line items added to the subscription. Recurring items are charged repeatedly, otherwise they are charged on the next invoice and then removed from the subscription. */
 export type SwellSubscriptionItemProductArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
@@ -2882,6 +3249,7 @@ export type SwellSubscriptionItemTax = {
   id: Maybe<Scalars['String']['output']>;
 };
 
+/** Plan options matching one or more of `product.options`. When setting this value, specify either option `id` or `name` (case-insensitive) to identify the option. */
 export type SwellSubscriptionOption = {
   __typename?: 'SwellSubscriptionOption';
   id: Maybe<Scalars['String']['output']>;
@@ -2903,6 +3271,7 @@ export type SwellSubscriptionOptionInput = {
   variant: InputMaybe<Scalars['Boolean']['input']>;
 };
 
+/** Order schedule for the subscription plan. */
 export type SwellSubscriptionOrderSchedule = {
   __typename?: 'SwellSubscriptionOrderSchedule';
   dateLimitEnd: Maybe<Scalars['DateTime']['output']>;
@@ -2912,6 +3281,7 @@ export type SwellSubscriptionOrderSchedule = {
   limitCurrent: Maybe<Scalars['Int']['output']>;
 };
 
+/** Subscription shipping details. */
 export type SwellSubscriptionShipping = {
   __typename?: 'SwellSubscriptionShipping';
   accountAddressId: Maybe<Scalars['ID']['output']>;
@@ -2953,6 +3323,7 @@ export type SwellSubscriptionShippingInput = {
   zip: InputMaybe<Scalars['String']['input']>;
 };
 
+/** List of taxes applied to the subscription. */
 export type SwellSubscriptionTax = {
   __typename?: 'SwellSubscriptionTax';
   amount: Maybe<Scalars['SafeNumber']['output']>;

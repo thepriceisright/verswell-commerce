@@ -7,10 +7,10 @@ import { Fragment, useEffect, useState } from 'react';
 
 import CloseIcon from 'components/icons/close';
 import MenuIcon from 'components/icons/menu';
-import { CategoryFragment } from 'lib/swell/__generated__/graphql';
+import { CategoryFragment, MenuFragment } from 'lib/swell/__generated__/graphql';
 import Search from './search';
 
-export default function MobileMenu({ menu }: { menu: CategoryFragment[] }) {
+export default function MobileMenu({ menu }: { menu: MenuFragment['items'] }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const [isOpen, setIsOpen] = useState(false);

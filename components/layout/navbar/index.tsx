@@ -4,26 +4,26 @@ import { Suspense } from 'react';
 import Cart from 'components/cart';
 import CartIcon from 'components/icons/cart';
 import LogoIcon from 'components/icons/logo';
-import { getCategories } from 'lib/swell';
-import { CategoryFragment } from 'lib/swell/__generated__/graphql';
+import { getMenu } from 'lib/swell';
 import MobileMenu from './mobile-menu';
 import Search from './search';
 
 export default async function Navbar() {
-  const menu = await getCategories();
+  // const menu = await getCategories();
+  const menu = await getMenu('main_menu');
 
   return (
     <nav className="relative flex items-center justify-between bg-white p-4 dark:bg-black lg:px-6">
-      <div className="block w-1/3 md:hidden">{menu && <MobileMenu menu={menu} />}</div>
+      <div className="block w-1/3 md:hidden">{menu && <MobileMenu menu={menu.items} />}</div>
       <div className="flex justify-self-center md:w-1/3 md:justify-self-start">
         <div className="md:mr-4">
           <Link href="/" aria-label="Go back home">
             <LogoIcon className="h-8 transition-transform hover:scale-110" />
           </Link>
         </div>
-        {menu?.length ? (
+        {menu?.items.length ? (
           <ul className="hidden md:flex">
-            {menu.slice(0, 3).map((item: CategoryFragment) => (
+            {menu.items.map((item) => (
               <li key={item.name}>
                 <Link
                   href={`/search/${item.slug}`}
