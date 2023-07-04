@@ -59,7 +59,7 @@ Next.js Commerce utilizes [Swell's Frontend API]([https://shopify.dev/docs/api/s
 
 In order to use the Swell's Frontend API, you need to obtain a public key in your Swell Store.
 
-Once created, you'll need to create a `SWELL_STOREFRONT_PUBLIC_KEY` environment variable and use the public access token as the value
+Once created, you'll need to create a `SWELL_PUBLIC_KEY` environment variable and use the public access token as the value
 
 <details>
   <summary>Expand to view detailed walkthrough</summary>
@@ -69,7 +69,7 @@ Once created, you'll need to create a `SWELL_STOREFRONT_PUBLIC_KEY` environment 
    ![Swell add public key](https://github.com/swellstores/verswell-commerce/assets/9212793/aaf595b5-bb94-490c-8d85-8edfc68f9d69)
 1. Add a decription to your public key and press the `Create Key` button
 ![swell-internal-next-marketplace swell store_admin_settings_api (1)](https://github.com/swellstores/verswell-commerce/assets/9212793/4b825477-c8e3-410e-abab-f4650b70b5cb)
-1. Copy the public key and assign it to the `SWELL_STOREFRONT_PUBLIC_KEY` environment variable
+1. Copy the public key and assign it to the `SWELL_PUBLIC_KEY` environment variable
 </details>
 
 
