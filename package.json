@@ -26,6 +26,7 @@
     "@headlessui/react": "^1.7.15",
     "@vercel/og": "^0.5.8",
     "clsx": "^1.2.1",
+    "encoding": "^0.1.13",
     "framer-motion": "^10.12.18",
     "graphql": "^16.7.1",
     "graphql-request": "^6.1.0",
