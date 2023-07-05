@@ -1,4 +1,4 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=SHOPIFY_REVALIDATION_SECRET,SHOPIFY_STOREFRONT_ACCESS_TOKEN,SHOPIFY_STORE_DOMAIN,SITE_NAME,TWITTER_CREATOR,TWITTER_SITE)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=SWELL_STOREFRONT_PUBLIC_KEY,SWELL_STORE_ID,SWELL_REVALIDATION_SECRET,SITE_NAME,TWITTER_CREATOR,TWITTER_SITE)
 
 # Next.js Swell Commerce
 
@@ -16,7 +16,7 @@ A Next.js 13 and App Router-ready ecommerce template featuring:
 - New fetching and caching paradigms
 - Dynamic OG images
 - Styling with Tailwind CSS
-- Checkout and payments with Shopify
+- Checkout and payments with Swell
 - Automatic light/dark mode based on system settings
 
 > Note: Looking for Next.js Commerce v1? View the [code](https://github.com/vercel/commerce/tree/v1), [demo](https://commerce-v1.vercel.store), and [release notes](https://github.com/vercel/commerce/releases/tag/v1)
@@ -26,7 +26,7 @@ A Next.js 13 and App Router-ready ecommerce template featuring:
 
 You will need to use the environment variables [defined in `.env.example`](.env.example) to run Next.js Commerce. It's recommended you use [Vercel Environment Variables](https://vercel.com/docs/concepts/projects/environment-variables) for this, but a `.env` file is all that is necessary.
 
-> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control your Shopify store.
+> Note: You should not commit your `.env` file or it will expose secrets that will allow others to control your Swell store.
 
 1. Install Vercel CLI: `npm i -g vercel`
 2. Link local instance with Vercel and GitHub accounts (creates `.vercel` directory): `vercel link`
@@ -49,13 +49,13 @@ Your app should now be running on [localhost:3000](http://localhost:3000/).
 1. Run `pmpm dev` to ensure everything is working correctly.
 </details>
 
-### Add Shopify domain to an environment variable
+### Add Swell domain to an environment variable
 
 Create a `SWELL_STORE_ID` environment variable and use your Swell store ID as the the value.
 
 ### Accessing the Swell Frontend API
 
-Next.js Commerce utilizes [Swell's Frontend API]([https://shopify.dev/docs/api/storefront](https://developers.swell.is/frontend-api/introduction)) to create unique customer experiences. The API offers a full range of commerce options making it possible for customers to control products, collections, menus, pages, cart, checkout, and more.
+Next.js Commerce utilizes [Swell's Frontend API](https://developers.swell.is/frontend-api/introduction) to create unique customer experiences. The API offers a full range of commerce options making it possible for customers to control products, collections, menus, pages, cart, checkout, and more.
 
 In order to use the Swell's Frontend API, you need to obtain a public key in your Swell Store.
 
@@ -75,7 +75,7 @@ Once created, you'll need to create a `SWELL_STOREFRONT_PUBLIC_KEY` environment 
 
 ### Configure webhooks for on-demand incremental static regeneration (ISR)
 
-Utilizing [Swell's webhooks](https://developers.swell.is/backend-api/webhooks/the-webhook-model), and listening for select [Swell webhook event topics](https://developers.swell.is/backend-api/events/event-types), we can use [Next'js on-demand revalidation](https://nextjs.org/docs/app/building-your-application/data-fetching/revalidating#using-on-demand-revalidation) to keep data fetches indefinitely cached until certain events in the Shopify store occur.
+Utilizing [Swell's webhooks](https://developers.swell.is/backend-api/webhooks/the-webhook-model), and listening for select [Swell webhook event topics](https://developers.swell.is/backend-api/events/event-types), we can use [Next'js on-demand revalidation](https://nextjs.org/docs/app/building-your-application/data-fetching/revalidating#using-on-demand-revalidation) to keep data fetches indefinitely cached until certain events in the Swell store occur.
 
 Next.js is pre-configured to listen for the following Swell webhook events and automatically revalidate fetches.
 - `category.created`
@@ -92,7 +92,7 @@ Next.js is pre-configured to listen for the following Swell webhook events and a
 #### Setup secret for secure revalidation
 
 1. Create your own secret or [generate a random UUID](https://www.uuidgenerator.net/guid).
-1. Create a [Vercel Environment Variable](https://vercel.com/docs/concepts/projects/environment-variables) named `SHOPIFY_REVALIDATION_SECRET` and use the value from above.
+1. Create a [Vercel Environment Variable](https://vercel.com/docs/concepts/projects/environment-variables) named `SWELL_REVALIDATION_SECRET` and use the value from above.
 
 #### Configure Swell webhooks
 
