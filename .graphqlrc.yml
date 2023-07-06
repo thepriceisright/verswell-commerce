@@ -2,7 +2,7 @@ overwrite: true
 schema:
   - https://${SWELL_STORE_ID}.swell.store/graphql:
       headers:
-        Authorization: ${SWELL_STOREFRONT_PUBLIC_KEY}
+        Authorization: ${SWELL_PUBLIC_KEY}
 documents: 'lib/**/*.graphql'
 generates:
   lib/swell/__generated__/graphql.ts:
