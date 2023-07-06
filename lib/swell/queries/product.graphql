@@ -11,3 +11,11 @@ query getProducts($sort: String, $query: String) {
     }
   }
 }
+
+query getProductsByCategory($sort: String, $query: String, $category: String) {
+  products(sort: $sort, search: $query, categories: [$category]) {
+    results {
+      ...Product
+    }
+  }
+}

@@ -97,11 +97,20 @@ export const getCategory = async (slug: string) => {
   return data.categoryBySlug;
 };
 
-export const getCategoryProducts = async (slug: string) => {
-  const { data } = await SwellClient.getCategoriesProducts({
-    slug
+export const getProductsByCategory = async (
+  category: string,
+  params?: {
+    query?: string;
+    sort?: string;
+  }
+) => {
+  const { sort, query } = params || {};
+  const { data } = await SwellClient.getProductsByCategory({
+    category,
+    sort,
+    query
   });
-  return data.categoryBySlug?.products;
+  return data?.products.results;
 };
 
 export const getCategories = async () => {

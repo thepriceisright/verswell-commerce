@@ -1,4 +1,5 @@
-import { getCategory, getCategoryProducts } from 'lib/swell';
+import { defaultSort, sorting } from 'lib/constants';
+import { getCategory, getProductsByCategory } from 'lib/swell';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 
@@ -32,8 +33,20 @@ export async function generateMetadata({
   };
 }
 
-export default async function CategoryPage({ params }: { params: { collection: string } }) {
-  const products = await getCategoryProducts(params.collection);
+export default async function CategoryPage({
+  params,
+  searchParams
+}: {
+  params: { collection: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const { sort, q: searchValue } = searchParams as { [key: string]: string };
+  const { sortKey, reverse } = sorting.find((item) => item.slug === sort) || defaultSort;
+
+  const products = await getProductsByCategory(params.collection, {
+    query: searchValue,
+    sort: `${sortKey} ${reverse ? 'desc' : 'asc'}`
+  });
 
   return (
     <section>
