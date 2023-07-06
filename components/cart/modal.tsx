@@ -32,7 +32,7 @@ export default function CartModal({ cart, cartIdUpdated }: { cart: Cart; cartIdU
   const closeCart = () => setIsOpen(false);
 
   useEffect(() => {
-    if (cartIdUpdated) {
+    if (cartIdUpdated && cart.id) {
       setCookie('sessionToken', cart.id, {
         path: '/',
         sameSite: 'strict',

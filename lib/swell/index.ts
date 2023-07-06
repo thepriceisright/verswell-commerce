@@ -46,14 +46,16 @@ export const getCart = async (sessionToken: string) => {
 };
 
 export const addToCart = async (
-  sessionToken: string,
+  sessionToken: string | undefined,
   {
     productId,
     quantity,
     options
   }: { productId: string; quantity: number; options: SwellCartItemOptionInput[] | undefined }
 ) => {
-  client.setHeader('X-Session', sessionToken);
+  if (sessionToken) {
+    client.setHeader('X-Session', sessionToken);
+  }
   const addCartItem = await getSdk(client).addToCart({
     productId,
     quantity,
