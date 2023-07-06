@@ -16,7 +16,7 @@ A Next.js 13 and App Router-ready ecommerce template featuring:
 - New fetching and caching paradigms
 - Dynamic OG images
 - Styling with Tailwind CSS
-- Checkout and payments with Shopify
+- Checkout and payments with Swell
 - Automatic light/dark mode based on system settings
 
 Next.js Commerce utilizes the Swell Frontend API to provide client-safe access to your store's data. The Frontend API has read-only permissions for most models including products, categories, navigation menus, pages, and more. With the addition of a session token, cart management, checkout, and account editing flows scoped to each customer are also available.

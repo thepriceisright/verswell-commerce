@@ -1,4 +1,4 @@
-import { getProducts } from 'lib/swell';
+import { getCategories, getProducts } from 'lib/swell';
 import { MetadataRoute } from 'next';
 
 const baseUrl = process.env.NEXT_PUBLIC_VERCEL_URL
@@ -11,30 +11,19 @@ export default async function sitemap(): Promise<Promise<Promise<MetadataRoute.S
     lastModified: new Date().toISOString()
   }));
 
-  const collectionsPromise = getCollections().then((collections) =>
-    collections.map((collection) => ({
-      url: `${baseUrl}${collection.path}`,
-      lastModified: collection.updatedAt
+  const collectionsPromise = getCategories().then((categories) =>
+    categories.map((category) => ({
+      url: `${baseUrl}${category.slug}`
     }))
   );
 
   const productsPromise = getProducts({}).then((products) =>
     products.map((product) => ({
-      url: `${baseUrl}/product/${product.handle}`,
-      lastModified: product.updatedAt
+      url: `${baseUrl}/product/${product.slug}`
     }))
   );
 
-  const pagesPromise = getPages().then((pages) =>
-    pages.map((page) => ({
-      url: `${baseUrl}/${page.handle}`,
-      lastModified: page.updatedAt
-    }))
-  );
-
-  const fetchedRoutes = (
-    await Promise.all([collectionsPromise, productsPromise, pagesPromise])
-  ).flat();
+  const fetchedRoutes = (await Promise.all([collectionsPromise, productsPromise])).flat();
 
   return [...routesMap, ...fetchedRoutes];
 }
