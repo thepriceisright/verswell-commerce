@@ -1,4 +1,4 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fcommerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Commerce&demo-url=https%3A%2F%2Fdemo.vercel.store&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=SWELL_STORE_ID,SWELL_PUBLIC_KEY,SWELL_REVALIDATION_SECRET,SITE_NAME,TWITTER_CREATOR,TWITTER_SITE)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/swellstores/verswell-commerce&project-name=commerce&repo-name=commerce&demo-title=Next.js%20Swell%20Commerce&demo-url=https://verswell-commerce.vercel.app/&demo-image=https%3A%2F%2Fbigcommerce-demo-asset-ksvtgfvnd.vercel.app%2Fbigcommerce.png&env=SWELL_STORE_ID,SWELL_PUBLIC_KEY,SWELL_REVALIDATION_SECRET,SITE_NAME,TWITTER_CREATOR,TWITTER_SITE)
 
 # Next.js Swell Commerce
 
