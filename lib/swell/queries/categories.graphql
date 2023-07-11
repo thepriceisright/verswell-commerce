@@ -11,12 +11,3 @@ query getGategory($slug: String!) {
     ...Category
   }
 }
-
-query getCategoriesProducts($slug: String!) {
-  categoryBySlug(slug: $slug) {
-    ...Category
-    products {
-      ...Product
-    }
-  }
-}

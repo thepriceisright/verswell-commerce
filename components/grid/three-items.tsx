@@ -1,6 +1,6 @@
 import { GridTileImage } from 'components/grid/tile';
 import { PLACEHOLDER_IMAGE } from 'lib/constants';
-import { getCategoryProducts } from 'lib/swell';
+import { getProductsByCategory } from 'lib/swell';
 import { ProductFragment } from 'lib/swell/__generated__/graphql';
 import Link from 'next/link';
 
@@ -38,7 +38,7 @@ function ThreeItemGridItem({
 
 export async function ThreeItemGrid() {
   // Collections that start with `hidden-*` are hidden from the search page.
-  const homepageItems = await getCategoryProducts('equipment');
+  const homepageItems = await getProductsByCategory('equipment');
 
   if (!homepageItems[0] || !homepageItems[1] || !homepageItems[2]) return null;
 

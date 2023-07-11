@@ -1,24 +1,29 @@
+// @ts-nocheck
 import { GraphQLClient } from 'graphql-request';
 import { GraphQLClientRequestHeaders } from 'graphql-request/build/cjs/types';
-import { print } from 'graphql'
+import { print } from 'graphql';
 import gql from 'graphql-tag';
 export type Maybe<T> = T;
 export type InputMaybe<T> = T | undefined;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
 export type MakeOptional<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]?: Maybe<T[SubKey]> };
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & { [SubKey in K]: Maybe<T[SubKey]> };
-export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = { [_ in K]?: never };
-export type Incremental<T> = T | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
+export type MakeEmpty<T extends { [key: string]: unknown }, K extends keyof T> = {
+  [_ in K]?: never;
+};
+export type Incremental<T> =
+  | T
+  | { [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never };
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
-  ID: { input: string; output: string; }
-  String: { input: string; output: string; }
-  Boolean: { input: boolean; output: boolean; }
-  Int: { input: number; output: number; }
-  Float: { input: number; output: number; }
-  DateTime: { input: any; output: any; }
-  JSON: { input: any; output: any; }
-  SafeNumber: { input: any; output: any; }
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
+  DateTime: { input: any; output: any };
+  JSON: { input: any; output: any };
+  SafeNumber: { input: any; output: any };
 };
 
 export type Mutation = {
@@ -51,16 +56,13 @@ export type Mutation = {
   updateSubscriptionItem: Maybe<SwellSubscriptionItem>;
 };
 
-
 export type MutationAddAccountAddressArgs = {
   input: InputMaybe<SwellAccountAddressInput>;
 };
 
-
 export type MutationAddAccountCardArgs = {
   input: InputMaybe<SwellAccountCardInput>;
 };
-
 
 export type MutationAddCartItemArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -68,12 +70,10 @@ export type MutationAddCartItemArgs = {
   input: InputMaybe<SwellCartItemInput>;
 };
 
-
 export type MutationAddSubscriptionItemArgs = {
   input: InputMaybe<SwellSubscriptionItemInput>;
   subscriptionId: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type MutationApplyCouponArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -81,44 +81,36 @@ export type MutationApplyCouponArgs = {
   code: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type MutationApplyGiftcardArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   code: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type MutationCreateAccountArgs = {
   input: InputMaybe<SwellAccountInput>;
 };
-
 
 export type MutationCreateSubscriptionArgs = {
   input: InputMaybe<SwellSubscriptionInput>;
 };
 
-
 export type MutationDeleteAccountAddressArgs = {
   addressId: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type MutationDeleteAccountCardArgs = {
   cardId: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type MutationDeleteCartItemArgs = {
   itemId: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type MutationDeleteSubscriptionItemArgs = {
   itemId: InputMaybe<Scalars['String']['input']>;
   subscriptionId: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type MutationLoginAccountArgs = {
   email: InputMaybe<Scalars['String']['input']>;
@@ -126,12 +118,10 @@ export type MutationLoginAccountArgs = {
   passwordToken: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type MutationRecoverAccountArgs = {
   password: InputMaybe<Scalars['String']['input']>;
   passwordResetKey: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type MutationRemoveGiftcardArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -139,42 +129,35 @@ export type MutationRemoveGiftcardArgs = {
   giftcardId: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type MutationSendAccountRecoveryArgs = {
   email: InputMaybe<Scalars['String']['input']>;
   passwordResetUrl: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type MutationSubmitCartOrderArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type MutationUpdateAccountArgs = {
   input: InputMaybe<SwellAccountInput>;
 };
-
 
 export type MutationUpdateAccountAddressArgs = {
   addressId: InputMaybe<Scalars['String']['input']>;
   input: InputMaybe<SwellAccountAddressInput>;
 };
 
-
 export type MutationUpdateAccountCardArgs = {
   cardId: InputMaybe<Scalars['String']['input']>;
   input: InputMaybe<SwellAccountCardInput>;
 };
-
 
 export type MutationUpdateCartArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   input: InputMaybe<SwellCartInput>;
 };
-
 
 export type MutationUpdateCartItemArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -183,12 +166,10 @@ export type MutationUpdateCartItemArgs = {
   itemId: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type MutationUpdateSubscriptionArgs = {
   id: InputMaybe<Scalars['String']['input']>;
   input: InputMaybe<SwellSubscriptionInput>;
 };
-
 
 export type MutationUpdateSubscriptionItemArgs = {
   input: InputMaybe<SwellSubscriptionItemInput>;
@@ -235,19 +216,16 @@ export type Query = {
   subscriptions: Maybe<SwellSubscriptions>;
 };
 
-
 export type QueryAccountArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryAttributeByIdArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   id: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryAttributesArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -259,12 +237,10 @@ export type QueryAttributesArgs = {
   where: InputMaybe<Scalars['JSON']['input']>;
 };
 
-
 export type QueryCartArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryCategoriesArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -276,20 +252,17 @@ export type QueryCategoriesArgs = {
   where: InputMaybe<Scalars['JSON']['input']>;
 };
 
-
 export type QueryCategoryByIdArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   id: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type QueryCategoryBySlugArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   slug: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryContentPageByIdArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -298,14 +271,12 @@ export type QueryContentPageByIdArgs = {
   id: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type QueryContentPageBySlugArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   _preview: InputMaybe<Scalars['Boolean']['input']>;
   slug: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryContentPagesArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -318,12 +289,10 @@ export type QueryContentPagesArgs = {
   where: InputMaybe<Scalars['JSON']['input']>;
 };
 
-
 export type QueryMenuSettingsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryOrderByIdArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -331,13 +300,11 @@ export type QueryOrderByIdArgs = {
   id: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type QueryOrderByNumberArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   number: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryOrdersArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -349,12 +316,10 @@ export type QueryOrdersArgs = {
   where: InputMaybe<Scalars['JSON']['input']>;
 };
 
-
 export type QueryPaymentSettingsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryProductByIdArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -365,7 +330,6 @@ export type QueryProductByIdArgs = {
   id: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type QueryProductBySlugArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
@@ -374,7 +338,6 @@ export type QueryProductBySlugArgs = {
   category: InputMaybe<Scalars['String']['input']>;
   slug: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QueryProductsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -389,12 +352,10 @@ export type QueryProductsArgs = {
   where: InputMaybe<Scalars['JSON']['input']>;
 };
 
-
 export type QueryStoreSettingsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QuerySubscriptionByIdArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -402,12 +363,10 @@ export type QuerySubscriptionByIdArgs = {
   id: InputMaybe<Scalars['String']['input']>;
 };
 
-
 export type QuerySubscriptionSettingsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 export type QuerySubscriptionsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -466,13 +425,11 @@ export type SwellAccount = {
   vatNumber: Maybe<Scalars['String']['output']>;
 };
 
-
 /** Customer */
 export type SwellAccountOrdersArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** Customer */
 export type SwellAccountSubscriptionsArgs = {
@@ -508,7 +465,6 @@ export type SwellAccountAddress = {
   /** Zip/Postal Code */
   zip: Maybe<Scalars['String']['output']>;
 };
-
 
 /** Stored addresses used by an account */
 export type SwellAccountAddressParentArgs = {
@@ -630,7 +586,6 @@ export type SwellAccountCard = {
   token: Maybe<Scalars['String']['output']>;
   zipCheck: Maybe<Scalars['String']['output']>;
 };
-
 
 /** Stored credit cards used by an account */
 export type SwellAccountCardParentArgs = {
@@ -925,13 +880,11 @@ export type SwellCart = {
   trialTaxIncludedTotal: Maybe<Scalars['SafeNumber']['output']>;
 };
 
-
 /** Cart */
 export type SwellCartAccountArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** Cart */
 export type SwellCartOrderArgs = {
@@ -1509,13 +1462,11 @@ export type SwellCategory = {
   topId: Maybe<Scalars['ID']['output']>;
 };
 
-
 /** Category */
 export type SwellCategoryChildrenArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** Category */
 export type SwellCategoryParentArgs = {
@@ -1523,13 +1474,11 @@ export type SwellCategoryParentArgs = {
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
-
 /** Category */
 export type SwellCategoryProductsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
 };
-
 
 /** Category */
 export type SwellCategoryTopArgs = {
@@ -1605,7 +1554,6 @@ export type SwellContentPageSectionCollectionPreview = {
   titleSize: Maybe<Scalars['String']['output']>;
   type: Maybe<Scalars['String']['output']>;
 };
-
 
 export type SwellContentPageSectionCollectionPreviewCategoryArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -1745,7 +1693,9 @@ export type SwellContentPageSectionMultiPanelPanelTextLink = {
   url: Maybe<Scalars['String']['output']>;
 };
 
-export type SwellContentPageSectionMultiPanelPanels = SwellContentPageSectionMultiPanelPanelImage | SwellContentPageSectionMultiPanelPanelText;
+export type SwellContentPageSectionMultiPanelPanels =
+  | SwellContentPageSectionMultiPanelPanelImage
+  | SwellContentPageSectionMultiPanelPanelText;
 
 export type SwellContentPageSectionPressMention = {
   __typename?: 'SwellContentPageSectionPressMention';
@@ -1763,7 +1713,16 @@ export type SwellContentPageSectionPressMentionMention = {
   quote: Maybe<Scalars['String']['output']>;
 };
 
-export type SwellContentPageSections = SwellContentPageSectionCollectionPreview | SwellContentPageSectionCustomerReview | SwellContentPageSectionEmailSignup | SwellContentPageSectionFullWidthMedium | SwellContentPageSectionHeadingWithText | SwellContentPageSectionLargeMedium | SwellContentPageSectionMultiFeature | SwellContentPageSectionMultiPanel | SwellContentPageSectionPressMention;
+export type SwellContentPageSections =
+  | SwellContentPageSectionCollectionPreview
+  | SwellContentPageSectionCustomerReview
+  | SwellContentPageSectionEmailSignup
+  | SwellContentPageSectionFullWidthMedium
+  | SwellContentPageSectionHeadingWithText
+  | SwellContentPageSectionLargeMedium
+  | SwellContentPageSectionMultiFeature
+  | SwellContentPageSectionMultiPanel
+  | SwellContentPageSectionPressMention;
 
 export type SwellContentPages = {
   __typename?: 'SwellContentPages';
@@ -2299,7 +2258,6 @@ export type SwellOrderShipmentItem = {
   variantId: Maybe<Scalars['ID']['output']>;
 };
 
-
 /** List of line items describing the products shipped. */
 export type SwellOrderShipmentItemProductArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -2492,7 +2450,6 @@ export type SwellProduct = {
   variants: Maybe<SwellProductsVariants>;
 };
 
-
 /** Product */
 export type SwellProductCategoriesArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -2510,7 +2467,6 @@ export type SwellProductBundleItem = {
   variant: Maybe<SwellProductVariant>;
   variantId: Maybe<Scalars['ID']['output']>;
 };
-
 
 /** List of products sold as a bundle. Applicable only when `bundle=true`. */
 export type SwellProductBundleItemProductArgs = {
@@ -2545,7 +2501,6 @@ export type SwellProductCrossSell = {
   product: Maybe<SwellProduct>;
   productId: Maybe<Scalars['ID']['output']>;
 };
-
 
 /** List of products to display as cross-sells on a shopping cart page. */
 export type SwellProductCrossSellProductArgs = {
@@ -2744,7 +2699,6 @@ export type SwellProductUpSell = {
   product: Maybe<SwellProduct>;
   productId: Maybe<Scalars['ID']['output']>;
 };
-
 
 /** List of products to display as up-sells on a product detail page. */
 export type SwellProductUpSellProductArgs = {
@@ -3033,7 +2987,6 @@ export type SwellSubscription = {
   variantId: Maybe<Scalars['ID']['output']>;
 };
 
-
 /** Subscription */
 export type SwellSubscriptionOrdersArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -3181,7 +3134,6 @@ export type SwellSubscriptionItem = {
   variantId: Maybe<Scalars['ID']['output']>;
 };
 
-
 /** List of invoice line items added to the subscription. Recurring items are charged repeatedly, otherwise they are charged on the next invoice and then removed from the subscription. */
 export type SwellSubscriptionItemProductArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -3201,7 +3153,6 @@ export type SwellSubscriptionItemBundleItem = {
   taxEach: Maybe<Scalars['SafeNumber']['output']>;
   variantId: Maybe<Scalars['ID']['output']>;
 };
-
 
 export type SwellSubscriptionItemBundleItemProductArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
@@ -3342,423 +3293,853 @@ export type SwellSubscriptions = {
   results: Maybe<Array<Maybe<SwellSubscription>>>;
 };
 
-export type CartFragment = (
-  { __typename?: 'SwellCart' }
-  & Pick<SwellCart, 'checkoutUrl' | 'subTotal' | 'grandTotal' | 'currency'>
-  & { taxes: Maybe<Array<Maybe<(
-    { __typename?: 'SwellCartTax' }
-    & Pick<SwellCartTax, 'amount'>
-  )>>>, items: Maybe<Array<Maybe<(
-    { __typename?: 'SwellCartItem' }
-    & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-    & { options: Maybe<Array<Maybe<(
-      { __typename?: 'SwellCartItemOption' }
-      & Pick<SwellCartItemOption, 'name' | 'value'>
-    )>>>, product: Maybe<(
-      { __typename?: 'SwellProduct' }
-      & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
-      & { images: Maybe<Array<Maybe<(
-        { __typename?: 'SwellProductImage' }
-        & Pick<SwellProductImage, 'caption'>
-        & { file: Maybe<(
-          { __typename?: 'SwellProductImageFile' }
-          & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
-        )> }
-      )>>> }
-    )> }
-  )>>> }
-);
+export type CartFragment = { __typename?: 'SwellCart' } & Pick<
+  SwellCart,
+  'checkoutUrl' | 'subTotal' | 'grandTotal' | 'currency'
+> & {
+    taxes: Maybe<Array<Maybe<{ __typename?: 'SwellCartTax' } & Pick<SwellCartTax, 'amount'>>>>;
+    items: Maybe<
+      Array<
+        Maybe<
+          { __typename?: 'SwellCartItem' } & Pick<
+            SwellCartItem,
+            'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'
+          > & {
+              options: Maybe<
+                Array<
+                  Maybe<
+                    { __typename?: 'SwellCartItemOption' } & Pick<
+                      SwellCartItemOption,
+                      'name' | 'value'
+                    >
+                  >
+                >
+              >;
+              product: Maybe<
+                { __typename?: 'SwellProduct' } & Pick<
+                  SwellProduct,
+                  'id' | 'name' | 'currency' | 'slug'
+                > & {
+                    images: Maybe<
+                      Array<
+                        Maybe<
+                          { __typename?: 'SwellProductImage' } & Pick<
+                            SwellProductImage,
+                            'caption'
+                          > & {
+                              file: Maybe<
+                                { __typename?: 'SwellProductImageFile' } & Pick<
+                                  SwellProductImageFile,
+                                  'url' | 'width' | 'height'
+                                >
+                              >;
+                            }
+                        >
+                      >
+                    >;
+                  }
+              >;
+            }
+        >
+      >
+    >;
+  };
 
-export type CartItemFragment = (
-  { __typename?: 'SwellCartItem' }
-  & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-  & { options: Maybe<Array<Maybe<(
-    { __typename?: 'SwellCartItemOption' }
-    & Pick<SwellCartItemOption, 'name' | 'value'>
-  )>>>, product: Maybe<(
-    { __typename?: 'SwellProduct' }
-    & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
-    & { images: Maybe<Array<Maybe<(
-      { __typename?: 'SwellProductImage' }
-      & Pick<SwellProductImage, 'caption'>
-      & { file: Maybe<(
-        { __typename?: 'SwellProductImageFile' }
-        & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
-      )> }
-    )>>> }
-  )> }
-);
+export type CartItemFragment = { __typename?: 'SwellCartItem' } & Pick<
+  SwellCartItem,
+  'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'
+> & {
+    options: Maybe<
+      Array<
+        Maybe<{ __typename?: 'SwellCartItemOption' } & Pick<SwellCartItemOption, 'name' | 'value'>>
+      >
+    >;
+    product: Maybe<
+      { __typename?: 'SwellProduct' } & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'> & {
+          images: Maybe<
+            Array<
+              Maybe<
+                { __typename?: 'SwellProductImage' } & Pick<SwellProductImage, 'caption'> & {
+                    file: Maybe<
+                      { __typename?: 'SwellProductImageFile' } & Pick<
+                        SwellProductImageFile,
+                        'url' | 'width' | 'height'
+                      >
+                    >;
+                  }
+              >
+            >
+          >;
+        }
+    >;
+  };
 
-export type CategoryFragment = (
-  { __typename?: 'SwellCategory' }
-  & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'>
-);
+export type CategoryFragment = { __typename?: 'SwellCategory' } & Pick<
+  SwellCategory,
+  'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'
+>;
 
-export type MenuFragment = (
-  { __typename?: 'SwellSettingsMenusSection' }
-  & Pick<SwellSettingsMenusSection, 'id' | 'name' | 'items'>
-);
+export type MenuFragment = { __typename?: 'SwellSettingsMenusSection' } & Pick<
+  SwellSettingsMenusSection,
+  'id' | 'name' | 'items'
+>;
 
-export type ProductFragment = (
-  { __typename?: 'SwellProduct' }
-  & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
-  & { options: Maybe<Array<Maybe<(
-    { __typename?: 'SwellProductOption' }
-    & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
-    & { values: Maybe<Array<Maybe<(
-      { __typename?: 'SwellProductOptionValue' }
-      & Pick<SwellProductOptionValue, 'id' | 'name' | 'price'>
-    )>>> }
-  )>>>, variants: Maybe<(
-    { __typename?: 'SwellProductsVariants' }
-    & { results: Maybe<Array<Maybe<(
-      { __typename?: 'SwellProductVariant' }
-      & Pick<SwellProductVariant, 'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'>
-      & { prices: Maybe<Array<Maybe<(
-        { __typename?: 'SwellProductVariantPrice' }
-        & Pick<SwellProductVariantPrice, 'price' | 'discountPercent'>
-      )>>> }
-    )>>> }
-  )>, images: Maybe<Array<Maybe<(
-    { __typename?: 'SwellProductImage' }
-    & Pick<SwellProductImage, 'caption'>
-    & { file: Maybe<(
-      { __typename?: 'SwellProductImageFile' }
-      & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
-    )> }
-  )>>> }
-);
+export type ProductFragment = { __typename?: 'SwellProduct' } & Pick<
+  SwellProduct,
+  | 'id'
+  | 'currency'
+  | 'slug'
+  | 'stockPurchasable'
+  | 'stockLevel'
+  | 'name'
+  | 'description'
+  | 'price'
+  | 'metaTitle'
+  | 'metaDescription'
+  | 'tags'
+> & {
+    options: Maybe<
+      Array<
+        Maybe<
+          { __typename?: 'SwellProductOption' } & Pick<
+            SwellProductOption,
+            'name' | 'id' | 'description' | 'variant'
+          > & {
+              values: Maybe<
+                Array<
+                  Maybe<
+                    { __typename?: 'SwellProductOptionValue' } & Pick<
+                      SwellProductOptionValue,
+                      'id' | 'name' | 'price'
+                    >
+                  >
+                >
+              >;
+            }
+        >
+      >
+    >;
+    variants: Maybe<
+      { __typename?: 'SwellProductsVariants' } & {
+        results: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'SwellProductVariant' } & Pick<
+                SwellProductVariant,
+                'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'
+              > & {
+                  prices: Maybe<
+                    Array<
+                      Maybe<
+                        { __typename?: 'SwellProductVariantPrice' } & Pick<
+                          SwellProductVariantPrice,
+                          'price' | 'discountPercent'
+                        >
+                      >
+                    >
+                  >;
+                }
+            >
+          >
+        >;
+      }
+    >;
+    images: Maybe<
+      Array<
+        Maybe<
+          { __typename?: 'SwellProductImage' } & Pick<SwellProductImage, 'caption'> & {
+              file: Maybe<
+                { __typename?: 'SwellProductImageFile' } & Pick<
+                  SwellProductImageFile,
+                  'url' | 'width' | 'height'
+                >
+              >;
+            }
+        >
+      >
+    >;
+  };
 
-export type ProductVariantFragment = (
-  { __typename?: 'SwellProductVariant' }
-  & Pick<SwellProductVariant, 'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'>
-  & { prices: Maybe<Array<Maybe<(
-    { __typename?: 'SwellProductVariantPrice' }
-    & Pick<SwellProductVariantPrice, 'price' | 'discountPercent'>
-  )>>> }
-);
+export type ProductVariantFragment = { __typename?: 'SwellProductVariant' } & Pick<
+  SwellProductVariant,
+  'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'
+> & {
+    prices: Maybe<
+      Array<
+        Maybe<
+          { __typename?: 'SwellProductVariantPrice' } & Pick<
+            SwellProductVariantPrice,
+            'price' | 'discountPercent'
+          >
+        >
+      >
+    >;
+  };
 
 export type AddToCartMutationVariables = Exact<{
   productId: Scalars['ID']['input'];
   quantity: Scalars['Int']['input'];
-  options: InputMaybe<Array<InputMaybe<SwellCartItemOptionInput>> | InputMaybe<SwellCartItemOptionInput>>;
+  options: InputMaybe<
+    Array<InputMaybe<SwellCartItemOptionInput>> | InputMaybe<SwellCartItemOptionInput>
+  >;
 }>;
 
-
-export type AddToCartMutation = (
-  { __typename?: 'Mutation' }
-  & { addCartItem: Maybe<(
-    { __typename?: 'SwellCart' }
-    & Pick<SwellCart, 'checkoutUrl' | 'subTotal' | 'grandTotal' | 'currency'>
-    & { taxes: Maybe<Array<Maybe<(
-      { __typename?: 'SwellCartTax' }
-      & Pick<SwellCartTax, 'amount'>
-    )>>>, items: Maybe<Array<Maybe<(
-      { __typename?: 'SwellCartItem' }
-      & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-      & { options: Maybe<Array<Maybe<(
-        { __typename?: 'SwellCartItemOption' }
-        & Pick<SwellCartItemOption, 'name' | 'value'>
-      )>>>, product: Maybe<(
-        { __typename?: 'SwellProduct' }
-        & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
-        & { images: Maybe<Array<Maybe<(
-          { __typename?: 'SwellProductImage' }
-          & Pick<SwellProductImage, 'caption'>
-          & { file: Maybe<(
-            { __typename?: 'SwellProductImageFile' }
-            & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
-          )> }
-        )>>> }
-      )> }
-    )>>> }
-  )> }
-);
+export type AddToCartMutation = { __typename?: 'Mutation' } & {
+  addCartItem: Maybe<
+    { __typename?: 'SwellCart' } & Pick<
+      SwellCart,
+      'checkoutUrl' | 'subTotal' | 'grandTotal' | 'currency'
+    > & {
+        taxes: Maybe<Array<Maybe<{ __typename?: 'SwellCartTax' } & Pick<SwellCartTax, 'amount'>>>>;
+        items: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'SwellCartItem' } & Pick<
+                SwellCartItem,
+                'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'
+              > & {
+                  options: Maybe<
+                    Array<
+                      Maybe<
+                        { __typename?: 'SwellCartItemOption' } & Pick<
+                          SwellCartItemOption,
+                          'name' | 'value'
+                        >
+                      >
+                    >
+                  >;
+                  product: Maybe<
+                    { __typename?: 'SwellProduct' } & Pick<
+                      SwellProduct,
+                      'id' | 'name' | 'currency' | 'slug'
+                    > & {
+                        images: Maybe<
+                          Array<
+                            Maybe<
+                              { __typename?: 'SwellProductImage' } & Pick<
+                                SwellProductImage,
+                                'caption'
+                              > & {
+                                  file: Maybe<
+                                    { __typename?: 'SwellProductImageFile' } & Pick<
+                                      SwellProductImageFile,
+                                      'url' | 'width' | 'height'
+                                    >
+                                  >;
+                                }
+                            >
+                          >
+                        >;
+                      }
+                  >;
+                }
+            >
+          >
+        >;
+      }
+  >;
+};
 
 export type EditCartItemMutationVariables = Exact<{
   itemId: Scalars['String']['input'];
   quantity: Scalars['Int']['input'];
 }>;
 
-
-export type EditCartItemMutation = (
-  { __typename?: 'Mutation' }
-  & { updateCartItem: Maybe<(
-    { __typename?: 'SwellCart' }
-    & Pick<SwellCart, 'checkoutUrl' | 'subTotal' | 'grandTotal' | 'currency'>
-    & { taxes: Maybe<Array<Maybe<(
-      { __typename?: 'SwellCartTax' }
-      & Pick<SwellCartTax, 'amount'>
-    )>>>, items: Maybe<Array<Maybe<(
-      { __typename?: 'SwellCartItem' }
-      & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-      & { options: Maybe<Array<Maybe<(
-        { __typename?: 'SwellCartItemOption' }
-        & Pick<SwellCartItemOption, 'name' | 'value'>
-      )>>>, product: Maybe<(
-        { __typename?: 'SwellProduct' }
-        & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
-        & { images: Maybe<Array<Maybe<(
-          { __typename?: 'SwellProductImage' }
-          & Pick<SwellProductImage, 'caption'>
-          & { file: Maybe<(
-            { __typename?: 'SwellProductImageFile' }
-            & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
-          )> }
-        )>>> }
-      )> }
-    )>>> }
-  )> }
-);
+export type EditCartItemMutation = { __typename?: 'Mutation' } & {
+  updateCartItem: Maybe<
+    { __typename?: 'SwellCart' } & Pick<
+      SwellCart,
+      'checkoutUrl' | 'subTotal' | 'grandTotal' | 'currency'
+    > & {
+        taxes: Maybe<Array<Maybe<{ __typename?: 'SwellCartTax' } & Pick<SwellCartTax, 'amount'>>>>;
+        items: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'SwellCartItem' } & Pick<
+                SwellCartItem,
+                'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'
+              > & {
+                  options: Maybe<
+                    Array<
+                      Maybe<
+                        { __typename?: 'SwellCartItemOption' } & Pick<
+                          SwellCartItemOption,
+                          'name' | 'value'
+                        >
+                      >
+                    >
+                  >;
+                  product: Maybe<
+                    { __typename?: 'SwellProduct' } & Pick<
+                      SwellProduct,
+                      'id' | 'name' | 'currency' | 'slug'
+                    > & {
+                        images: Maybe<
+                          Array<
+                            Maybe<
+                              { __typename?: 'SwellProductImage' } & Pick<
+                                SwellProductImage,
+                                'caption'
+                              > & {
+                                  file: Maybe<
+                                    { __typename?: 'SwellProductImageFile' } & Pick<
+                                      SwellProductImageFile,
+                                      'url' | 'width' | 'height'
+                                    >
+                                  >;
+                                }
+                            >
+                          >
+                        >;
+                      }
+                  >;
+                }
+            >
+          >
+        >;
+      }
+  >;
+};
 
 export type RemoveFromCartMutationVariables = Exact<{
   itemId: Scalars['String']['input'];
 }>;
 
+export type RemoveFromCartMutation = { __typename?: 'Mutation' } & {
+  deleteCartItem: Maybe<
+    { __typename?: 'SwellCart' } & Pick<
+      SwellCart,
+      'checkoutUrl' | 'subTotal' | 'grandTotal' | 'currency'
+    > & {
+        taxes: Maybe<Array<Maybe<{ __typename?: 'SwellCartTax' } & Pick<SwellCartTax, 'amount'>>>>;
+        items: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'SwellCartItem' } & Pick<
+                SwellCartItem,
+                'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'
+              > & {
+                  options: Maybe<
+                    Array<
+                      Maybe<
+                        { __typename?: 'SwellCartItemOption' } & Pick<
+                          SwellCartItemOption,
+                          'name' | 'value'
+                        >
+                      >
+                    >
+                  >;
+                  product: Maybe<
+                    { __typename?: 'SwellProduct' } & Pick<
+                      SwellProduct,
+                      'id' | 'name' | 'currency' | 'slug'
+                    > & {
+                        images: Maybe<
+                          Array<
+                            Maybe<
+                              { __typename?: 'SwellProductImage' } & Pick<
+                                SwellProductImage,
+                                'caption'
+                              > & {
+                                  file: Maybe<
+                                    { __typename?: 'SwellProductImageFile' } & Pick<
+                                      SwellProductImageFile,
+                                      'url' | 'width' | 'height'
+                                    >
+                                  >;
+                                }
+                            >
+                          >
+                        >;
+                      }
+                  >;
+                }
+            >
+          >
+        >;
+      }
+  >;
+};
 
-export type RemoveFromCartMutation = (
-  { __typename?: 'Mutation' }
-  & { deleteCartItem: Maybe<(
-    { __typename?: 'SwellCart' }
-    & Pick<SwellCart, 'checkoutUrl' | 'subTotal' | 'grandTotal' | 'currency'>
-    & { taxes: Maybe<Array<Maybe<(
-      { __typename?: 'SwellCartTax' }
-      & Pick<SwellCartTax, 'amount'>
-    )>>>, items: Maybe<Array<Maybe<(
-      { __typename?: 'SwellCartItem' }
-      & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-      & { options: Maybe<Array<Maybe<(
-        { __typename?: 'SwellCartItemOption' }
-        & Pick<SwellCartItemOption, 'name' | 'value'>
-      )>>>, product: Maybe<(
-        { __typename?: 'SwellProduct' }
-        & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
-        & { images: Maybe<Array<Maybe<(
-          { __typename?: 'SwellProductImage' }
-          & Pick<SwellProductImage, 'caption'>
-          & { file: Maybe<(
-            { __typename?: 'SwellProductImageFile' }
-            & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
-          )> }
-        )>>> }
-      )> }
-    )>>> }
-  )> }
-);
+export type GetCartQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetCartQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetCartQuery = { __typename?: 'Query' } & {
+  cart: Maybe<
+    { __typename?: 'SwellCart' } & Pick<
+      SwellCart,
+      'checkoutUrl' | 'subTotal' | 'grandTotal' | 'currency'
+    > & {
+        taxes: Maybe<Array<Maybe<{ __typename?: 'SwellCartTax' } & Pick<SwellCartTax, 'amount'>>>>;
+        items: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'SwellCartItem' } & Pick<
+                SwellCartItem,
+                'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'
+              > & {
+                  options: Maybe<
+                    Array<
+                      Maybe<
+                        { __typename?: 'SwellCartItemOption' } & Pick<
+                          SwellCartItemOption,
+                          'name' | 'value'
+                        >
+                      >
+                    >
+                  >;
+                  product: Maybe<
+                    { __typename?: 'SwellProduct' } & Pick<
+                      SwellProduct,
+                      'id' | 'name' | 'currency' | 'slug'
+                    > & {
+                        images: Maybe<
+                          Array<
+                            Maybe<
+                              { __typename?: 'SwellProductImage' } & Pick<
+                                SwellProductImage,
+                                'caption'
+                              > & {
+                                  file: Maybe<
+                                    { __typename?: 'SwellProductImageFile' } & Pick<
+                                      SwellProductImageFile,
+                                      'url' | 'width' | 'height'
+                                    >
+                                  >;
+                                }
+                            >
+                          >
+                        >;
+                      }
+                  >;
+                }
+            >
+          >
+        >;
+      }
+  >;
+};
 
+export type GetCategoriesQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetCartQuery = (
-  { __typename?: 'Query' }
-  & { cart: Maybe<(
-    { __typename?: 'SwellCart' }
-    & Pick<SwellCart, 'checkoutUrl' | 'subTotal' | 'grandTotal' | 'currency'>
-    & { taxes: Maybe<Array<Maybe<(
-      { __typename?: 'SwellCartTax' }
-      & Pick<SwellCartTax, 'amount'>
-    )>>>, items: Maybe<Array<Maybe<(
-      { __typename?: 'SwellCartItem' }
-      & Pick<SwellCartItem, 'id' | 'quantity' | 'price' | 'discountTotal' | 'taxTotal' | 'variantId'>
-      & { options: Maybe<Array<Maybe<(
-        { __typename?: 'SwellCartItemOption' }
-        & Pick<SwellCartItemOption, 'name' | 'value'>
-      )>>>, product: Maybe<(
-        { __typename?: 'SwellProduct' }
-        & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
-        & { images: Maybe<Array<Maybe<(
-          { __typename?: 'SwellProductImage' }
-          & Pick<SwellProductImage, 'caption'>
-          & { file: Maybe<(
-            { __typename?: 'SwellProductImageFile' }
-            & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
-          )> }
-        )>>> }
-      )> }
-    )>>> }
-  )> }
-);
-
-export type GetCategoriesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetCategoriesQuery = (
-  { __typename?: 'Query' }
-  & { categories: Maybe<(
-    { __typename?: 'SwellCategories' }
-    & { results: Maybe<Array<Maybe<(
-      { __typename?: 'SwellCategory' }
-      & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'>
-    )>>> }
-  )> }
-);
+export type GetCategoriesQuery = { __typename?: 'Query' } & {
+  categories: Maybe<
+    { __typename?: 'SwellCategories' } & {
+      results: Maybe<
+        Array<
+          Maybe<
+            { __typename?: 'SwellCategory' } & Pick<
+              SwellCategory,
+              'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'
+            >
+          >
+        >
+      >;
+    }
+  >;
+};
 
 export type GetGategoryQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
+export type GetGategoryQuery = { __typename?: 'Query' } & {
+  categoryBySlug: Maybe<
+    { __typename?: 'SwellCategory' } & Pick<
+      SwellCategory,
+      'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'
+    >
+  >;
+};
 
-export type GetGategoryQuery = (
-  { __typename?: 'Query' }
-  & { categoryBySlug: Maybe<(
-    { __typename?: 'SwellCategory' }
-    & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'>
-  )> }
-);
+export type GetMenusQueryVariables = Exact<{ [key: string]: never }>;
 
-export type GetCategoriesProductsQueryVariables = Exact<{
-  slug: Scalars['String']['input'];
-}>;
-
-
-export type GetCategoriesProductsQuery = (
-  { __typename?: 'Query' }
-  & { categoryBySlug: Maybe<(
-    { __typename?: 'SwellCategory' }
-    & Pick<SwellCategory, 'name' | 'slug' | 'metaDescription' | 'metaKeywords' | 'description'>
-    & { products: Maybe<Array<Maybe<(
-      { __typename?: 'SwellProduct' }
-      & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
-      & { options: Maybe<Array<Maybe<(
-        { __typename?: 'SwellProductOption' }
-        & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
-        & { values: Maybe<Array<Maybe<(
-          { __typename?: 'SwellProductOptionValue' }
-          & Pick<SwellProductOptionValue, 'id' | 'name' | 'price'>
-        )>>> }
-      )>>>, variants: Maybe<(
-        { __typename?: 'SwellProductsVariants' }
-        & { results: Maybe<Array<Maybe<(
-          { __typename?: 'SwellProductVariant' }
-          & Pick<SwellProductVariant, 'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'>
-          & { prices: Maybe<Array<Maybe<(
-            { __typename?: 'SwellProductVariantPrice' }
-            & Pick<SwellProductVariantPrice, 'price' | 'discountPercent'>
-          )>>> }
-        )>>> }
-      )>, images: Maybe<Array<Maybe<(
-        { __typename?: 'SwellProductImage' }
-        & Pick<SwellProductImage, 'caption'>
-        & { file: Maybe<(
-          { __typename?: 'SwellProductImageFile' }
-          & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
-        )> }
-      )>>> }
-    )>>> }
-  )> }
-);
-
-export type GetMenusQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetMenusQuery = (
-  { __typename?: 'Query' }
-  & { menuSettings: Maybe<(
-    { __typename?: 'SwellSettingsMenus' }
-    & { sections: Maybe<Array<Maybe<(
-      { __typename?: 'SwellSettingsMenusSection' }
-      & Pick<SwellSettingsMenusSection, 'id' | 'name' | 'items'>
-    )>>> }
-  )> }
-);
+export type GetMenusQuery = { __typename?: 'Query' } & {
+  menuSettings: Maybe<
+    { __typename?: 'SwellSettingsMenus' } & {
+      sections: Maybe<
+        Array<
+          Maybe<
+            { __typename?: 'SwellSettingsMenusSection' } & Pick<
+              SwellSettingsMenusSection,
+              'id' | 'name' | 'items'
+            >
+          >
+        >
+      >;
+    }
+  >;
+};
 
 export type GetProductQueryVariables = Exact<{
   slug: Scalars['String']['input'];
 }>;
 
-
-export type GetProductQuery = (
-  { __typename?: 'Query' }
-  & { productBySlug: Maybe<(
-    { __typename?: 'SwellProduct' }
-    & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
-    & { options: Maybe<Array<Maybe<(
-      { __typename?: 'SwellProductOption' }
-      & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
-      & { values: Maybe<Array<Maybe<(
-        { __typename?: 'SwellProductOptionValue' }
-        & Pick<SwellProductOptionValue, 'id' | 'name' | 'price'>
-      )>>> }
-    )>>>, variants: Maybe<(
-      { __typename?: 'SwellProductsVariants' }
-      & { results: Maybe<Array<Maybe<(
-        { __typename?: 'SwellProductVariant' }
-        & Pick<SwellProductVariant, 'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'>
-        & { prices: Maybe<Array<Maybe<(
-          { __typename?: 'SwellProductVariantPrice' }
-          & Pick<SwellProductVariantPrice, 'price' | 'discountPercent'>
-        )>>> }
-      )>>> }
-    )>, images: Maybe<Array<Maybe<(
-      { __typename?: 'SwellProductImage' }
-      & Pick<SwellProductImage, 'caption'>
-      & { file: Maybe<(
-        { __typename?: 'SwellProductImageFile' }
-        & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
-      )> }
-    )>>> }
-  )> }
-);
+export type GetProductQuery = { __typename?: 'Query' } & {
+  productBySlug: Maybe<
+    { __typename?: 'SwellProduct' } & Pick<
+      SwellProduct,
+      | 'id'
+      | 'currency'
+      | 'slug'
+      | 'stockPurchasable'
+      | 'stockLevel'
+      | 'name'
+      | 'description'
+      | 'price'
+      | 'metaTitle'
+      | 'metaDescription'
+      | 'tags'
+    > & {
+        options: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'SwellProductOption' } & Pick<
+                SwellProductOption,
+                'name' | 'id' | 'description' | 'variant'
+              > & {
+                  values: Maybe<
+                    Array<
+                      Maybe<
+                        { __typename?: 'SwellProductOptionValue' } & Pick<
+                          SwellProductOptionValue,
+                          'id' | 'name' | 'price'
+                        >
+                      >
+                    >
+                  >;
+                }
+            >
+          >
+        >;
+        variants: Maybe<
+          { __typename?: 'SwellProductsVariants' } & {
+            results: Maybe<
+              Array<
+                Maybe<
+                  { __typename?: 'SwellProductVariant' } & Pick<
+                    SwellProductVariant,
+                    'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'
+                  > & {
+                      prices: Maybe<
+                        Array<
+                          Maybe<
+                            { __typename?: 'SwellProductVariantPrice' } & Pick<
+                              SwellProductVariantPrice,
+                              'price' | 'discountPercent'
+                            >
+                          >
+                        >
+                      >;
+                    }
+                >
+              >
+            >;
+          }
+        >;
+        images: Maybe<
+          Array<
+            Maybe<
+              { __typename?: 'SwellProductImage' } & Pick<SwellProductImage, 'caption'> & {
+                  file: Maybe<
+                    { __typename?: 'SwellProductImageFile' } & Pick<
+                      SwellProductImageFile,
+                      'url' | 'width' | 'height'
+                    >
+                  >;
+                }
+            >
+          >
+        >;
+      }
+  >;
+};
 
 export type GetProductsQueryVariables = Exact<{
   sort: InputMaybe<Scalars['String']['input']>;
   query: InputMaybe<Scalars['String']['input']>;
 }>;
 
+export type GetProductsQuery = { __typename?: 'Query' } & {
+  products: Maybe<
+    { __typename?: 'SwellProducts' } & {
+      results: Maybe<
+        Array<
+          Maybe<
+            { __typename?: 'SwellProduct' } & Pick<
+              SwellProduct,
+              | 'id'
+              | 'currency'
+              | 'slug'
+              | 'stockPurchasable'
+              | 'stockLevel'
+              | 'name'
+              | 'description'
+              | 'price'
+              | 'metaTitle'
+              | 'metaDescription'
+              | 'tags'
+            > & {
+                options: Maybe<
+                  Array<
+                    Maybe<
+                      { __typename?: 'SwellProductOption' } & Pick<
+                        SwellProductOption,
+                        'name' | 'id' | 'description' | 'variant'
+                      > & {
+                          values: Maybe<
+                            Array<
+                              Maybe<
+                                { __typename?: 'SwellProductOptionValue' } & Pick<
+                                  SwellProductOptionValue,
+                                  'id' | 'name' | 'price'
+                                >
+                              >
+                            >
+                          >;
+                        }
+                    >
+                  >
+                >;
+                variants: Maybe<
+                  { __typename?: 'SwellProductsVariants' } & {
+                    results: Maybe<
+                      Array<
+                        Maybe<
+                          { __typename?: 'SwellProductVariant' } & Pick<
+                            SwellProductVariant,
+                            'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'
+                          > & {
+                              prices: Maybe<
+                                Array<
+                                  Maybe<
+                                    { __typename?: 'SwellProductVariantPrice' } & Pick<
+                                      SwellProductVariantPrice,
+                                      'price' | 'discountPercent'
+                                    >
+                                  >
+                                >
+                              >;
+                            }
+                        >
+                      >
+                    >;
+                  }
+                >;
+                images: Maybe<
+                  Array<
+                    Maybe<
+                      { __typename?: 'SwellProductImage' } & Pick<SwellProductImage, 'caption'> & {
+                          file: Maybe<
+                            { __typename?: 'SwellProductImageFile' } & Pick<
+                              SwellProductImageFile,
+                              'url' | 'width' | 'height'
+                            >
+                          >;
+                        }
+                    >
+                  >
+                >;
+              }
+          >
+        >
+      >;
+    }
+  >;
+};
 
-export type GetProductsQuery = (
-  { __typename?: 'Query' }
-  & { products: Maybe<(
-    { __typename?: 'SwellProducts' }
-    & { results: Maybe<Array<Maybe<(
-      { __typename?: 'SwellProduct' }
-      & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
-      & { options: Maybe<Array<Maybe<(
-        { __typename?: 'SwellProductOption' }
-        & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
-        & { values: Maybe<Array<Maybe<(
-          { __typename?: 'SwellProductOptionValue' }
-          & Pick<SwellProductOptionValue, 'id' | 'name' | 'price'>
-        )>>> }
-      )>>>, variants: Maybe<(
-        { __typename?: 'SwellProductsVariants' }
-        & { results: Maybe<Array<Maybe<(
-          { __typename?: 'SwellProductVariant' }
-          & Pick<SwellProductVariant, 'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'>
-          & { prices: Maybe<Array<Maybe<(
-            { __typename?: 'SwellProductVariantPrice' }
-            & Pick<SwellProductVariantPrice, 'price' | 'discountPercent'>
-          )>>> }
-        )>>> }
-      )>, images: Maybe<Array<Maybe<(
-        { __typename?: 'SwellProductImage' }
-        & Pick<SwellProductImage, 'caption'>
-        & { file: Maybe<(
-          { __typename?: 'SwellProductImageFile' }
-          & Pick<SwellProductImageFile, 'url' | 'width' | 'height'>
-        )> }
-      )>>> }
-    )>>> }
-  )> }
-);
+export type GetProductsByCategoryQueryVariables = Exact<{
+  sort: InputMaybe<Scalars['String']['input']>;
+  query: InputMaybe<Scalars['String']['input']>;
+  category: InputMaybe<Scalars['String']['input']>;
+}>;
+
+export type GetProductsByCategoryQuery = { __typename?: 'Query' } & {
+  products: Maybe<
+    { __typename?: 'SwellProducts' } & {
+      results: Maybe<
+        Array<
+          Maybe<
+            { __typename?: 'SwellProduct' } & Pick<
+              SwellProduct,
+              | 'id'
+              | 'currency'
+              | 'slug'
+              | 'stockPurchasable'
+              | 'stockLevel'
+              | 'name'
+              | 'description'
+              | 'price'
+              | 'metaTitle'
+              | 'metaDescription'
+              | 'tags'
+            > & {
+                options: Maybe<
+                  Array<
+                    Maybe<
+                      { __typename?: 'SwellProductOption' } & Pick<
+                        SwellProductOption,
+                        'name' | 'id' | 'description' | 'variant'
+                      > & {
+                          values: Maybe<
+                            Array<
+                              Maybe<
+                                { __typename?: 'SwellProductOptionValue' } & Pick<
+                                  SwellProductOptionValue,
+                                  'id' | 'name' | 'price'
+                                >
+                              >
+                            >
+                          >;
+                        }
+                    >
+                  >
+                >;
+                variants: Maybe<
+                  { __typename?: 'SwellProductsVariants' } & {
+                    results: Maybe<
+                      Array<
+                        Maybe<
+                          { __typename?: 'SwellProductVariant' } & Pick<
+                            SwellProductVariant,
+                            'id' | 'name' | 'sku' | 'optionValueIds' | 'stockLevel' | 'currency'
+                          > & {
+                              prices: Maybe<
+                                Array<
+                                  Maybe<
+                                    { __typename?: 'SwellProductVariantPrice' } & Pick<
+                                      SwellProductVariantPrice,
+                                      'price' | 'discountPercent'
+                                    >
+                                  >
+                                >
+                              >;
+                            }
+                        >
+                      >
+                    >;
+                  }
+                >;
+                images: Maybe<
+                  Array<
+                    Maybe<
+                      { __typename?: 'SwellProductImage' } & Pick<SwellProductImage, 'caption'> & {
+                          file: Maybe<
+                            { __typename?: 'SwellProductImageFile' } & Pick<
+                              SwellProductImageFile,
+                              'url' | 'width' | 'height'
+                            >
+                          >;
+                        }
+                    >
+                  >
+                >;
+              }
+          >
+        >
+      >;
+    }
+  >;
+};
 
 export const CartItemFragmentDoc = gql`
-    fragment CartItem on SwellCartItem {
-  id
-  quantity
-  price
-  discountTotal
-  taxTotal
-  variantId
-  options {
-    name
-    value
+  fragment CartItem on SwellCartItem {
+    id
+    quantity
+    price
+    discountTotal
+    taxTotal
+    variantId
+    options {
+      name
+      value
+    }
+    product {
+      id
+      name
+      currency
+      slug
+      images {
+        file {
+          url
+          width
+          height
+        }
+        caption
+      }
+    }
   }
-  product {
+`;
+export const CartFragmentDoc = gql`
+  fragment Cart on SwellCart {
+    checkoutUrl
+    subTotal
+    grandTotal
+    currency
+    taxes {
+      amount
+    }
+    items {
+      ...CartItem
+    }
+  }
+  ${CartItemFragmentDoc}
+`;
+export const CategoryFragmentDoc = gql`
+  fragment Category on SwellCategory {
+    name
+    slug
+    metaDescription
+    metaKeywords
+    description
+  }
+`;
+export const MenuFragmentDoc = gql`
+  fragment Menu on SwellSettingsMenusSection {
     id
     name
+    items
+  }
+`;
+export const ProductVariantFragmentDoc = gql`
+  fragment ProductVariant on SwellProductVariant {
+    id
+    name
+    sku
+    prices {
+      price
+      discountPercent
+    }
+    optionValueIds
+    stockLevel
+    currency
+  }
+`;
+export const ProductFragmentDoc = gql`
+  fragment Product on SwellProduct {
+    id
     currency
     slug
+    stockPurchasable
+    stockLevel
+    name
+    description
+    options {
+      name
+      id
+      description
+      variant
+      values {
+        id
+        name
+        price
+      }
+    }
+    price
+    variants {
+      results {
+        ...ProductVariant
+      }
+    }
     images {
       file {
         url
@@ -3767,177 +4148,106 @@ export const CartItemFragmentDoc = gql`
       }
       caption
     }
+    metaTitle
+    metaDescription
+    tags
   }
-}
-    `;
-export const CartFragmentDoc = gql`
-    fragment Cart on SwellCart {
-  checkoutUrl
-  subTotal
-  grandTotal
-  currency
-  taxes {
-    amount
-  }
-  items {
-    ...CartItem
-  }
-}
-    ${CartItemFragmentDoc}`;
-export const CategoryFragmentDoc = gql`
-    fragment Category on SwellCategory {
-  name
-  slug
-  metaDescription
-  metaKeywords
-  description
-}
-    `;
-export const MenuFragmentDoc = gql`
-    fragment Menu on SwellSettingsMenusSection {
-  id
-  name
-  items
-}
-    `;
-export const ProductVariantFragmentDoc = gql`
-    fragment ProductVariant on SwellProductVariant {
-  id
-  name
-  sku
-  prices {
-    price
-    discountPercent
-  }
-  optionValueIds
-  stockLevel
-  currency
-}
-    `;
-export const ProductFragmentDoc = gql`
-    fragment Product on SwellProduct {
-  id
-  currency
-  slug
-  stockPurchasable
-  stockLevel
-  name
-  description
-  options {
-    name
-    id
-    description
-    variant
-    values {
-      id
-      name
-      price
-    }
-  }
-  price
-  variants {
-    results {
-      ...ProductVariant
-    }
-  }
-  images {
-    file {
-      url
-      width
-      height
-    }
-    caption
-  }
-  metaTitle
-  metaDescription
-  tags
-}
-    ${ProductVariantFragmentDoc}`;
+  ${ProductVariantFragmentDoc}
+`;
 export const AddToCartDocument = gql`
-    mutation addToCart($productId: ID!, $quantity: Int!, $options: [SwellCartItemOptionInput]) {
-  addCartItem(
-    input: {productId: $productId, quantity: $quantity, options: $options}
-  ) {
-    ...Cart
+  mutation addToCart($productId: ID!, $quantity: Int!, $options: [SwellCartItemOptionInput]) {
+    addCartItem(input: { productId: $productId, quantity: $quantity, options: $options }) {
+      ...Cart
+    }
   }
-}
-    ${CartFragmentDoc}`;
+  ${CartFragmentDoc}
+`;
 export const EditCartItemDocument = gql`
-    mutation editCartItem($itemId: String!, $quantity: Int!) {
-  updateCartItem(itemId: $itemId, input: {quantity: $quantity}) {
-    ...Cart
+  mutation editCartItem($itemId: String!, $quantity: Int!) {
+    updateCartItem(itemId: $itemId, input: { quantity: $quantity }) {
+      ...Cart
+    }
   }
-}
-    ${CartFragmentDoc}`;
+  ${CartFragmentDoc}
+`;
 export const RemoveFromCartDocument = gql`
-    mutation removeFromCart($itemId: String!) {
-  deleteCartItem(itemId: $itemId) {
-    ...Cart
+  mutation removeFromCart($itemId: String!) {
+    deleteCartItem(itemId: $itemId) {
+      ...Cart
+    }
   }
-}
-    ${CartFragmentDoc}`;
+  ${CartFragmentDoc}
+`;
 export const GetCartDocument = gql`
-    query getCart {
-  cart {
-    ...Cart
+  query getCart {
+    cart {
+      ...Cart
+    }
   }
-}
-    ${CartFragmentDoc}`;
+  ${CartFragmentDoc}
+`;
 export const GetCategoriesDocument = gql`
-    query getCategories {
-  categories {
-    results {
+  query getCategories {
+    categories {
+      results {
+        ...Category
+      }
+    }
+  }
+  ${CategoryFragmentDoc}
+`;
+export const GetGategoryDocument = gql`
+  query getGategory($slug: String!) {
+    categoryBySlug(slug: $slug) {
       ...Category
     }
   }
-}
-    ${CategoryFragmentDoc}`;
-export const GetGategoryDocument = gql`
-    query getGategory($slug: String!) {
-  categoryBySlug(slug: $slug) {
-    ...Category
-  }
-}
-    ${CategoryFragmentDoc}`;
-export const GetCategoriesProductsDocument = gql`
-    query getCategoriesProducts($slug: String!) {
-  categoryBySlug(slug: $slug) {
-    ...Category
-    products {
-      ...Product
-    }
-  }
-}
-    ${CategoryFragmentDoc}
-${ProductFragmentDoc}`;
+  ${CategoryFragmentDoc}
+`;
 export const GetMenusDocument = gql`
-    query getMenus {
-  menuSettings {
-    sections {
-      ...Menu
+  query getMenus {
+    menuSettings {
+      sections {
+        ...Menu
+      }
     }
   }
-}
-    ${MenuFragmentDoc}`;
+  ${MenuFragmentDoc}
+`;
 export const GetProductDocument = gql`
-    query getProduct($slug: String!) {
-  productBySlug(slug: $slug) {
-    ...Product
-  }
-}
-    ${ProductFragmentDoc}`;
-export const GetProductsDocument = gql`
-    query getProducts($sort: String, $query: String) {
-  products(sort: $sort, search: $query) {
-    results {
+  query getProduct($slug: String!) {
+    productBySlug(slug: $slug) {
       ...Product
     }
   }
-}
-    ${ProductFragmentDoc}`;
+  ${ProductFragmentDoc}
+`;
+export const GetProductsDocument = gql`
+  query getProducts($sort: String, $query: String) {
+    products(sort: $sort, search: $query) {
+      results {
+        ...Product
+      }
+    }
+  }
+  ${ProductFragmentDoc}
+`;
+export const GetProductsByCategoryDocument = gql`
+  query getProductsByCategory($sort: String, $query: String, $category: String) {
+    products(sort: $sort, search: $query, categories: [$category]) {
+      results {
+        ...Product
+      }
+    }
+  }
+  ${ProductFragmentDoc}
+`;
 
-export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string, operationType?: string) => Promise<T>;
-
+export type SdkFunctionWrapper = <T>(
+  action: (requestHeaders?: Record<string, string>) => Promise<T>,
+  operationName: string,
+  operationType?: string
+) => Promise<T>;
 
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationType) => action();
 const AddToCartDocumentString = print(AddToCartDocument);
@@ -3946,41 +4256,177 @@ const RemoveFromCartDocumentString = print(RemoveFromCartDocument);
 const GetCartDocumentString = print(GetCartDocument);
 const GetCategoriesDocumentString = print(GetCategoriesDocument);
 const GetGategoryDocumentString = print(GetGategoryDocument);
-const GetCategoriesProductsDocumentString = print(GetCategoriesProductsDocument);
 const GetMenusDocumentString = print(GetMenusDocument);
 const GetProductDocumentString = print(GetProductDocument);
 const GetProductsDocumentString = print(GetProductsDocument);
+const GetProductsByCategoryDocumentString = print(GetProductsByCategoryDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
-    addToCart(variables: AddToCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: AddToCartMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<AddToCartMutation>(AddToCartDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'addToCart', 'mutation');
+    addToCart(
+      variables: AddToCartMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: AddToCartMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<AddToCartMutation>(AddToCartDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders
+          }),
+        'addToCart',
+        'mutation'
+      );
     },
-    editCartItem(variables: EditCartItemMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: EditCartItemMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<EditCartItemMutation>(EditCartItemDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'editCartItem', 'mutation');
+    editCartItem(
+      variables: EditCartItemMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: EditCartItemMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<EditCartItemMutation>(EditCartItemDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders
+          }),
+        'editCartItem',
+        'mutation'
+      );
     },
-    removeFromCart(variables: RemoveFromCartMutationVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: RemoveFromCartMutation; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<RemoveFromCartMutation>(RemoveFromCartDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'removeFromCart', 'mutation');
+    removeFromCart(
+      variables: RemoveFromCartMutationVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: RemoveFromCartMutation;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<RemoveFromCartMutation>(RemoveFromCartDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders
+          }),
+        'removeFromCart',
+        'mutation'
+      );
     },
-    getCart(variables?: GetCartQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetCartQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetCartQuery>(GetCartDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCart', 'query');
+    getCart(
+      variables?: GetCartQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{ data: GetCartQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<GetCartQuery>(GetCartDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders
+          }),
+        'getCart',
+        'query'
+      );
     },
-    getCategories(variables?: GetCategoriesQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetCategoriesQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetCategoriesQuery>(GetCategoriesDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategories', 'query');
+    getCategories(
+      variables?: GetCategoriesQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: GetCategoriesQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<GetCategoriesQuery>(GetCategoriesDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders
+          }),
+        'getCategories',
+        'query'
+      );
     },
-    getGategory(variables: GetGategoryQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetGategoryQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetGategoryQuery>(GetGategoryDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getGategory', 'query');
+    getGategory(
+      variables: GetGategoryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{ data: GetGategoryQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<GetGategoryQuery>(GetGategoryDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders
+          }),
+        'getGategory',
+        'query'
+      );
     },
-    getCategoriesProducts(variables: GetCategoriesProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetCategoriesProductsQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetCategoriesProductsQuery>(GetCategoriesProductsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getCategoriesProducts', 'query');
+    getMenus(
+      variables?: GetMenusQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{ data: GetMenusQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<GetMenusQuery>(GetMenusDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders
+          }),
+        'getMenus',
+        'query'
+      );
     },
-    getMenus(variables?: GetMenusQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetMenusQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetMenusQuery>(GetMenusDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getMenus', 'query');
+    getProduct(
+      variables: GetProductQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{ data: GetProductQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<GetProductQuery>(GetProductDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders
+          }),
+        'getProduct',
+        'query'
+      );
     },
-    getProduct(variables: GetProductQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetProductQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetProductQuery>(GetProductDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProduct', 'query');
+    getProducts(
+      variables?: GetProductsQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{ data: GetProductsQuery; extensions?: any; headers: Dom.Headers; status: number }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<GetProductsQuery>(GetProductsDocumentString, variables, {
+            ...requestHeaders,
+            ...wrappedRequestHeaders
+          }),
+        'getProducts',
+        'query'
+      );
     },
-    getProducts(variables?: GetProductsQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<{ data: GetProductsQuery; extensions?: any; headers: Dom.Headers; status: number; }> {
-        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetProductsQuery>(GetProductsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getProducts', 'query');
+    getProductsByCategory(
+      variables?: GetProductsByCategoryQueryVariables,
+      requestHeaders?: GraphQLClientRequestHeaders
+    ): Promise<{
+      data: GetProductsByCategoryQuery;
+      extensions?: any;
+      headers: Dom.Headers;
+      status: number;
+    }> {
+      return withWrapper(
+        (wrappedRequestHeaders) =>
+          client.rawRequest<GetProductsByCategoryQuery>(
+            GetProductsByCategoryDocumentString,
+            variables,
+            { ...requestHeaders, ...wrappedRequestHeaders }
+          ),
+        'getProductsByCategory',
+        'query'
+      );
     }
   };
 }

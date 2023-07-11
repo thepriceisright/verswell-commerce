@@ -10,13 +10,15 @@ export const addItem = async (
 ): Promise<Error | undefined> => {
   const cartId = cookies().get('sessionToken')?.value;
 
-  if (!cartId || !productId) {
-    return new Error('Missing cartId or variantId');
+  if (!productId) {
+    return new Error('Missing variantId');
   }
 
   try {
     const data = await addToCart(cartId, { quantity: 1, productId, options });
-    cookies().set('sessionToken', data.headers.get('X-Session'));
+    if (data.headers.get('X-Session')) {
+      cookies().set('sessionToken', data.headers.get('X-Session'));
+    }
   } catch (e) {
     return new Error('Error adding item', { cause: e });
   }

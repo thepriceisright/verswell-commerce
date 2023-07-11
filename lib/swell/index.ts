@@ -1,7 +1,7 @@
 import { SWELL_GRAPHQL_API_ENDPOINT } from 'lib/constants';
 const domain = `https://${process.env.SWELL_STORE_ID!}.swell.store`;
 const endpoint = `${domain}${SWELL_GRAPHQL_API_ENDPOINT}`;
-const key = process.env.SWELL_STOREFRONT_PUBLIC_KEY!;
+const key = process.env.SWELL_PUBLIC_KEY!;
 
 import { GraphQLClient } from 'graphql-request';
 import { SwellCartItemOptionInput, getSdk } from './__generated__/graphql';
@@ -46,14 +46,16 @@ export const getCart = async (sessionToken: string) => {
 };
 
 export const addToCart = async (
-  sessionToken: string,
+  sessionToken: string | undefined,
   {
     productId,
     quantity,
     options
   }: { productId: string; quantity: number; options: SwellCartItemOptionInput[] | undefined }
 ) => {
-  client.setHeader('X-Session', sessionToken);
+  if (sessionToken) {
+    client.setHeader('X-Session', sessionToken);
+  }
   const addCartItem = await getSdk(client).addToCart({
     productId,
     quantity,
@@ -95,11 +97,20 @@ export const getCategory = async (slug: string) => {
   return data.categoryBySlug;
 };
 
-export const getCategoryProducts = async (slug: string) => {
-  const { data } = await SwellClient.getCategoriesProducts({
-    slug
+export const getProductsByCategory = async (
+  category: string,
+  params?: {
+    query?: string;
+    sort?: string;
+  }
+) => {
+  const { sort, query } = params || {};
+  const { data } = await SwellClient.getProductsByCategory({
+    category,
+    sort,
+    query
   });
-  return data.categoryBySlug?.products;
+  return data?.products.results;
 };
 
 export const getCategories = async () => {

@@ -32,7 +32,7 @@ export default function CartModal({ cart, cartIdUpdated }: { cart: Cart; cartIdU
   const closeCart = () => setIsOpen(false);
 
   useEffect(() => {
-    if (cartIdUpdated) {
+    if (cartIdUpdated && cart.id) {
       setCookie('sessionToken', cart.id, {
         path: '/',
         sameSite: 'strict',
@@ -44,6 +44,7 @@ export default function CartModal({ cart, cartIdUpdated }: { cart: Cart; cartIdU
 
   useEffect(() => {
     // Open cart modal when when quantity changes.
+    if (!cart.items) return;
     if (cart.items?.length !== quantityRef.current) {
       // But only if it's not already open (quantity also changes when editing items in cart).
       if (!isOpen) {
@@ -172,7 +173,7 @@ export default function CartModal({ cart, cartIdUpdated }: { cart: Cart; cartIdU
                       <p>Taxes</p>
                       <Price
                         className="text-right"
-                        amount={cart.taxes?.amount || 0}
+                        amount={`${cart.taxes?.reduce((a, b) => a + b.amount, 0) || 0}`}
                         currencyCode={cart.currency}
                       />
                     </div>
