@@ -1,10 +1,10 @@
+import { GraphQLClient } from 'graphql-request';
 import { SWELL_GRAPHQL_API_ENDPOINT } from 'lib/constants';
+import { SwellCartItemOptionInput, getSdk } from './__generated__/graphql';
 const domain = `https://${process.env.SWELL_STORE_ID!}.swell.store`;
 const endpoint = `${domain}${SWELL_GRAPHQL_API_ENDPOINT}`;
 const key = process.env.SWELL_PUBLIC_KEY!;
 
-import { GraphQLClient } from 'graphql-request';
-import { SwellCartItemOptionInput, getSdk } from './__generated__/graphql';
 const client = new GraphQLClient(endpoint, {
   headers: {
     Authorization: key
