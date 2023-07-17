@@ -2,10 +2,6 @@
 
 # Next.js Swell Commerce
 
-## 🔴 The repository is currently a **Work in Progress** 🔴
-
-> The Swell Team is currently working on supporting the Vercel Commerce v2. Updates will be made to this repository. If you'd like to visit the Next.js Commerce v1 Repo with Swell Backend Support, you can do so [here](https://github.com/swellstores/nextjs-commerce).
-
 A Next.js 13 and App Router-ready ecommerce template featuring:
 
 - Next.js App Router
