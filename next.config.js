@@ -8,6 +8,16 @@ module.exports = {
     serverActions: true
   },
   images: {
-    domains: ['cdn.schema.io', 'cdn.swell.store', 'media.istockphoto.com']
+    domains: ['cdn.schema.io', 'cdn.swell.store', 'media.istockphoto.com'],
+    formats: ['image/avif', 'image/webp'],
+  },
+  async redirects() {
+    return [
+      {
+        source: '/password',
+        destination: '/',
+        permanent: true
+      }
+    ];
   }
 };

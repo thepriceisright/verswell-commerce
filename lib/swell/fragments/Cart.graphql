@@ -22,6 +22,9 @@ fragment CartItem on SwellCartItem {
     name
     value
   }
+  variant {
+    name
+  }
   product {
     id
     name

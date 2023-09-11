@@ -4,7 +4,11 @@ const endpoint = `${domain}${SWELL_GRAPHQL_API_ENDPOINT}`;
 const key = process.env.SWELL_PUBLIC_KEY!;
 
 import { GraphQLClient } from 'graphql-request';
+import { TAGS } from 'lib/constants';
+import { revalidateTag } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
 import { SwellCartItemOptionInput, getSdk } from './__generated__/graphql';
+
 const client = new GraphQLClient(endpoint, {
   headers: {
     Authorization: key
@@ -127,3 +131,34 @@ export const getMenu = async (id: string) => {
   const menus = await getMenus();
   return menus.sections.find((menu) => menu.id === id);
 };
+
+
+// This is called from `app/api/revalidate.ts` so providers can control revalidation logic.
+export async function revalidate(req: NextRequest): Promise<NextResponse> {
+  const collectionWebhooks = ['category.created', 'category.deleted', 'category.updated'];
+  const productWebhooks = ['product.created', 'product.deleted', 'product.updated'];
+  const { type } = await req.json();
+  const secret = req.nextUrl.searchParams.get('secret');
+  const isCollectionUpdate = collectionWebhooks.includes(type);
+  const isProductUpdate = productWebhooks.includes(type);
+
+  if (!secret || secret !== process.env.SWELL_REVALIDATION_SECRET) {
+    console.error('Invalid revalidation secret.');
+    return NextResponse.json({ status: 200 });
+  }
+
+  if (!isCollectionUpdate && !isProductUpdate) {
+    // We don't need to revalidate anything for any other topics.
+    return NextResponse.json({ status: 200 });
+  }
+
+  if (isCollectionUpdate) {
+    revalidateTag(TAGS.collections);
+  }
+
+  if (isProductUpdate) {
+    revalidateTag(TAGS.products);
+  }
+
+  return NextResponse.json({ status: 200, revalidated: true, now: Date.now() });
+}

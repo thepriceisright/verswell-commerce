@@ -1,12 +1,12 @@
 'use client';
 
+import { PlusIcon } from '@heroicons/react/24/outline';
 import clsx from 'clsx';
 import { addItem } from 'components/cart/actions';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState, useTransition } from 'react';
-
 import LoadingDots from 'components/loading-dots';
 import { ProductFragment } from 'lib/swell/__generated__/graphql';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState, useTransition } from 'react';
 
 export function AddToCart({
   availableForSale,
@@ -15,11 +15,10 @@ export function AddToCart({
   product: ProductFragment;
   availableForSale: boolean;
 }) {
-  const [selectedOptions, setSelectedOptions] = useState([]);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();
-
+  const [isPending, startTransition] = useTransition();  
+  const [selectedOptions, setSelectedOptions] = useState([]);
   useEffect(() => {
     const currentVariantArray: any = [];
     searchParams.forEach((value, key) => {
@@ -28,33 +27,39 @@ export function AddToCart({
     setSelectedOptions(currentVariantArray);
   }, [searchParams]);
 
+
   return (
     <button
       aria-label="Add item to cart"
       disabled={isPending}
+      title={availableForSale ? 'Add To Cart' : 'Out Of Stock'}
       onClick={() => {
+        // Safeguard in case someone messes with `disabled` in devtools.
         if (!availableForSale) return;
+
         startTransition(async () => {
           const error = await addItem(product.id, selectedOptions);
 
           if (error) {
-            alert(error);
-            return;
+            // Trigger the error boundary in the root error.js
+            throw new Error(error.toString());
           }
 
           router.refresh();
         });
       }}
       className={clsx(
-        'flex w-full items-center justify-center bg-black p-4 text-sm uppercase tracking-wide text-white opacity-90 hover:opacity-100 dark:bg-white dark:text-black',
+        'relative flex w-full items-center justify-center rounded-full bg-blue-600 p-4 tracking-wide text-white hover:opacity-90',
         {
-          'cursor-not-allowed opacity-60': !availableForSale,
+          'cursor-not-allowed opacity-60 hover:opacity-60': !availableForSale,
           'cursor-not-allowed': isPending
         }
       )}
     >
+      <div className="absolute left-0 ml-4">
+        {!isPending ? <PlusIcon className="h-5" /> : <LoadingDots className="mb-3 bg-white" />}
+      </div>
       <span>{availableForSale ? 'Add To Cart' : 'Out Of Stock'}</span>
-      {isPending ? <LoadingDots className="bg-white dark:bg-black" /> : null}
     </button>
   );
 }

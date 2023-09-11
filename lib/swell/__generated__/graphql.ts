@@ -221,6 +221,8 @@ export type Query = {
   contentPageById: Maybe<SwellContentPage>;
   contentPageBySlug: Maybe<SwellContentPage>;
   contentPages: Maybe<SwellContentPages>;
+  contentTestModelById: Maybe<SwellContentTestModel>;
+  contentTestModels: Maybe<SwellContentTestModels>;
   menuSettings: Maybe<SwellSettingsMenus>;
   orderById: Maybe<SwellOrder>;
   orderByNumber: Maybe<SwellOrder>;
@@ -309,6 +311,26 @@ export type QueryContentPageBySlugArgs = {
 
 
 export type QueryContentPagesArgs = {
+  _currency: InputMaybe<Scalars['String']['input']>;
+  _locale: InputMaybe<Scalars['String']['input']>;
+  _preview: InputMaybe<Scalars['Boolean']['input']>;
+  limit: InputMaybe<Scalars['Int']['input']>;
+  page: InputMaybe<Scalars['Int']['input']>;
+  search: InputMaybe<Scalars['String']['input']>;
+  sort: InputMaybe<Scalars['String']['input']>;
+  where: InputMaybe<Scalars['JSON']['input']>;
+};
+
+
+export type QueryContentTestModelByIdArgs = {
+  _currency: InputMaybe<Scalars['String']['input']>;
+  _locale: InputMaybe<Scalars['String']['input']>;
+  _preview: InputMaybe<Scalars['Boolean']['input']>;
+  id: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryContentTestModelsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   _preview: InputMaybe<Scalars['Boolean']['input']>;
@@ -1773,6 +1795,23 @@ export type SwellContentPages = {
   pageCount: Maybe<Scalars['Int']['output']>;
   pages: Maybe<Array<Maybe<Page>>>;
   results: Maybe<Array<Maybe<SwellContentPage>>>;
+};
+
+/** Test-Model */
+export type SwellContentTestModel = {
+  __typename?: 'SwellContentTestModel';
+  dateCreated: Maybe<Scalars['DateTime']['output']>;
+  dateUpdated: Maybe<Scalars['DateTime']['output']>;
+  id: Maybe<Scalars['ID']['output']>;
+};
+
+export type SwellContentTestModels = {
+  __typename?: 'SwellContentTestModels';
+  count: Maybe<Scalars['Int']['output']>;
+  page: Maybe<Scalars['Int']['output']>;
+  pageCount: Maybe<Scalars['Int']['output']>;
+  pages: Maybe<Array<Maybe<Page>>>;
+  results: Maybe<Array<Maybe<SwellContentTestModel>>>;
 };
 
 /** Order */
@@ -3355,7 +3394,10 @@ export type CartFragment = (
     & { options: Maybe<Array<Maybe<(
       { __typename?: 'SwellCartItemOption' }
       & Pick<SwellCartItemOption, 'name' | 'value'>
-    )>>>, product: Maybe<(
+    )>>>, variant: Maybe<(
+      { __typename?: 'SwellProductVariant' }
+      & Pick<SwellProductVariant, 'name'>
+    )>, product: Maybe<(
       { __typename?: 'SwellProduct' }
       & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
       & { images: Maybe<Array<Maybe<(
@@ -3376,7 +3418,10 @@ export type CartItemFragment = (
   & { options: Maybe<Array<Maybe<(
     { __typename?: 'SwellCartItemOption' }
     & Pick<SwellCartItemOption, 'name' | 'value'>
-  )>>>, product: Maybe<(
+  )>>>, variant: Maybe<(
+    { __typename?: 'SwellProductVariant' }
+    & Pick<SwellProductVariant, 'name'>
+  )>, product: Maybe<(
     { __typename?: 'SwellProduct' }
     & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
     & { images: Maybe<Array<Maybe<(
@@ -3460,7 +3505,10 @@ export type AddToCartMutation = (
       & { options: Maybe<Array<Maybe<(
         { __typename?: 'SwellCartItemOption' }
         & Pick<SwellCartItemOption, 'name' | 'value'>
-      )>>>, product: Maybe<(
+      )>>>, variant: Maybe<(
+        { __typename?: 'SwellProductVariant' }
+        & Pick<SwellProductVariant, 'name'>
+      )>, product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
@@ -3496,7 +3544,10 @@ export type EditCartItemMutation = (
       & { options: Maybe<Array<Maybe<(
         { __typename?: 'SwellCartItemOption' }
         & Pick<SwellCartItemOption, 'name' | 'value'>
-      )>>>, product: Maybe<(
+      )>>>, variant: Maybe<(
+        { __typename?: 'SwellProductVariant' }
+        & Pick<SwellProductVariant, 'name'>
+      )>, product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
@@ -3531,7 +3582,10 @@ export type RemoveFromCartMutation = (
       & { options: Maybe<Array<Maybe<(
         { __typename?: 'SwellCartItemOption' }
         & Pick<SwellCartItemOption, 'name' | 'value'>
-      )>>>, product: Maybe<(
+      )>>>, variant: Maybe<(
+        { __typename?: 'SwellProductVariant' }
+        & Pick<SwellProductVariant, 'name'>
+      )>, product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
@@ -3564,7 +3618,10 @@ export type GetCartQuery = (
       & { options: Maybe<Array<Maybe<(
         { __typename?: 'SwellCartItemOption' }
         & Pick<SwellCartItemOption, 'name' | 'value'>
-      )>>>, product: Maybe<(
+      )>>>, variant: Maybe<(
+        { __typename?: 'SwellProductVariant' }
+        & Pick<SwellProductVariant, 'name'>
+      )>, product: Maybe<(
         { __typename?: 'SwellProduct' }
         & Pick<SwellProduct, 'id' | 'name' | 'currency' | 'slug'>
         & { images: Maybe<Array<Maybe<(
@@ -3755,6 +3812,9 @@ export const CartItemFragmentDoc = gql`
   options {
     name
     value
+  }
+  variant {
+    name
   }
   product {
     id
