@@ -2,6 +2,7 @@ fragment Product on SwellProduct {
   id
   currency
   slug
+  stockTracking
   stockPurchasable
   stockLevel
   name

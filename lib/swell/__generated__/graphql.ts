@@ -221,8 +221,6 @@ export type Query = {
   contentPageById: Maybe<SwellContentPage>;
   contentPageBySlug: Maybe<SwellContentPage>;
   contentPages: Maybe<SwellContentPages>;
-  contentTestModelById: Maybe<SwellContentTestModel>;
-  contentTestModels: Maybe<SwellContentTestModels>;
   menuSettings: Maybe<SwellSettingsMenus>;
   orderById: Maybe<SwellOrder>;
   orderByNumber: Maybe<SwellOrder>;
@@ -311,26 +309,6 @@ export type QueryContentPageBySlugArgs = {
 
 
 export type QueryContentPagesArgs = {
-  _currency: InputMaybe<Scalars['String']['input']>;
-  _locale: InputMaybe<Scalars['String']['input']>;
-  _preview: InputMaybe<Scalars['Boolean']['input']>;
-  limit: InputMaybe<Scalars['Int']['input']>;
-  page: InputMaybe<Scalars['Int']['input']>;
-  search: InputMaybe<Scalars['String']['input']>;
-  sort: InputMaybe<Scalars['String']['input']>;
-  where: InputMaybe<Scalars['JSON']['input']>;
-};
-
-
-export type QueryContentTestModelByIdArgs = {
-  _currency: InputMaybe<Scalars['String']['input']>;
-  _locale: InputMaybe<Scalars['String']['input']>;
-  _preview: InputMaybe<Scalars['Boolean']['input']>;
-  id: InputMaybe<Scalars['String']['input']>;
-};
-
-
-export type QueryContentTestModelsArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
   _preview: InputMaybe<Scalars['Boolean']['input']>;
@@ -1504,7 +1482,6 @@ export type SwellCategories = {
 export type SwellCategory = {
   __typename?: 'SwellCategory';
   children: Maybe<Array<Maybe<SwellCategory>>>;
-  content: Maybe<SwellCategoryContent>;
   /** A long-form description of the category. Can contain HTML or other markup languages. */
   description: Maybe<Scalars['String']['output']>;
   /** Image depicting the category. */
@@ -1560,16 +1537,6 @@ export type SwellCategoryTopArgs = {
   _locale: InputMaybe<Scalars['String']['input']>;
 };
 
-export type SwellCategoryContent = {
-  __typename?: 'SwellCategoryContent';
-  darkenHeroImage: Maybe<Scalars['Int']['output']>;
-  paginationStyle: Maybe<Scalars['String']['output']>;
-  productCols: Maybe<Scalars['Int']['output']>;
-  productRows: Maybe<Scalars['Int']['output']>;
-  showHeroImage: Maybe<Scalars['Boolean']['output']>;
-  textColor: Maybe<Scalars['String']['output']>;
-};
-
 /** List of images depicting the category. */
 export type SwellCategoryImage = {
   __typename?: 'SwellCategoryImage';
@@ -1609,184 +1576,8 @@ export type SwellContentPage = {
   name: Maybe<Scalars['String']['output']>;
   published: Maybe<Scalars['Boolean']['output']>;
   redirect: Maybe<Scalars['String']['output']>;
-  sections: Maybe<Array<Maybe<SwellContentPageSections>>>;
   slug: Maybe<Scalars['String']['output']>;
 };
-
-export type SwellContentPageSectionCollectionPreview = {
-  __typename?: 'SwellContentPageSectionCollectionPreview';
-  category: Maybe<SwellCategory>;
-  categoryId: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  productCols: Maybe<Scalars['Int']['output']>;
-  productRows: Maybe<Scalars['Int']['output']>;
-  productTextAlign: Maybe<Scalars['String']['output']>;
-  showPrice: Maybe<Scalars['Boolean']['output']>;
-  showTitle: Maybe<Scalars['Boolean']['output']>;
-  title: Maybe<Scalars['String']['output']>;
-  titleAlign: Maybe<Scalars['String']['output']>;
-  titleSize: Maybe<Scalars['String']['output']>;
-  type: Maybe<Scalars['String']['output']>;
-};
-
-
-export type SwellContentPageSectionCollectionPreviewCategoryArgs = {
-  _currency: InputMaybe<Scalars['String']['input']>;
-  _locale: InputMaybe<Scalars['String']['input']>;
-};
-
-export type SwellContentPageSectionCustomerReview = {
-  __typename?: 'SwellContentPageSectionCustomerReview';
-  heading: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  reviews: Maybe<Array<Maybe<SwellContentPageSectionCustomerReviewReview>>>;
-  type: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionCustomerReviewReview = {
-  __typename?: 'SwellContentPageSectionCustomerReviewReview';
-  id: Maybe<Scalars['ID']['output']>;
-  location: Maybe<Scalars['String']['output']>;
-  name: Maybe<Scalars['String']['output']>;
-  quote: Maybe<Scalars['String']['output']>;
-  score: Maybe<Scalars['Int']['output']>;
-};
-
-export type SwellContentPageSectionEmailSignup = {
-  __typename?: 'SwellContentPageSectionEmailSignup';
-  alignX: Maybe<Scalars['String']['output']>;
-  bgColor: Maybe<Scalars['String']['output']>;
-  description: Maybe<Scalars['String']['output']>;
-  heading: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  image: Maybe<Scalars['JSON']['output']>;
-  outerSpacingX: Maybe<Scalars['String']['output']>;
-  outerSpacingY: Maybe<Scalars['String']['output']>;
-  textAlign: Maybe<Scalars['String']['output']>;
-  type: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionFullWidthMedium = {
-  __typename?: 'SwellContentPageSectionFullWidthMedium';
-  alignX: Maybe<Scalars['String']['output']>;
-  alignY: Maybe<Scalars['String']['output']>;
-  bgColor: Maybe<Scalars['String']['output']>;
-  darkenBg: Maybe<Scalars['Int']['output']>;
-  description: Maybe<Scalars['String']['output']>;
-  heading: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  image: Maybe<Scalars['JSON']['output']>;
-  innerSpacing: Maybe<Scalars['String']['output']>;
-  links: Maybe<Array<Maybe<SwellContentPageSectionFullWidthMediumLink>>>;
-  outerSpacingX: Maybe<Scalars['String']['output']>;
-  outerSpacingY: Maybe<Scalars['String']['output']>;
-  textColor: Maybe<Scalars['String']['output']>;
-  type: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionFullWidthMediumLink = {
-  __typename?: 'SwellContentPageSectionFullWidthMediumLink';
-  id: Maybe<Scalars['ID']['output']>;
-  label: Maybe<Scalars['String']['output']>;
-  style: Maybe<Scalars['String']['output']>;
-  url: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionHeadingWithText = {
-  __typename?: 'SwellContentPageSectionHeadingWithText';
-  bgColor: Maybe<Scalars['String']['output']>;
-  description: Maybe<Scalars['String']['output']>;
-  heading: Maybe<Scalars['String']['output']>;
-  headingPosition: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  label: Maybe<Scalars['String']['output']>;
-  textColumnWidth: Maybe<Scalars['String']['output']>;
-  textColumns: Maybe<Scalars['String']['output']>;
-  type: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionLargeMedium = {
-  __typename?: 'SwellContentPageSectionLargeMedium';
-  bgColor: Maybe<Scalars['String']['output']>;
-  caption: Maybe<Scalars['String']['output']>;
-  description: Maybe<Scalars['String']['output']>;
-  heading: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  image: Maybe<Scalars['JSON']['output']>;
-  type: Maybe<Scalars['String']['output']>;
-  url: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionMultiFeature = {
-  __typename?: 'SwellContentPageSectionMultiFeature';
-  columnWidth: Maybe<Scalars['String']['output']>;
-  features: Maybe<Array<Maybe<SwellContentPageSectionMultiFeatureFeature>>>;
-  heading: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  type: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionMultiFeatureFeature = {
-  __typename?: 'SwellContentPageSectionMultiFeatureFeature';
-  icon: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  label: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionMultiPanel = {
-  __typename?: 'SwellContentPageSectionMultiPanel';
-  bgColor: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  panels: Maybe<Array<Maybe<SwellContentPageSectionMultiPanelPanels>>>;
-  textAlign: Maybe<Scalars['String']['output']>;
-  type: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionMultiPanelPanelImage = {
-  __typename?: 'SwellContentPageSectionMultiPanelPanelImage';
-  id: Maybe<Scalars['ID']['output']>;
-  image: Maybe<Scalars['JSON']['output']>;
-  imageAlt: Maybe<Scalars['String']['output']>;
-  type: Maybe<Scalars['String']['output']>;
-  url: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionMultiPanelPanelText = {
-  __typename?: 'SwellContentPageSectionMultiPanelPanelText';
-  description: Maybe<Scalars['String']['output']>;
-  heading: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  links: Maybe<Array<Maybe<SwellContentPageSectionMultiPanelPanelTextLink>>>;
-  type: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionMultiPanelPanelTextLink = {
-  __typename?: 'SwellContentPageSectionMultiPanelPanelTextLink';
-  id: Maybe<Scalars['ID']['output']>;
-  label: Maybe<Scalars['String']['output']>;
-  style: Maybe<Scalars['String']['output']>;
-  url: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionMultiPanelPanels = SwellContentPageSectionMultiPanelPanelImage | SwellContentPageSectionMultiPanelPanelText;
-
-export type SwellContentPageSectionPressMention = {
-  __typename?: 'SwellContentPageSectionPressMention';
-  id: Maybe<Scalars['ID']['output']>;
-  mentions: Maybe<Array<Maybe<SwellContentPageSectionPressMentionMention>>>;
-  type: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSectionPressMentionMention = {
-  __typename?: 'SwellContentPageSectionPressMentionMention';
-  id: Maybe<Scalars['ID']['output']>;
-  logo: Maybe<Scalars['JSON']['output']>;
-  logoScale: Maybe<Scalars['Int']['output']>;
-  name: Maybe<Scalars['String']['output']>;
-  quote: Maybe<Scalars['String']['output']>;
-};
-
-export type SwellContentPageSections = SwellContentPageSectionCollectionPreview | SwellContentPageSectionCustomerReview | SwellContentPageSectionEmailSignup | SwellContentPageSectionFullWidthMedium | SwellContentPageSectionHeadingWithText | SwellContentPageSectionLargeMedium | SwellContentPageSectionMultiFeature | SwellContentPageSectionMultiPanel | SwellContentPageSectionPressMention;
 
 export type SwellContentPages = {
   __typename?: 'SwellContentPages';
@@ -1795,23 +1586,6 @@ export type SwellContentPages = {
   pageCount: Maybe<Scalars['Int']['output']>;
   pages: Maybe<Array<Maybe<Page>>>;
   results: Maybe<Array<Maybe<SwellContentPage>>>;
-};
-
-/** Test-Model */
-export type SwellContentTestModel = {
-  __typename?: 'SwellContentTestModel';
-  dateCreated: Maybe<Scalars['DateTime']['output']>;
-  dateUpdated: Maybe<Scalars['DateTime']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-};
-
-export type SwellContentTestModels = {
-  __typename?: 'SwellContentTestModels';
-  count: Maybe<Scalars['Int']['output']>;
-  page: Maybe<Scalars['Int']['output']>;
-  pageCount: Maybe<Scalars['Int']['output']>;
-  pages: Maybe<Array<Maybe<Page>>>;
-  results: Maybe<Array<Maybe<SwellContentTestModel>>>;
 };
 
 /** Order */
@@ -2483,7 +2257,6 @@ export type SwellProduct = {
   /** List of products sold as a bundle. Applicable only when `bundle=true`. */
   bundleItems: Maybe<Array<Maybe<SwellProductBundleItem>>>;
   categories: Maybe<Array<Maybe<SwellCategory>>>;
-  content: Maybe<SwellProductContent>;
   /** List of products to display as cross-sells on a shopping cart page. */
   crossSells: Maybe<Array<Maybe<SwellProductCrossSell>>>;
   currency: Maybe<Scalars['String']['output']>;
@@ -2556,23 +2329,6 @@ export type SwellProductBundleItem = {
 export type SwellProductBundleItemProductArgs = {
   _currency: InputMaybe<Scalars['String']['input']>;
   _locale: InputMaybe<Scalars['String']['input']>;
-};
-
-export type SwellProductContent = {
-  __typename?: 'SwellProductContent';
-  enableQuantity: Maybe<Scalars['Boolean']['output']>;
-  enableSocialSharing: Maybe<Scalars['Boolean']['output']>;
-  maxQuantity: Maybe<Scalars['Int']['output']>;
-  productBenefits: Maybe<Array<Maybe<SwellProductContentProductBenefit>>>;
-  showStockLevel: Maybe<Scalars['Boolean']['output']>;
-  upSellCols: Maybe<Scalars['Int']['output']>;
-};
-
-export type SwellProductContentProductBenefit = {
-  __typename?: 'SwellProductContentProductBenefit';
-  icon: Maybe<Scalars['String']['output']>;
-  id: Maybe<Scalars['ID']['output']>;
-  text: Maybe<Scalars['String']['output']>;
 };
 
 /** List of products to display as cross-sells on a shopping cart page. */
@@ -3447,7 +3203,7 @@ export type MenuFragment = (
 
 export type ProductFragment = (
   { __typename?: 'SwellProduct' }
-  & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
+  & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockTracking' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
   & { options: Maybe<Array<Maybe<(
     { __typename?: 'SwellProductOption' }
     & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
@@ -3687,7 +3443,7 @@ export type GetProductQuery = (
   { __typename?: 'Query' }
   & { productBySlug: Maybe<(
     { __typename?: 'SwellProduct' }
-    & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
+    & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockTracking' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
     & { options: Maybe<Array<Maybe<(
       { __typename?: 'SwellProductOption' }
       & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
@@ -3728,7 +3484,7 @@ export type GetProductsQuery = (
     { __typename?: 'SwellProducts' }
     & { results: Maybe<Array<Maybe<(
       { __typename?: 'SwellProduct' }
-      & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
+      & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockTracking' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
       & { options: Maybe<Array<Maybe<(
         { __typename?: 'SwellProductOption' }
         & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
@@ -3771,7 +3527,7 @@ export type GetProductsByCategoryQuery = (
     { __typename?: 'SwellProducts' }
     & { results: Maybe<Array<Maybe<(
       { __typename?: 'SwellProduct' }
-      & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
+      & Pick<SwellProduct, 'id' | 'currency' | 'slug' | 'stockTracking' | 'stockPurchasable' | 'stockLevel' | 'name' | 'description' | 'price' | 'metaTitle' | 'metaDescription' | 'tags'>
       & { options: Maybe<Array<Maybe<(
         { __typename?: 'SwellProductOption' }
         & Pick<SwellProductOption, 'name' | 'id' | 'description' | 'variant'>
@@ -3881,6 +3637,7 @@ export const ProductFragmentDoc = gql`
   id
   currency
   slug
+  stockTracking
   stockPurchasable
   stockLevel
   name

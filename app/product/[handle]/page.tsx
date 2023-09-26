@@ -60,7 +60,7 @@ export default async function ProductPage({ params }: { params: { handle: string
     image: product.images[0]?.file.url,
     offers: {
       '@type': 'AggregateOffer',
-      availability: product.stockPurchasable
+      availability: product.stockTracking === false || product.stockPurchasable
         ? 'https://schema.org/InStock'
         : 'https://schema.org/OutOfStock',
       priceCurrency: product.currency,

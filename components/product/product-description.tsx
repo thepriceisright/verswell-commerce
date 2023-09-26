@@ -16,7 +16,7 @@ export function ProductDescription({ product }: { product: ProductFragment }) {
           />
         </div>
       </div>
-      <VariantSelector options={product.options} variants={product.variants.results} stockPurchasable={product.stockPurchasable}
+      <VariantSelector options={product.options} variants={product.variants.results} stockPurchasable={product.stockTracking === false || product.stockPurchasable}
 />
 
       {product.description ? (
@@ -26,7 +26,7 @@ export function ProductDescription({ product }: { product: ProductFragment }) {
         />
       ) : null}
 
-      <AddToCart product={product} availableForSale={product.stockPurchasable} />
+      <AddToCart product={product} availableForSale={product.stockTracking === false || product.stockPurchasable} />
     </>
   );
 }
