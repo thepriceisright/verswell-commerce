@@ -4,7 +4,6 @@ import CartModal from './modal';
 
 export default async function Cart() {
   const cartId = cookies().get('sessionToken')?.value;
-  let cartIdUpdated = false;
   let cart;
 
   if (cartId) {

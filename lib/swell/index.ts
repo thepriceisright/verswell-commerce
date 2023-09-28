@@ -1,4 +1,5 @@
 import { SWELL_GRAPHQL_API_ENDPOINT } from 'lib/constants';
+
 const domain = `https://${process.env.SWELL_STORE_ID!}.swell.store`;
 const endpoint = `${domain}${SWELL_GRAPHQL_API_ENDPOINT}`;
 const key = process.env.SWELL_PUBLIC_KEY!;
@@ -32,21 +33,24 @@ export const getProducts = async ({ query, sort }: { query?: string; sort?: stri
   return data.products.results;
 };
 
-export const createCart = async () => {
-  const data = await SwellClient.getCart();
-  return {
-    id: data.headers.get('X-Session')!,
-    ...data.data.cart
-  };
-};
-
 export const getCart = async (sessionToken: string) => {
-  client.setHeader('X-Session', sessionToken);
-  const data = await getSdk(client).getCart();
-  return {
-    id: sessionToken,
-    ...data.data.cart
-  };
+  try {
+    client.setHeader('X-Session', sessionToken);
+    const data = await getSdk(client).getCart();
+    if (data.data.cart) {
+      return {
+        ...data.data.cart
+      };
+    }
+  } catch (e) {
+    client.setHeader('X-Session', '');
+    const data = await getSdk(client).getCart();
+    if (data.data.cart) {
+      return {
+        ...data.data.cart
+      };
+    }
+  }
 };
 
 export const addToCart = async (
@@ -60,12 +64,22 @@ export const addToCart = async (
   if (sessionToken) {
     client.setHeader('X-Session', sessionToken);
   }
-  const addCartItem = await getSdk(client).addToCart({
-    productId,
-    quantity,
-    options
-  });
-  return addCartItem;
+  try {
+    const addCartItem = await getSdk(client).addToCart({
+      productId,
+      quantity,
+      options
+    });
+    return addCartItem;
+  } catch (e) {
+    client.setHeader('X-Session', '');
+    const addCartItem = await getSdk(client).addToCart({
+      productId,
+      quantity,
+      options
+    });
+    return addCartItem;
+  }
 };
 
 export const updateCart = async (
@@ -131,7 +145,6 @@ export const getMenu = async (id: string) => {
   const menus = await getMenus();
   return menus.sections.find((menu) => menu.id === id);
 };
-
 
 // This is called from `app/api/revalidate.ts` so providers can control revalidation logic.
 export async function revalidate(req: NextRequest): Promise<NextResponse> {

@@ -114,18 +114,13 @@ export default function CartModal({ cart }: { cart: CartFragment | undefined }) 
                                   className="h-full w-full object-cover"
                                   width={64}
                                   height={64}
-                                  alt={
-                                    item.product.images[0]?.caption ||
-                                    item.product.name
-                                  }
-                                  src={item.product.images[0]?.file.url || ""}
+                                  alt={item.product.images[0]?.caption || item.product.name}
+                                  src={item.product.images[0]?.file.url || ''}
                                 />
                               </div>
 
                               <div className="flex flex-1 flex-col text-base">
-                                <span className="leading-tight">
-                                  {item.product.name}
-                                </span>
+                                <span className="leading-tight">{item.product.name}</span>
                                 {item.variant && item.variant.name !== DEFAULT_OPTION ? (
                                   <p className="text-sm text-neutral-500 dark:text-neutral-400">
                                     {item.variant.name}
