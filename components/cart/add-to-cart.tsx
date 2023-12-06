@@ -17,7 +17,7 @@ export function AddToCart({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [isPending, startTransition] = useTransition();  
+  const [isPending, startTransition] = useTransition();
   const [selectedOptions, setSelectedOptions] = useState([]);
   useEffect(() => {
     const currentVariantArray: any = [];
@@ -26,7 +26,6 @@ export function AddToCart({
     });
     setSelectedOptions(currentVariantArray);
   }, [searchParams]);
-
 
   return (
     <button
