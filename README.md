@@ -38,7 +38,7 @@ _To use Vercel Environment Variables:_
 2. Select the `Vercel Solutions` scope.
 3. Connect to the existing `commerce-swell` project.
 4. Run `vc env pull` to get environment variables.
-5. Run `pmpm dev` to ensure everything is working correctly.
+5. Run `pnpm dev` to ensure everything is working correctly.
 </details>
 
 ### Connecting to your Swell store
